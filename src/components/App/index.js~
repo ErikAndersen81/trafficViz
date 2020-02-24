@@ -1,0 +1,90 @@
+import React, { useState, useEffect } from 'react';
+import Blueprints from '../../constants/blueprints';
+import Intersection from '../Intersection';
+import SelectSource from '../SelectSource';
+import Date from '../Date';
+import Map from '../Map';
+
+
+function App() {
+    /* Use median week as default simulation */
+    const [simulationType, setSimulationType] = useState('median');
+    
+    return (
+	<>
+	  <SelectSource simulation={simulationType} setSimulation={setSimulationType}/>
+	  <br/>
+	  <Date simulationType={simulationType} />
+	<div className="graph">
+	    <svg
+		width="100%"
+		height="100%"
+		viewBox="0 0 1337 1179"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlnsXlink="http://www.w3.org/1999/xlink"
+            >
+		<g>
+		    { <Map /> }
+		    <Intersections simulationType={simulationType} />
+		</g>
+            </svg>
+	    </div>
+	    </>
+    );
+}
+
+const mergeData = (data, blueprints) => {
+    var dict = {};
+    Object.keys(blueprints)
+	  .forEach( tag => {
+	      dict[tag]={...blueprints[tag]};
+	      dict[tag].streets.forEach((street,idx) => {
+		  var streetDict = {};
+		  street.lanes.forEach(lane => {streetDict[lane]=JSON.parse(data[tag])[lane]});
+		  dict[tag].streets[idx].lanes = streetDict;
+	      });
+	  })
+    return dict
+}
+	      
+
+const Intersections = (props) => {
+    const [data, setData ] = useState(null);
+    const [requested, setRequested] = useState(false);
+    const resource = "http://127.0.0.1:5000/real";
+
+    const payload = {
+	method: 'POST',
+	headers: {
+	    'Accept': 'application/json',
+	    'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({date:'2017-12-14 13:30:00'})
+    }
+    
+    useEffect( () => {
+	/* Only request data from trafficSimulator if we change the simulation type
+	 * OR DATE!!!
+	 */
+	if (requested===props.simulationType) {return;}
+	setRequested(props.simulationType);
+	fetch(resource, payload).then(
+	    /* extract data from response and pass it on */
+	    (response) => {
+		return response.json();
+	    }).then(
+		/* merge retreived data with blueprint data and update state */
+		(jsonData) => {
+		    const mergedData = mergeData(jsonData['data'], Blueprints);
+		    setData(mergedData);
+		});
+    }, [props.simulationType, requested, resource]);
+    return (
+	<>
+	    { data ? Object.keys(data).map( key => <Intersection data={data[key]} name={key} key={key} />) : null}
+	</>
+    )
+}
+
+
+export default App;

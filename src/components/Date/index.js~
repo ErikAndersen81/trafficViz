@@ -1,0 +1,21 @@
+import React, {useEffect, useState } from 'react';
+
+const Date = (props) => {
+    const resource = "http://127.0.0.1:5000/K071/" + props.simulationType;
+    const key = props.simulationType === "real" ? "K071" : "Unnamed: 0";
+    const [date, setDate] = useState(null);
+
+    useEffect( () => {
+	fetch(resource).then(
+	    /* extract data from response and pass it on */
+	    (response) => {
+		console.log(response);
+		return response.json();
+	    }).then(
+		(jsonData) => {
+		    console.log(jsonData[key]);
+		});
+    });
+
+    return null;
+};
