@@ -6,7 +6,6 @@ const Intersections = (props) => {
     const [data, setData ] = useState(null);
     const [requested, setRequested] = useState(false);
     const resource = "http://127.0.0.1:5000/" + props.simulationType;
-
     const payload = {
 	method: 'POST',
 	headers: {
@@ -17,11 +16,9 @@ const Intersections = (props) => {
     }
     
     useEffect( () => {
-	/* Only request data from trafficSimulator if we change the simulation type
-	 * OR DATE!!!
-	 */
-	if (requested===props.simulationType) {return;}
-	setRequested(props.simulationType);
+	/* Only request data from trafficSimulator if we change the simulation type or date */
+	if (requested===props.simulationType + props.date) {return;}
+	setRequested(props.simulationType + props.date);
 	fetch(resource, payload).then(
 	    /* extract data from response and pass it on */
 	    (response) => {
