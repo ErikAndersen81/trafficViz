@@ -36,7 +36,7 @@ const Intersections = (props) => {
 		    const mergedData = mergeData(jsonData['data'], JSON.parse(JSON.stringify(Blueprints)));
 		    setData(mergedData);
 		}).catch(e => console.log(e));
-    }, [props.simulationType, requested, resource, payload]);
+    }, [props.simulationType, requested, resource, payload, props.date]);
     return (
 	<>
 	    { data ? Object.keys(data).map( key => <Intersection data={data[key]} name={key} key={key} />) : null}
