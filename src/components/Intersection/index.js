@@ -27,7 +27,7 @@ const Intersection = (props) => {
 const Street = (props) => {
     const lanes = Object.keys(props.lanes).map( (lane,idx) =>
 	(
-	    <g key={props.id+lane}>	    
+	    <g key={props.id+lane} className="street">	    
 	        <Lane key={lane}
 	              cars={props.lanes[lane]}
 	              x={props.x}
@@ -51,12 +51,11 @@ const Street = (props) => {
 const Lane = (props) => {
     return (
 	<rect
-	    className="lane"
-	    fill={carsToColor(props.cars)}
-	    width="1"
-	    height="30"
-	    x={props.x + props.offset}
-	    y={props.y}/>
+	  fill={carsToColor(props.cars)}
+	  width="1"
+	  height="30"
+	  x={props.x + props.offset}
+	  y={props.y}/>
     )
 };
 

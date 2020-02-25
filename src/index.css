@@ -7,6 +7,10 @@
     font: 8px sans-serif;
 }
 
+.street {
+    mix-blend-mode: normal;
+}
+
 .Map{
     background-color: #444444;
     background-image: url("./constants/images/map.svg");

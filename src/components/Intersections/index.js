@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Blueprints from '../../constants/blueprints';
 import Intersection from '../Intersection';
 
+
+/* 
+ * This component is responsible for rendering blueprints and retreive data 
+ * for the given date from the server and upon succesful retrieval
+ * merge the data with corresponding blueprints
+ */
 const Intersections = (props) => {
     const [data, setData ] = useState(null);
     const [requested, setRequested] = useState(false);
