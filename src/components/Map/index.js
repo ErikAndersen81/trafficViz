@@ -9,15 +9,17 @@ const Map = (props) => {
     return (
 	<LeafletMap className="Map"
 		    center={[52.0704978, 4.3006999]}
-		    zoom={11}
-		    minZoom={11}
+		    zoom={13}
+		    minZoom={12}
 		    attributionControl={true}
 		    zoomControl={true}
 		    doubleClickZoom={true}
 		    scrollWheelZoom={true}
 		    dragging={true}
 		    animate={true}
-		    easeLinearity={0.35}>
+		    easeLinearity={0.35}
+		    maxBounds={[[52.02,4.1],[52.12, 4.45]]} 
+	>
 	    <TileLayer
 		url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
