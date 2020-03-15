@@ -16,21 +16,14 @@ const SelectSource = (props) => {
 		   value="mean"
 		   onChange={() => props.setSimulation("mean")}
 		   checked={props.simulation === "mean"}/>
-	    <label htmlFor="mean">Mean Week</label>
+	    <label htmlFor="mean">Mean values</label>
 	    <input type="radio"
 		   id="real"
 		   name="source"
 		   value="real"
 		   onChange={() => props.setSimulation("real")}
 		   checked={props.simulation === "real"}/>
-	    <label htmlFor="real">Actual Measurements</label>
-	    <input type="radio"
-		   id="bounds"
-		   name="source"
-		   value="bounds"
-		   onChange={() => props.setSimulation("bounds")}
-		   checked={props.simulation === "bounds"}/>
-	    <label htmlFor="real">Bounds</label>
+	    <label htmlFor="real">Continous values</label>
 	</form>
     )
 };

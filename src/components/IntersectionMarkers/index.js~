@@ -1,0 +1,73 @@
+import React , { useState } from 'react';
+import { Circle, Tooltip, Popup } from 'react-leaflet';
+import Blueprints from '../../constants/blueprints';
+import { GetData } from '../utility';
+
+const IntersectionMarkers = (props) => {
+    const [data, setData] = useState();
+    GetData({date:props.date, simulationType:props.simulationType, setData:setData});
+    
+    return (
+	<div className="markers">
+	    {
+		data ?
+		Object.keys(data).map( (intersection,idx) =>
+		    <IntersectionMarker key={idx}
+					name={intersection}
+					data={data[intersection]}/>)
+		: null
+	    }
+	</div>
+    );
+};
+
+const IntersectionMarker = props => {
+    const blueprint = Blueprints[props.name];
+    
+    if (!blueprint || !props.data) return null;
+    var radius = 0;
+    Object.values(props.data).forEach( x => radius += x);
+    var content = `<span><p>${props.name}<\br>`;
+    Object.keys(props.data).forEach( key => content += `${key}: ${props.data[key]}`);
+    content += `</p></span>`;
+    radius *= .5;
+    return (
+	<>
+	    <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}} radius={radius}>
+		<Tooltip>{props.name}</Tooltip>
+		<Popup>
+		    <h3>{props.name}</h3>
+		    <table>
+			<tr>
+			    <th>Lane</th>
+			    <th>Cars</th>
+			</tr>
+			{
+			    Object.keys(props.data).map( key => <tr><td>{key}</td><td>{props.data[key]}</td></tr>)
+			}
+		    </table>
+		</Popup>
+	    </Circle>
+	</>
+    )
+}
+
+const mergeData = (data, blueprints) => {
+    var dict = {};
+    Object.keys(blueprints)
+	  .forEach( tag => {
+	      dict[tag]={...blueprints[tag]};
+	      dict[tag].streets
+		       .forEach((street,idx) => {
+			   var streetDict = {};
+			   street.lanes
+				 .forEach(lane => {
+				     streetDict[lane]=JSON.parse(data[tag])[lane];
+				 });
+			   dict[tag].streets[idx].lanes = streetDict;
+		       });
+	  })
+    return dict
+}
+
+export default IntersectionMarkers;
