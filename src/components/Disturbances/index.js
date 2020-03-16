@@ -10,7 +10,7 @@ const Disturbances = props => {
 	<>
 	    {
 		data && data[0] ?
-		<Disturbance coords={data[0].coords} type={data[0].type} location={data[0].location} /> :null
+		<Disturbance coords={data[0].coords} type={data[0].type} location={data[0].location} start={data[0].starttime} end={data[0].endtime} /> :null
 	    }
 	</>
 );
@@ -24,8 +24,16 @@ const Disturbance = (props) => {
 		Object.keys(coords).map( coord => {
 		    return (
 			<Marker position={{lat:coords[coord].latitude, lng:coords[coord].longitude}}
-			    key={coord}>
-			    <Tooltip><b>{props.location}</b><br/>{props.type}</Tooltip>
+				key={coord}>
+			    <Tooltip>
+				<b>{props.location}</b>
+				<br/>
+				{props.type}
+				<br/>
+				Start: {props.start}
+				<br/>
+				End: {props.end}
+			    </Tooltip>
 			</Marker>)
 		})
 	    }
