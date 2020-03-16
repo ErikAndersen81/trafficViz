@@ -18,7 +18,7 @@ const Map = (props) => {
 		    dragging={true}
 		    animate={true}
 		    easeLinearity={0.35}
-		    maxBounds={[[52.02,4.1],[52.12, 4.45]]} 
+		    maxBounds={[[52.02,4.1],[52.14, 4.45]]} 
 	>
 	    <TileLayer
 		url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
