@@ -111,3 +111,17 @@ table, th, td {
 .DateButton:hover {
     background-color:#440044;
 }
+
+.RunButton {
+    width: 25px;
+    height: 25px;
+    background-size:cover;
+    background-image: url('./constants/images/run.png');
+}
+
+.PauseButton {
+    width: 25px;
+    height: 25px;
+    background-size:cover;
+    background-image: url('./constants/images/pause.png');
+}

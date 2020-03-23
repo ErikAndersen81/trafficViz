@@ -3,10 +3,9 @@ import { validateDate } from '../Date';
 
 const RunButton = (props) => {
     const [run, setRun] = useState(false);
-    
+    const className = run ? "PauseButton" : "RunButton";
     const handleClick= (e) => {
 	setRun(!run);
-	console.log("Set run to", !run);
     }
     
     useEffect( () => {
@@ -29,7 +28,7 @@ const RunButton = (props) => {
 
     
     
-    return <button onClick={handleClick} className="RunButton">run</button>
+    return <button onClick={handleClick} className={className} ></button>
 }
 
 export default RunButton;
