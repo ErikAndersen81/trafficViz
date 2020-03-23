@@ -5,6 +5,7 @@ import DatePicker from '../Date';
 import Map from '../Map';
 import BarCharts from '../BarCharts';
 
+import RunButton from '../RunButton';
 
 function App() {
     /* Set default values */
@@ -22,6 +23,7 @@ function App() {
 				   setVisualization={setVisualizationType}/>
 	      <SelectSource simulation={simulationType}
 			    setSimulation={setSimulationType}/>
+	      <RunButton date={date} setDate={setDate} />
 	      </div>
 	    <div>
 	      <p className="Note" ><small>Current date range for "actual" measurements is from {first} to {last} </small></p>

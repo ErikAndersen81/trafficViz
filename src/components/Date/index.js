@@ -185,4 +185,5 @@ const validateDate = (date) => {
     return date.year+"-"+date.month+"-"+date.day+" "+date.hours+":"+date.minutes;
 }
 
-export default DatePicker
+export { validateDate };
+export default DatePicker;
