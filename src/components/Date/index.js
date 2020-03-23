@@ -62,33 +62,10 @@ import React, { useState } from 'react';
  *  */
 
 const DatePicker = (props) => {
-    const [date, setDate] = useState(props.date);
-    
-    const handleOnChange = e => {
-	setDate(e.target.value);
-	e.preventDefault();
-    };
-
-    const handleOnKey = e => {
-	if (e.key !== "Enter") return;
-	/* Do we need to implement verification of date? */
-	/* const value = e.target.value;
-	   const year = value.slice(0,4);
-	   const month = value.slice(5,7);
-	   const day = value.slice(8,10);
-	   const hours = value.slice(11,13);
-	   const minutes = value.slice(14,16);
-	   console.log(year +" "+month+" "+day+" "+hours+":"+minutes); */
-	props.setDate(date);
-	e.preventDefault();
-    };
-    
     return (
 	<div className="DatePicker">
-	    <input className="DateField" value={date}
-		   onChange={handleOnChange}
-		   onKeyPress={handleOnKey} />
-	    <Forward date={date} setDate={setDate} handler={props.setDate} />
+	    <input className="DateField" value={props.date}/>
+	    <Forward date={props.date} setDate={props.setDate} handler={props.setDate} />
 	</div>
     )
     

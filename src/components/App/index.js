@@ -4,6 +4,7 @@ import SelectVisualization from '../SelectVisualization';
 import DatePicker from '../Date';
 import Map from '../Map';
 import BarCharts from '../BarCharts';
+import IntervalBarCharts from '../IntervalBarCharts';
 
 import RunButton from '../RunButton';
 
@@ -12,32 +13,35 @@ function App() {
     const first = "2017-02-06 13:15:00";
     const last = "2019-03-26 10:00:00";
     const [simulationType, setSimulationType] = useState('median');
-    const [visualizationType, setVisualizationType] = useState('map');
+    const [visualizationType, setVisualizationType] = useState('interval');
     const [date, setDate] = useState("2017-02-07 18:45");
 
     return (
 	<>
-	  <div className="Header">
-	    <div>
-	      <SelectVisualization visualization={visualizationType}
-				   setVisualization={setVisualizationType}/>
-	      <SelectSource simulation={simulationType}
-			    setSimulation={setSimulationType}/>
-	      <RunButton date={date} setDate={setDate} />
-	      </div>
-	    <div>
-	      <p className="Note" ><small>Current date range for "actual" measurements is from {first} to {last} </small></p>
-	      <DatePicker date={date} setDate={setDate} />
+	    <div className="Header">
+		<div>
+		    <SelectVisualization visualization={visualizationType}
+					 setVisualization={setVisualizationType}/>
+		    <SelectSource simulation={simulationType}
+				  setSimulation={setSimulationType}/>
+		    <RunButton date={date} setDate={setDate} />
+		</div>
+		<div>
+		    <p className="Note" ><small>Current date range for "actual" measurements is from {first} to {last} </small></p>
+		    <DatePicker date={date} setDate={setDate} />
+		</div>
 	    </div>
-	  </div>
-	  {
-	      visualizationType === 'barchart' ? <BarCharts simulationType={simulationType}
-							    date={date} />: null
-	  }
-	  {
-	      visualizationType === 'map' ? <Map simulationType={simulationType}
-						 date={date} />: null
-	  }
+	    {
+		visualizationType === 'barchart' ? <BarCharts simulationType={simulationType}
+							      date={date} />: null
+	    }
+	    {
+		visualizationType === 'map' ? <Map simulationType={simulationType}
+						   date={date} />: null
+	    }
+	    {
+		visualizationType === 'interval' ? <IntervalBarCharts date={date} />: null
+	    }
 	</>
     );
 }

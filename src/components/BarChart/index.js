@@ -75,4 +75,6 @@ const BarLabel = props => {
     );
 }
 
+export { Bar }
+
 export default BarChart;
