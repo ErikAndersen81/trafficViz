@@ -5,7 +5,7 @@ const Graphs = (props) => {
     const [data, setData] = useState();
     GetData({date:props.date, simulationType:'real48h', setData:setData});
     return (
-	<div className="chartsholder">
+	<div className="chartsHolder">
 	    {
 		data ?
 		Object.keys(data).map( (intersection,idx) =>
@@ -19,7 +19,6 @@ const Graphs = (props) => {
 		name={Object.keys(data)[0]}
 		data={data[Object.keys(data)[0]]}/> : null
 	    }
-	    
 	</div>
     );
 }
@@ -28,20 +27,23 @@ const Graph48h = props => {
     /* Use the first key in the first lane ('dicts' are sorted since ES2015) as offset */
     const offset = parseInt(Object.keys(props.data[[Object.keys(props.data)[0]]])[0])
     const maxVal = 350; /* This is the maximum number of cars we expect to see */
-    const hLines = [1,2,3,4,5,6,7].map(i => <path d={"M -1 "+ (i*50) + " L 194 "+ (i*50)}
+    const hLines = [1,2,3,4,5,6].map(i => <path d={"M -1 "+ (i*50) + " L 194 "+ (i*50)}
 						  stroke="blue"
-						  strokeDasharray=".2"
-						  strokeWidth="1"
+						  strokeWidth="2"
 						  fill="transparent"
 						  shapeRendering="optimizeSpeed"
 						  id={props.name+"hLine" + i}
 						  key={props.name+"hLine" + i}
 						  className="hLine"/>)
-    const hLabels = [1,2,3,4,5,6,7].map(i => <text stroke="white"
-	                                           fill="transparent"
-						   y="0"
-	                                           key={props.name + "hLabel" + i}
-						   x={i*50}> {i*50}</text>);
+    const hLabels = [1,2,3,4,5,6,7].map(i =>
+	<text stroke="cyan"
+	      strokeWidth=".2"
+	      fontSize="15"
+	      fill="aquamarine"
+	      x="0"
+	      key={props.name + "hLabel" + i}
+	      y={345 - i*50}> {i*50}
+	</text>);
     const data2path = (data, offset) => {
 	let x = (i) =>  parseInt(i) - offset;
 	let y = (i) => maxVal - parseInt(data[i]);
@@ -57,7 +59,7 @@ const Graph48h = props => {
 			.map((key,idx) => <path d={data2path(props.data[key], offset)}
 			fill="transparent"
 			stroke={colors[idx]}
-			strokeWidth=".2"
+			strokeWidth=".5"
 			shapeRendering="optimizeSpeed"
 			key={"path" + key + props.name}/> )
     
@@ -70,8 +72,17 @@ const Graph48h = props => {
 		width="100%">
 		<g id={props.name + "hLines"} key={props.name + "hLines"}>
 		    {hLines}
-		    {hLabels}
 		    {paths}
+		    <g transform="scale(.3 1)">
+			{hLabels}
+			<text stroke="cyan"
+			      strokeWidth=".2"
+			      fontSize="17"
+			      fill="aquamarine"
+			      x="0"
+			      y="20">cars</text>
+		    </g>
+
 		</g>
 	    </svg>
 	</div>
