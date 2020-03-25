@@ -7,7 +7,7 @@ import Disturbances from '../Disturbances';
 
 const Map = (props) => {
     return (
-	<LeafletMap className="ShowWide"
+	<LeafletMap className="Map"
 		    center={[52.0704978, 4.3006999]}
 		    zoom={13}
 		    minZoom={12}
@@ -18,7 +18,7 @@ const Map = (props) => {
 		    dragging={true}
 		    animate={true}
 		    easeLinearity={0.35}
-		    maxBounds={[[52.02,4.1],[52.14, 4.45]]} 
+		    maxBounds={[[52.02,4.1],[52.15, 4.45]]} 
 	>
 	    <TileLayer
 	    url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'

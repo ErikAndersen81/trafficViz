@@ -2,7 +2,7 @@ import React from 'react';
 
 const SelectVisualization = (props) => {
     const visualizations = {
-	'barchart':'Bar Charts', 'map':'Map', 'interval':'Graph'
+	'barchart':'Bar Charts', 'map':'Map', 'graph':'Graph'
     }
     return (
 	<form>

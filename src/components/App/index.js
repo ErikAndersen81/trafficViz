@@ -13,7 +13,7 @@ function App() {
     const first = "2017-02-06 13:15:00";
     const last = "2019-03-26 10:00:00";
     const [simulationType, setSimulationType] = useState('median');
-    const [visualizationType, setVisualizationType] = useState('interval');
+    const [visualizationType, setVisualizationType] = useState('graph');
     const [date, setDate] = useState("2017-02-07 18:45");
 
     return (
@@ -31,6 +31,7 @@ function App() {
 		    <DatePicker date={date} setDate={setDate} />
 		</div>
 	    </div>
+	    <div className="vizWindow">
 	    {
 		visualizationType === 'barchart' ? <BarCharts simulationType={simulationType}
 							      date={date} />: null
@@ -40,8 +41,9 @@ function App() {
 						   date={date} />: null
 	    }
 	    {
-		visualizationType === 'interval' ? <Graphs date={date} />: null
+		visualizationType === 'graph' ? <Graphs date={date} />: null
 	    }
+	    </div>
 	</>
     );
 }

@@ -5,7 +5,7 @@ const Graphs = (props) => {
     const [data, setData] = useState();
     GetData({date:props.date, simulationType:'real48h', setData:setData});
     return (
-	<div className="chartsholder">
+	<div className="chartsholder chartSpace">
 	    {
 		data ?
 		Object.keys(data).map( (intersection,idx) =>
