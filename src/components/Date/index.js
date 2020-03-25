@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 /* This component is used in conjuction with Date and will translate median dates to week days */
 /* const formatDate = (date) => {
@@ -64,7 +64,7 @@ import React, { useState } from 'react';
 const DatePicker = (props) => {
     return (
 	<div className="DatePicker">
-	    <input className="DateField" value={props.date}/>
+	    <button className="DateButton"> {props.date}</button>
 	    <Forward date={props.date} setDate={props.setDate} handler={props.setDate} />
 	</div>
     )

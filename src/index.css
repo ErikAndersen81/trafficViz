@@ -13,7 +13,7 @@
     grid-template-columns: 50% 50%;
 }
 
-.Map{
+.ShowWide{
     margin: 5px 5px;
     object-fit: cover;
     width: 98vw;
@@ -29,6 +29,11 @@
     height:77vh;
     margin: 5px 5px;
     overflow-y: scroll;
+}
+
+.chartSpace {
+    display:grid;
+    grid-row-gap: 5px;
 }
 
 .charts {

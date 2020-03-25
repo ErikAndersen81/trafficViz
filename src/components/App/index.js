@@ -4,7 +4,7 @@ import SelectVisualization from '../SelectVisualization';
 import DatePicker from '../Date';
 import Map from '../Map';
 import BarCharts from '../BarCharts';
-import IntervalBarCharts from '../IntervalBarCharts';
+import Graphs from '../Graphs';
 
 import RunButton from '../RunButton';
 
@@ -40,7 +40,7 @@ function App() {
 						   date={date} />: null
 	    }
 	    {
-		visualizationType === 'interval' ? <IntervalBarCharts date={date} />: null
+		visualizationType === 'interval' ? <Graphs date={date} />: null
 	    }
 	</>
     );

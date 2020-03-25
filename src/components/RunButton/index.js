@@ -21,7 +21,7 @@ const RunButton = (props) => {
 		}
 		date['minutes'] += 15;
 		props.setDate(validateDate(date));
-	    }, 1000 );
+	    }, 100 );
 	    return () => clearInterval(increment);
 	}
     }, [props, props.date, run]);

@@ -1,22 +1,23 @@
 import React from 'react';
 
 const SelectVisualization = (props) => {
+    const visualizations = {
+	'barchart':'Bar Charts', 'map':'Map', 'interval':'Graph'
+    }
     return (
 	<form>
-	    <input type="radio"
-		   id="map"
-		   name="source"
-		   value="map"
-		   onChange={() => props.setVisualization("map")}
-		   checked={props.visualization === "map"} />
-	    <label htmlFor="map">Map</label>
-	    <input type="radio"
-		   id="barcharts"
-		   name="source"
-		   value="barchart"
-		   onChange={() => props.setVisualization("barchart")}
-		   checked={props.visualization === "barchart"}/>
-	    <label htmlFor="barchart">Bar Charts</label>
+	    {
+		Object.keys(visualizations).map( key =>
+		    <React.Fragment key={key}>
+			<input type="radio"
+			       id={key}
+			       key={key}
+			       name="source"
+			       value={key}
+			       onChange={() => props.setVisualization(key)}
+			       checked={props.visualization === key} />
+			<label htmlFor={key}>{visualizations[key]}</label></React.Fragment>)
+	    }
 	</form>
     )
 };
