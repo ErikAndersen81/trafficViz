@@ -18,19 +18,33 @@ const SelectSource = (props) => {
 		   checked={props.simulation === "mean"}/>
 	    <label htmlFor="mean">Mean Week</label>
 	    <input type="radio"
-		   id="real"
+		   id="raw"
 		   name="source"
-		   value="real"
-		   onChange={() => props.setSimulation("real")}
-		   checked={props.simulation === "real"}/>
-	    <label htmlFor="real">Actual Measurements</label>
+		   value="raw"
+		   onChange={() => props.setSimulation("raw")}
+		   checked={props.simulation === "raw"}/>
+	    <label htmlFor="raw">Actual Measurements</label>
 	    <input type="radio"
-		   id="bounds"
+		   id="upper"
 		   name="source"
-		   value="bounds"
-		   onChange={() => props.setSimulation("bounds")}
-		   checked={props.simulation === "bounds"}/>
-	    <label htmlFor="real">Bounds</label>
+		   value="upper"
+		   onChange={() => props.setSimulation("upper")}
+		   checked={props.simulation === "upper"}/>
+	    <label htmlFor="upper">Upper bounds</label>
+	    <input type="radio"
+		   id="lower"
+		   name="source"
+		   value="lower"
+		   onChange={() => props.setSimulation("lower")}
+		   checked={props.simulation === "lower"}/>
+	    <label htmlFor="lower">Bounds</label>
+	    <input type="radio"
+		   id="filled"
+		   name="source"
+		   value="filled"
+		   onChange={() => props.setSimulation("filled")}
+		   checked={props.simulation === "filled"}/>
+	    <label htmlFor="filled">Filled with median</label>
 	</form>
     )
 };

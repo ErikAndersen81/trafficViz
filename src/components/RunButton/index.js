@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { validateDate } from '../Date';
+import React, { useState, useEffect, useContext } from 'react';
+import { DateTimeContext } from '../Context';
+import { validateDate, parseDate } from '../Date';
 
 const RunButton = (props) => {
     const [run, setRun] = useState(false);
+    const [starttime, setStarttime] = useContext(DateTimeContext).starttime;
+    const [endtime, setEndtime] = useContext(DateTimeContext).endtime;
     const className = run ? "PauseButton" : "RunButton";
     const handleClick= (e) => {
 	setRun(!run);
@@ -11,23 +14,20 @@ const RunButton = (props) => {
     useEffect( () => {
 	if (run) {
 	    const increment = setInterval( () => {
-		let value = props.date;
-		let date = {
-		    year: parseInt(value.slice(0,4)),
-		    month: parseInt(value.slice(5,7)),
-		    day: parseInt(value.slice(8,10)),
-		    hours: parseInt(value.slice(11,13)),
-		    minutes: parseInt(value.slice(14,16))
-		}
-		date['minutes'] += 15;
-		props.setDate(validateDate(date));
-	    }, 100 );
+		let start = parseDate(starttime);
+		let end = parseDate(endtime);
+		start['minutes'] += 15;
+		end['minutes'] += 15;
+
+		console.log(start);
+		console.log(validateDate(start));
+		
+		setStarttime(validateDate(start));
+		setEndtime(validateDate(end));
+	    }, 750 );
 	    return () => clearInterval(increment);
 	}
-    }, [props, props.date, run]);
-
-    
-    
+    }, [run]);
     return <button onClick={handleClick} className={className} ></button>
 }
 

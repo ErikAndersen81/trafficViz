@@ -2,7 +2,7 @@
 // 0 degrees is South, 90 is West, etc.
 // Note: Currently only the coordinates are used.
 const Blueprints = {
-    K071:{
+    K71:{
 	latitude:52.104061,
 	longitude:4.317273,
 	streets:[
@@ -12,7 +12,7 @@ const Blueprints = {
 	    { rotation:135, lanes:[81,82,91]}
 	]
     },
-    K097:{
+    K97:{
 	latitude:52.062739,
 	longitude:4.344412,
 	streets:[
@@ -211,11 +211,12 @@ const Blueprints = {
     K704: { latitude: 52.084932, longitude: 4.2727 },
     K707: { latitude: 52.078994, longitude: 4.261542 },
     K711: { latitude: 52.095735, longitude: 4.286347 },
-    /* TODO: 
-     * K704: Latitude: 52.084932 | Longitude: 4.2727,
-     * K707: Latitude: 52.078994 | Longitude: 4.261542,
-     * K711: Latitude: 52.095735 | Longitude: 4.286347,
-     */
+    'N14.1': { latitude: 52.074758, longitude: 4.393630 },
+    Oosteinde: { latitude: 52.079546, longitude: 4.385927  },
+    'N14.2': { latitude: 52.085097, longitude: 4.379275 },
+    'N14.3': { latitude: 52.101708, longitude: 4.363654 },
+    N211: { latitude: 52.013389, longitude: 4.310846  },
 }
+
 
 export default Blueprints;

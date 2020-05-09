@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Marker, Tooltip } from 'react-leaflet';
-import { GetData } from '../utility';
+import useData from '../Hooks/useData';
+
 
 const Disturbances = props => {
-    const [data, setData] = useState([]);
-    GetData({date:props.date, simulationType:"train", setData:setData});
-    /* test: 2019-03-29 15:15 */
+    const [data, loading, error] = useData({starttime:props.date, disturbances:true});
+    const disturbances = data ? data.disturbances.data : [];
     return (
 	<>
 	    {
-		data && data[0] ?
-		<Disturbance coords={data[0].coords} type={data[0].type} location={data[0].location} start={data[0].starttime} end={data[0].endtime} /> :null
+		disturbances.map( disturbance => <Disturbance key={"DisturbanceMarker" + disturbance[4]}
+							      coords={disturbance[4]}
+							      type={disturbance[1]}
+							      location={disturbance[0]}
+							      start={disturbance[2]}
+							      end={disturbance[2]} />)
 	    }
 	</>
-);
+		);
 }
 
 const Disturbance = (props) => {
@@ -24,7 +28,7 @@ const Disturbance = (props) => {
 		Object.keys(coords).map( coord => {
 		    return (
 			<Marker position={{lat:coords[coord].latitude, lng:coords[coord].longitude}}
-				key={coord}>
+				key={"Marker"+coord}>
 			    <Tooltip>
 				<b>{props.location}</b>
 				<br/>

@@ -1,119 +1,45 @@
-import React from 'react';
-
-/* This component is used in conjuction with Date and will translate median dates to week days */
-/* const formatDate = (date) => {
- *     const dayDate = date.slice(8,10);
- *     var day;
- *     switch (dayDate) {
- * 	case "01":
- * 	    day = "Thursday";
- * 	    break;
- * 	case "02":
- * 	    day = "Friday";
- * 	    break;
- * 	case "03":
- * 	    day = "Saturday";
- * 	    break;
- * 	case "04":
- * 	    day = "Sunday";
- * 	    break;
- * 	case "05":
- * 	    day = "Monday";
- * 	    break;
- * 	case "06":
- * 	    day = "Tuesday";
- * 	    break;
- * 	case "07":
- * 	    day = "Wednesday";
- * 	    break;
- * 	default:
- * 	    day = "You should have checked the median dates";
- *     }
- *     return day + date.slice(10);
- * }
- *  
- */
-
-/* This component can render the date by collecting a sample from the server */
-
-/* const Date = (props) => {
- *     const resource = "http://127.0.0.1:5000/K071/" + props.simulationType;
- *     const key = props.simulationType === "real" ? "K071" : "Unnamed: 0";
- *     const [date, setDate] = useState(null);
- *     
- *     useEffect( () => {
- *   	fetch(resource).then(
- * 	    (response) => {
- * 		return response.json();
- * 	    }).then(
- * 		(jsonData) => {
- * 		    const formattedDate = props.simulationType === "real" ?
- * 					  jsonData[key] :
- * 					  formatDate(jsonData[key]);
- * 		    setDate(formattedDate);
- *  		});
- *     });
- *     return (
- *      	<>
- * 	    <DatePicker date={setDate} />
- * 	    <p>{date}</p>
- * 	</>);
- * }; 
- *  */
+import React, { useContext} from 'react';
+import { DateTimeContext } from '../Context';
 
 const DatePicker = (props) => {
+    const [dateTime, setDateTime] = useContext(DateTimeContext)[props.time];
+    const date = dateTime.slice(0,10);
+    const time = dateTime.slice(11);
     return (
-	<div className="DatePicker">
-	    <button className="DateButton"> {props.date}</button>
-	    <Forward date={props.date} setDate={props.setDate} handler={props.setDate} />
-	</div>
+	<form>
+	    <label htmlFor="date"> Date: </label>
+	    <input type="date"
+		   id={"date" + props.time}
+		   name="date"
+		   value={date}
+		   step="1"
+		   min="2015-01-01"
+		   max="2019-03-30"
+		   onChange={(e) => setDateTime(e.target.value + " " + time)}/>
+	    <label htmlFor="time"> Time: </label>
+	    <input type="time"
+		   name="time"
+		   id={"time" + props.time}
+		   value={time}
+		   min="00:00" max="24:00"
+		   onChange={(e) => setDateTime( date + " " + e.target.value)}
+	    />
+	</form>
     )
     
 };
 
+const parseDate =  time => {return {
+    year: parseInt(time.slice(0,4)),
+    month: parseInt(time.slice(5,7)),
+    day: parseInt(time.slice(8,10)),
+    hours: parseInt(time.slice(11,13)),
+    minutes: parseInt(time.slice(14,16))
+}};
 
-const Forward = (props) => {
-    
-    const nextTime = (event) => {
-	let value = props.date;
-	let date = {
-	    year: parseInt(value.slice(0,4)),
-	    month: parseInt(value.slice(5,7)),
-	    day: parseInt(value.slice(8,10)),
-	    hours: parseInt(value.slice(11,13)),
-	    minutes: parseInt(value.slice(14,16))
-	}
-	if (event.target.name === "week") {
-	    date.day += parseInt(event.target.value);
-	} else {
-	    date[[event.target.name]] += parseInt(event.target.value);
-	}
-	date = validateDate(date);
-	props.setDate(date);
-	props.handler(date);
-	event.preventDefault();
-    }
-    return (
-	<div className="DateButtons">
-	    <button className="DateButton" onClick={nextTime} name="minutes" value={15}>+15 m</button>
-	    <button className="DateButton" onClick={nextTime} name="hours" value={1}>+1 h</button>
-	    <button className="DateButton" onClick={nextTime} name="day" value={1}>+1 d</button>
-	    <button className="DateButton" onClick={nextTime} name="week" value={7}>+1 w</button>
-	    <button className="DateButton" onClick={nextTime} name="month" value={1}>+1 m</button>
-	    <button className="DateButton" onClick={nextTime} name="year" value={1}>+1 y</button>
-	    
-	    <button className="DateButton" onClick={nextTime} name="minutes" value={-15}>-15 m</button>
-	    <button className="DateButton" onClick={nextTime} name="hours" value={-1}>-1 h</button>
-	    <button className="DateButton" onClick={nextTime} name="day" value={-1}>-1 d</button>
-	    <button className="DateButton" onClick={nextTime} name="week" value={-7}>-1 w</button>
-	    <button className="DateButton" onClick={nextTime} name="month" value={-1}>-1 m</button>
-	    <button className="DateButton" onClick={nextTime} name="year" value={-1}>-1 y</button>
-	</div>
-    );
-}
 
 const validateDate = (date) => {
-    
+    /* Minutes */
     if (date.minutes/15 > 3) {
 	date.hours += 1;
 	date.minutes = (date.minutes) % 60;
@@ -122,6 +48,8 @@ const validateDate = (date) => {
 	date.minutes = 45;
     }
     if (date.minutes === 0) date.minutes = "00";
+
+    /* Hours */
     if (date.hours/23 > 1) {
 	date.day += 1;
 	date.hours = date.hours % 24;
@@ -162,5 +90,5 @@ const validateDate = (date) => {
     return date.year+"-"+date.month+"-"+date.day+" "+date.hours+":"+date.minutes;
 }
 
-export { validateDate };
+export { validateDate, parseDate};
 export default DatePicker;

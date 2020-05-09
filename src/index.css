@@ -1,11 +1,127 @@
+/* related to the Graph component  */
 .graph {
-    width:100vw;
-    height:100vh;
+    width:100%;
+}
+
+.chartWide {
+    background-color: #f9f9f9f9;
+    height:25vw;
+    margin-bottom:5px;
+}
+
+.GraphBox {
+    border-style: groove;
+}
+
+.hLine {
+    stroke:black;
+    stroke-width:.5;
+    fill:transparent;
+    shape-rendering:optimizeSpeed;
+}
+
+.hLabel {
+    font-size:.15em;
+    fill:black;
+    text-anchor:end;
+}
+
+.dateLine {
+    stroke:black;
+    stroke-width:.1;
+    fill:transparent;
+}
+
+.dateLabel {
+    fill:black;
+    font-size:3px;
+    text-anchor:middle;
+    
+}
+
+.path {
+    fill:transparent;
+    stroke-width:.2;
+    shape-rendering:optimizeSpeed;
+}
+
+.highlighted {
+    stroke:#aaaaaa;
+}
+
+.disturbance {
+    height:100px;
+    fill:#ff3355;
+    opacity:.3;
+    y:0;
 }
 
 .laneText {
     font: 8px sans-serif;
 }
+
+body {
+    font-family: Noto Sans;
+}
+
+/************************/
+
+.BoxHeader {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    background-color: #aadd11;
+    text-align: center;
+    grid-column-start:span 2;
+}
+
+.InfoBox {
+    grid-column-start:span 2;
+}
+
+.DatetimeBox {
+    display: grid;
+    grid-template-columns:50% 50%;
+    grid-row-gap: 2px;
+    border-style: groove;
+}
+
+.DatetimeSelector {
+    text-align:center;
+}
+
+.DatetimeSelector > p {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    background-color: #ddffaa;
+}
+
+.DatetimeSelector > form {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    background-color: #ffffaa;
+}
+
+.DatetimeSelector > div {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    background-color: #ffffaa;
+}
+
+.DropdownBtn {
+    top:0px;
+    background-color:white;
+    margin: 3px 3px 3px 3px;
+}
+
+
+/*****************************************/
 
 .Header {
     margin: auto;
@@ -15,29 +131,17 @@
 }
 
 .Map {
-    object-fit: cover;
     width: 100%;
     height: 100%;
 }
 
-.vizWindow {
-    margin: 5px 5px;
-    object-fit: cover;
-    width: 98vw;
-    height: 77vh;
-}
-
-
-.Note {
-    margin:0;
-    height:20%;
-    
-}
-
-.chartsHolder {
-    height:77vh;
-    margin: 5px 5px;
-    overflow-y: scroll;
+.mapAndGraphsContainer {
+    display:grid;
+    height:98vh;
+    width:100%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
+    grid-column-gap: 5px;
 }
 
 .charts {
@@ -51,12 +155,12 @@
 }
 
 .chart {
-    background-color: #000000;
+    background-color: #ffff00;
     height:25vw;
 }
 
 .Bar {
-    fill: #73B9B0;
+    fill: #73B9ff;
     stroke: #000000;
     stroke-width:1px;
     rx:2px;
@@ -64,62 +168,24 @@
 
 
 table, th, td {
-    border: 1px solid #C7EBE6;
+    border: 1px solid #ffEBE6;
     background-color: #00ffaa;
     border-collapse: collapse;
     color:#1D8989;
 }
 
-.DatePicker {
-    margin: 0;
-    height:80%;
-    width:100%;
-    display:grid;
-    grid-template-columns:20% auto;
-}
+/************ Date selector *****************/
 
-.DateField {
-    color:#1D8989;
-    text-align: center;
-    text-shadow: -1px -1px #ffffff;
-    font-size:large;
-    border-left: 0px;
-    border-top-color: #1D8989;
-    border-bottom-color: #C7EBE6;
-    background-color: #000000;
-    color:#1D8989;
+input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
 }
-
-.DateDisplay {
-    background-color: #000000;
-    color:#1D8989;
-    border: 2.5px solid;
-    border-bottom-color: #C7EBE6;
-    border-left-color: #c7FFFF
+::-webkit-clear-button
+{
+    display: none; /* Hide the button */
+    -webkit-appearance: none; /* turn off default browser styling */
 }
-
-.DateButtons {
-    column-span: all;
-    width:100%;
-    height:100%;
-    margin: auto;
-    display:grid;
-    background-color: #000000;
-    grid-template-columns: auto auto auto auto auto auto;
-}
-
-.DateButton {
-    color:#1D8989;
-    background-color:#000000;
-    border: 2.5px solid;
-    border-bottom-color: #C7EBE6;
-    border-left-color: #c7FFFF
-    
-}
-
-.DateButton:hover {
-    background-color:#440044;
-}
+/*****************************************/
 
 .RunButton {
     width: 25px;

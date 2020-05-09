@@ -1,48 +1,79 @@
-import React , { useState } from 'react';
-import { Circle, Tooltip, Popup } from 'react-leaflet';
+import React, { useContext } from 'react';
+import { Circle, Tooltip } from 'react-leaflet';
 import Blueprints from '../../constants/blueprints';
-import { GetData } from '../utility';
-import BarChart from '../BarChart';
+import { DataContext, HighlightContext } from '../Context';
 
 const IntersectionMarkers = (props) => {
-    const [data, setData] = useState();
-    GetData({date:props.date, simulationType:props.simulationType, setData:setData});
-    
+    const data = useContext(DataContext);
+    if (!data) return null;
+    const ints = data ? Object.keys(data.intersections).map( (intersection,idx) => (
+	<IntersectionMarker key={intersection + "IntersectionMarker"}
+			    name={intersection}
+			    measurements={data.interval}
+			    handleIntersectionClick={props.handleIntersectionClick}
+			    size={data.intersections[[intersection]].size}
+			    belows={data.intersections[[intersection]].belows}
+			    aboves={data.intersections[[intersection]].aboves}/>)) : null;
     return (
 	<div className="markers">
-	    {
-		data ?
-		Object.keys(data).map( (intersection,idx) =>
-		    <IntersectionMarker key={idx}
-					name={intersection}
-					data={data[intersection]}/>)
-		: null
-	    }
+	    { ints ? ints : <p>error</p>}
 	</div>
     );
 };
 
 const IntersectionMarker = props => {
     const blueprint = Blueprints[props.name];
+    const Highlight = useContext(HighlightContext);
+    if (!blueprint) return null;
+
+    const handleIntersectionHover = event => {
+	if (event.type === "mouseover") {Highlight.setHighlighted(props.name);}
+	else {Highlight.setHighlighted("");}
+    }
     
-    if (!blueprint || !props.data) return null;
-    var radius = 0;
-    Object.values(props.data).forEach( x => radius += x);
-    var content = `<span><p>${props.name}<\br>`;
-    Object.keys(props.data).forEach( key => content += `${key}: ${props.data[key]}`);
-    content += `</p></span>`;
-    radius *= .5;
+    /* Size is traffic intensity relative to the number of measurements */
+    const radius = (props.size/props.measurements);
+
+    /* Set gradient as percentage of outliers below and avoe means, respectively*/
+    
+    const aboves = parseInt((props.aboves/props.measurements)*100);
+    const belows = (props.belows/props.measurements)*100;
+    
+    const Fill = props => (
+	<svg xmlns="http://www.w3.org/2000/svg">
+	  <defs>
+	    <radialGradient id={'bgGradient' + aboves + belows} >
+	      <stop offset={belows + '%'}  stopColor='yellow'  />
+              <stop offset={belows + '%'}  stopColor='blue'  />
+              <stop offset={100 - aboves + '%'} stopColor='blue'  />
+	      <stop offset={100 - aboves + '%'} stopColor='red'  />
+	    </radialGradient>
+	  </defs>
+	</svg>
+    );
+    
     return (
 	<>
-	    <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}} radius={radius}>
-		<Tooltip>{props.name}</Tooltip>
-		<Popup maxWidth="300" minWidth="300" maxHeight="300">
-		    <BarChart name={props.name} data={props.data} />
-		</Popup>
-	    </Circle>
+	   <Fill/> 
+	   <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}}
+		   radius={radius+50}
+		   className="circle"
+		   weight="1.5"
+		   color={Highlight.highlighted === props.name ? 'white':'black'}
+		   fillOpacity="0.5"
+		   fillColor={"url(#bgGradient" + aboves + belows + ")"}
+		   onMouseOver={handleIntersectionHover}
+		   onMouseOut={handleIntersectionHover}
+		   onclick={props.handleIntersectionClick}>
+	     <Tooltip>
+	       <h3>{props.name}</h3>
+	       <p>Number of passings: {props.size} </p>
+	       <p>Measurements &gt; &mu; + 3&sigma;: {props.aboves}</p>
+	       <p>Measurements &lt; &mu; - 3&sigma;: {props.belows}</p>
+	     </Tooltip>
+	   </Circle>
 	</>
     )
 }
-
 
 export default IntersectionMarkers;

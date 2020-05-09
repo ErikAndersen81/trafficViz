@@ -1,0 +1,3 @@
+import HighlightContext from './HighlightContext'
+
+export {HighlightContext}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Map as LeafletMap, TileLayer } from 'react-leaflet';
 
 import IntersectionMarkers from '../IntersectionMarkers';
-import Disturbances from '../Disturbances';
+/* import Disturbances from '../Disturbances'; */
 
 const Map = (props) => {
     return (
@@ -17,14 +17,12 @@ const Map = (props) => {
 		    scrollWheelZoom={true}
 		    dragging={true}
 		    animate={true}
-		    easeLinearity={0.35}
-		    maxBounds={[[52.02,4.1],[52.15, 4.45]]} 
+		    easeLinearity={0.35} 
 	>
 	    <TileLayer
-	    url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+		url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
-	    <IntersectionMarkers simulationType={props.simulationType} date={props.date}/>
-	    <Disturbances date={props.date}/>
+	    <IntersectionMarkers handleIntersectionClick={props.handleIntersectionClick}/>
 	</LeafletMap>	
     );
 
