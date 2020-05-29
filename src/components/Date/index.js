@@ -5,6 +5,8 @@ const DatePicker = (props) => {
     const [dateTime, setDateTime] = useContext(DateTimeContext)[props.time];
     const date = dateTime.slice(0,10);
     const time = dateTime.slice(11);
+    const max = props.max ? props.max : "2019-03-30";
+    const min = props.min ? props.min : "2015-01-01";
     return (
 	<form>
 	    <label htmlFor="date"> Date: </label>
@@ -13,8 +15,8 @@ const DatePicker = (props) => {
 		   name="date"
 		   value={date}
 		   step="1"
-		   min="2015-01-01"
-		   max="2019-03-30"
+		   min={min}
+		   max={max}
 		   onChange={(e) => setDateTime(e.target.value + " " + time)}/>
 	    <label htmlFor="time"> Time: </label>
 	    <input type="time"

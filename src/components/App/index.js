@@ -11,10 +11,10 @@ import GraphOptions from '../GraphOptions';
 
 function App() {
     /* Set default values */
-    const [datatypes, setDatatypes] = useState(["deviant", "aggregated"]);
-    const [intersections, setIntersections] = useState(['K159']);
-    const [starttime, setStarttime] = useState("2015-01-02 19:00");
-    const [endtime, setEndtime] = useState("2015-01-09 19:00");
+    const [datatypes, setDatatypes] = useState(["deviant", "aggregated", "simplified", "mean"]);
+    const [intersections, setIntersections] = useState([ 'N211' ]);
+    const [starttime, setStarttime] = useState("2016-12-22 00:00");
+    const [endtime, setEndtime] = useState("2017-01-01 00:00");
 
     const [highlighted, setHighlighted] = useState("");
     
@@ -25,7 +25,6 @@ function App() {
     });
     const interval = {starttime:[starttime, setStarttime],
 		      endtime:[endtime, setEndtime]}
-    
     const handleIntersectionClick = event => {
 	const key = event.target.options.children._owner.key;
 	const intersection = key.slice(0,key.indexOf('I'))
@@ -47,43 +46,43 @@ function App() {
     
     return (
 	<DataContext.Provider value={data}>
-	  <HighlightContext.Provider value={{highlighted:highlighted, setHighlighted:setHighlighted}}>
-	    <div className="mapAndGraphsContainer">
-		<Map handleIntersectionClick={handleIntersectionClick}
-		handleIntersectionHover={handleIntersectionHover} />
-		<div>
-		    <div className="GraphBox">
-			<Graph />
-			<GraphOptions datatypes={datatypes}
-				      setDatatypes={setDatatypes}
-			/>
-		    </div>
-		    <DateTimeContext.Provider value={interval} >
-			<div className="DatetimeBox">
-			    <BoxHeader>Time Frame Boundaries</BoxHeader>
-			    <div className="DatetimeSelector">
-				<p>From</p>
-				<DatePicker time="starttime"/>
-			    </div>
-			    <div className="DatetimeSelector">
-				<p>To</p>
-				<DatePicker time="endtime"/>
-			    </div>
-			    <div>
-				<BoxHeader>Move Time Frame</BoxHeader>
-				<div className="DatetimeSelector">
-				    <p>Step through time</p>
-				    <Skip />
-				</div>
-			    </div>
-			    {null ? <div>
-				<BoxHeader>Automatic Time Skip</BoxHeader>
-				<RunButton />
-			    </div> : null }
+	    <HighlightContext.Provider value={{highlighted:highlighted, setHighlighted:setHighlighted}}>
+		<div className="mapAndGraphsContainer">
+		    <Map handleIntersectionClick={handleIntersectionClick}
+			 handleIntersectionHover={handleIntersectionHover} />
+		    <div>
+			<div className="GraphBox">
+			    <Graph />
+			    <GraphOptions datatypes={datatypes}
+					  setDatatypes={setDatatypes}
+			    />
 			</div>
-		    </DateTimeContext.Provider>
+			<DateTimeContext.Provider value={interval} >
+			    <div className="DatetimeBox">
+				<BoxHeader>Time Frame Boundaries</BoxHeader>
+				<div className="DatetimeSelector">
+				    <p>From</p>
+				    <DatePicker time="starttime" max={endtime.slice(0,10)} />
+				</div>
+				<div className="DatetimeSelector">
+				    <p>To</p>
+				    <DatePicker time="endtime" min={starttime.slice(0,10)}/>
+				</div>
+				<div>
+				    <BoxHeader>Move Time Frame</BoxHeader>
+				    <div className="DatetimeSelector">
+					<p>Step through time</p>
+					<Skip />
+				    </div>
+				</div>
+				{null ? <div>
+				    <BoxHeader>Automatic Time Skip</BoxHeader>
+				    <RunButton />
+				</div> : null }
+			    </div>
+			</DateTimeContext.Provider>
+		    </div>
 		</div>
-	    </div>
 	    </HighlightContext.Provider>
 	</DataContext.Provider>
     );

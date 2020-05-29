@@ -9,7 +9,7 @@ const Grid = props => {
 	      className="dateLine"/>));
     
     const dateLabels = [0,.25,.5,.75].map(i => (
-	<text x={(i*props.slice*props.scalar_x)}
+	<text x={7 + (i*props.slice*props.scalar_x)}
 	      y="105"
 	      id={"dateLabel" + i}
 	      key={"dateLabel" + i}
@@ -41,7 +41,7 @@ const Grid = props => {
 const prettyPrintDate = date => {
     if (date === undefined) return null;
     let month = parseInt(date.slice(5,7));
-    let day = parseInt(date.slice(9,11));
+    let day = parseInt(date.slice(8,10));
     return day+"/"+month +" " + date.slice(11,16) 
 };
 
