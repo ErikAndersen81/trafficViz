@@ -38,7 +38,7 @@ const IntersectionMarker = props => {
     
     const aboves = parseInt((props.aboves/props.measurements)*100);
     const belows = (props.belows/props.measurements)*100;
-    
+    if (isNaN(aboves) | isNaN(belows)) return null;
     const Fill = props => (
 	<svg xmlns="http://www.w3.org/2000/svg">
 	  <defs>
@@ -54,24 +54,25 @@ const IntersectionMarker = props => {
     
     return (
 	<>
-	   <Fill/> 
-	   <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}}
-		   radius={radius+50}
-		   className="circle"
-		   weight="1.5"
-		   color={Highlight.highlighted === props.name ? 'white':'black'}
-		   fillOpacity="0.5"
-		   fillColor={"url(#bgGradient" + aboves + belows + ")"}
-		   onMouseOver={handleIntersectionHover}
-		   onMouseOut={handleIntersectionHover}
-		   onclick={props.handleIntersectionClick}>
-	     <Tooltip>
-	       <h3>{props.name}</h3>
-	       <p>Number of passings: {props.size} </p>
-	       <p>Measurements &gt; &mu; + 3&sigma;: {props.aboves}</p>
-	       <p>Measurements &lt; &mu; - 3&sigma;: {props.belows}</p>
-	     </Tooltip>
-	   </Circle>
+	    <Fill/> 
+	    <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}}
+		    radius={radius+50}
+		    className="circle"
+		    weight="1.5"
+		    color={Highlight.highlighted === props.name ? 'white':'black'}
+		    fillOpacity="0.5"
+		    fillColor={"url(#bgGradient" + aboves + belows + ")"}
+		    onMouseOver={handleIntersectionHover}
+		    onMouseOut={handleIntersectionHover}
+		    onclick={props.handleIntersectionClick}>
+		<Tooltip>
+		    <h3>{props.name}</h3>
+		    <p>Number of passings: {props.size} </p>
+		    <p>Measurements: {props.measurements}</p>
+		    <p>Measurements &gt; &mu; + 3&sigma;: {props.aboves}</p>
+		    <p>Measurements &lt; &mu; - 3&sigma;: {props.belows}</p>
+		</Tooltip>
+	    </Circle>
 	</>
     )
 }

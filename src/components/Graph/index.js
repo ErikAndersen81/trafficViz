@@ -31,7 +31,7 @@ const Graph = props => {
 			      fontSize="4"
 			      textAnchor="right"
 			      x="-6"
-			      y="-5">cars</text>
+			      y="-5">Passings</text>
 			<text strokeWidth="0"
 			      fontSize="7"
 			      fill="cyan"

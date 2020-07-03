@@ -11,10 +11,10 @@ import GraphOptions from '../GraphOptions';
 
 function App() {
     /* Set default values */
-    const [datatypes, setDatatypes] = useState(["deviant", "aggregated", "simplified", "mean"]);
-    const [intersections, setIntersections] = useState([ 'N211' ]);
-    const [starttime, setStarttime] = useState("2016-12-22 00:00");
-    const [endtime, setEndtime] = useState("2017-01-01 00:00");
+    const [datatypes, setDatatypes] = useState(["deviant", "aggregated" ]);
+    const [intersections, setIntersections] = useState([]);
+    const [starttime, setStarttime] = useState("2016-11-28 05:00");
+    const [endtime, setEndtime] = useState("2016-12-05 05:00");
 
     const [highlighted, setHighlighted] = useState("");
     

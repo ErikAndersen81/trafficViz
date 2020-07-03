@@ -3,8 +3,7 @@ import { DateTimeContext } from '../Context';
 
 const DatePicker = (props) => {
     const [dateTime, setDateTime] = useContext(DateTimeContext)[props.time];
-    const date = dateTime.slice(0,10);
-    const time = dateTime.slice(11);
+    const [ date, time ] = dateTime.split(" ");
     const max = props.max ? props.max : "2019-03-30";
     const min = props.min ? props.min : "2015-01-01";
     return (
@@ -31,16 +30,30 @@ const DatePicker = (props) => {
     
 };
 
-const parseDate =  time => {return {
-    year: parseInt(time.slice(0,4)),
-    month: parseInt(time.slice(5,7)),
-    day: parseInt(time.slice(8,10)),
-    hours: parseInt(time.slice(11,13)),
-    minutes: parseInt(time.slice(14,16))
-}};
+// const parseDate =  time => {
+//     return {
+// 	year: parseInt(time.slice(0,4)),
+// 	month: parseInt(time.slice(5,7)),
+// 	day: parseInt(time.slice(8,10)),
+// 	hours: parseInt(time.slice(11,13)),
+// 	minutes: parseInt(time.slice(14,16))
+//     }};
+
+const parseDate =  datetime => {
+    let [date, time] = datetime.split(" ");
+    let [year, month, day] = date.split("-").map(x => parseInt(x) | 0);
+    let [hours, minutes] = time.split(":").map(x => parseInt(x) | 0);
+    return {
+	year: year,
+	month: month,
+	day: day,
+	hours: hours, 
+	minutes: minutes
+    }};
 
 
 const validateDate = (date) => {
+    console.log(date);
     /* Minutes */
     if (date.minutes/15 > 3) {
 	date.hours += 1;
@@ -61,22 +74,22 @@ const validateDate = (date) => {
 	date.hours="23";
 	date.day -= 1;
     }
-    let s = 0; 
-    if (date.year%4 === 0) s = 1;
+    let leapYear = false; 
+    if (date.year%4 === 0) leapYear = true;
     let days = 30;
-    let long = new Set([1,3,5,7,8,10,12]);
-    if (long.has(date.month)) days = 31;
+    let longMonths = new Set([1,3,5,7,8,10,12]);
+    if (longMonths.has(date.month)) days = 31;
     else if (date.month === 2) {
-	days = s===1 ? 29 : 28;
+	days = leapYear ? 29 : 28;
     }
     if (date.day > days) {
 	date.month += 1;
 	date.day = date.day-days;
     } else if (date.day <= 0) {
 	date.month -= 1;
-	if (long.has(date.month)) date.day = 31 - date.day;
-	else if (date.month === 2) date.day = s===1 ? 29 - date.day : 28 - date.day;
-	else date.day=30 - date.day;
+	if (longMonths.has(date.month)) date.day = 31 + date.day;
+	else if (date.month === 2) date.day = leapYear ? 29 + date.day : 28 + date.day;
+	else date.day= 30 + date.day;
     }
     if (date.day < 10) date.day = "0"+date.day;
 

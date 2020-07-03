@@ -38,11 +38,11 @@ const Grid = props => {
     )
 }
 
-const prettyPrintDate = date => {
-    if (date === undefined) return null;
-    let month = parseInt(date.slice(5,7));
-    let day = parseInt(date.slice(8,10));
-    return day+"/"+month +" " + date.slice(11,16) 
+const prettyPrintDate = datetime => {
+    if (!datetime) return null;
+    let [ date, time ] =  datetime.split(" ");
+    let [ year, month, day ] = date.split("-");
+    return day+"/"+month+" " + time.slice(0,5);
 };
 
 

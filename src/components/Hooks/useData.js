@@ -18,7 +18,7 @@ const useDataHook = (body, controller) => {
     const [isLoading, setIsLoading] = useState(false);
     
     /* I should change this to be set as a shell variable if I want to run it on a different network */
-    const resource = "http://192.168.1.86:5000/data";
+    const resource = "http://127.0.0.1:5000/data";
     const payload = {
 	signal: controller.signal,
 	method: 'POST',
