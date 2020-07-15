@@ -15,14 +15,15 @@ const Paths = props => {
 								       scalar_x={props.scalar_x}
 								       scalar_y={props.scalar_y}/>
     ));
-    const mean = intersectionsMean.map( (x, idx) => ( <GroupPaths values={props.data[x]['mean']}
-								  key={"GroupPathMean"+x}
-								  groupName="mean"
-								  name={x}
-								  dash=".5 .2"
-								  color={colors[idx]}
-								  scalar_x={props.scalar_x}
-								  scalar_y={props.scalar_y}/>
+    
+    const mean = intersectionsMean.map( (x, idx) => ( <GroupPaths values={props.data[x].mean}
+											    key={"GroupPathMean"+x}
+											    groupName="mean"
+											    name={x}
+											    dash=".5 .2"
+											    color={colors[idx]}
+											    scalar_x={props.scalar_x}
+											    scalar_y={props.scalar_y}/>
     ));
     const median = intersectionsMedian.map( (x, idx) => ( <GroupPaths values={props.data[x]['median']}
 								      key={"GroupPathMedian"+x}

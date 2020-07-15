@@ -22,10 +22,7 @@ const Map = (props) => {
 	    <TileLayer
 		url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
-	    <IntersectionMarkers handleIntersectionClick={props.handleIntersectionClick}
-				 starttime={props.starttime}
-				 endtime={props.endtime}
-				 />
+	    <IntersectionMarkers handleIntersectionClick={props.handleIntersectionClick}/>
 	</LeafletMap>	
     );
 

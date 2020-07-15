@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { prettyPrintDate } from '../Date';
 const Grid = props => {
     const max = props.maxVal;
     const dateLines = [0,.25,.5,.75,1].map(i => (
@@ -37,13 +37,6 @@ const Grid = props => {
 	</>
     )
 }
-
-const prettyPrintDate = datetime => {
-    if (!datetime) return null;
-    let [ date, time ] =  datetime.split(" ");
-    let [ year, month, day ] = date.split("-");
-    return day+"/"+month+" " + time.slice(0,5);
-};
 
 
 export default Grid;

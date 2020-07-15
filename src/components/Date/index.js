@@ -1,9 +1,9 @@
-import React, { useContext} from 'react';
-import { DateTimeContext } from '../Context';
+import React from 'react';
 
 const DatePicker = (props) => {
-    const [dateTime, setDateTime] = useContext(DateTimeContext)[props.time];
-    const [ date, time ] = dateTime.split(" ");
+    const datetime = props.datetime;
+    const setDatetime = props.setDatetime;
+    const [ date, time ] = datetime.split(" ");
     const max = props.max ? props.max : "2019-03-30";
     const min = props.min ? props.min : "2015-01-01";
     return (
@@ -16,28 +16,19 @@ const DatePicker = (props) => {
 		   step="1"
 		   min={min}
 		   max={max}
-		   onChange={(e) => setDateTime(e.target.value + " " + time)}/>
+		   onChange={(e) => setDatetime(e.target.value + " " + time)}/>
 	    <label htmlFor="time"> Time: </label>
 	    <input type="time"
 		   name="time"
 		   id={"time" + props.time}
 		   value={time}
 		   min="00:00" max="24:00"
-		   onChange={(e) => setDateTime( date + " " + e.target.value)}
+		   onChange={(e) => setDatetime( date + " " + e.target.value)}
 	    />
 	</form>
     )
     
 };
-
-// const parseDate =  time => {
-//     return {
-// 	year: parseInt(time.slice(0,4)),
-// 	month: parseInt(time.slice(5,7)),
-// 	day: parseInt(time.slice(8,10)),
-// 	hours: parseInt(time.slice(11,13)),
-// 	minutes: parseInt(time.slice(14,16))
-//     }};
 
 const parseDate =  datetime => {
     let [date, time] = datetime.split(" ");
@@ -105,5 +96,12 @@ const validateDate = (date) => {
     return date.year+"-"+date.month+"-"+date.day+" "+date.hours+":"+date.minutes;
 }
 
-export { validateDate, parseDate};
+const prettyPrintDate = datetime => {
+    if (!datetime) return null;
+    let [ date, time ] =  datetime.split(" ");
+    let [ month, day ] = date.split("-").slice(1);
+    return day+"/"+month+" " + time.slice(0,5);
+};
+
+export { validateDate, parseDate, prettyPrintDate };
 export default DatePicker;

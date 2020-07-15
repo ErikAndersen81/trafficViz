@@ -6,7 +6,7 @@ import useData from '../Hooks/useData';
 const IntersectionMarkers = React.memo((props) => {
     const { starttime, endtime } = useContext(DateTimeContext);
     const { data } = useData({starttime:starttime, endtime:endtime}, 'markers');
-    const {data:coordinates} = useData('get', 'coordinates');
+    const { data:coordinates } = useData('get', 'coordinates');
     if (!data) return null;
     const ints = data ? Object.keys(data.total_passings).map( (intersection,idx) => (
 	<IntersectionMarker key={intersection + "IntersectionMarker"}

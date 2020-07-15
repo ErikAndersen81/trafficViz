@@ -4,8 +4,7 @@ import { DateTimeContext } from '../Context';
 
 const Skip = (props) => {
     const [interval, setInterval] = useState("hours");
-    const [starttime, setStarttime] = useContext(DateTimeContext).starttime;
-    const [endtime, setEndtime] = useContext(DateTimeContext).endtime;
+    const {starttime, setStarttime, endtime, setEndtime} = useContext(DateTimeContext);
     
     let start = parseDate(starttime);
     let end = parseDate(endtime);

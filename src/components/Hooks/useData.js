@@ -37,33 +37,33 @@ const useDataHook = (body, res, controller) => {
 	      },
 	      body: body};
     
-    useEffect( () => {
-	console.log("hook called");
-	const fetchData = async () => {
-	    try {
-		const response = await fetch(resource, payload);
-		const jsonData = await response.json();
-		if (jsonData.error) {
-		    setError(jsonData.error);
-		} else {
-		    setData(jsonData);
-		}}
-	    catch (err) {
-		console.log(err)
-		if (controller.signal.aborted) {
-		    console.log("aborted!!")
-		} else {
-		    setError(err);
-		}
+    const fetchData = async () => {
+	try {
+	    const response = await fetch(resource, payload);
+	    const jsonData = await response.json();
+	    if (jsonData.error) {
+		setError(jsonData.error);
+	    } else {
+		setData(jsonData);
+	    }}
+	catch (err) {
+	    console.log(err)
+	    if (controller.signal.aborted) {
+		console.log("aborted!!")
+	    } else {
+		setError(err);
 	    }
 	}
-	
+    }
+    
+    useEffect( () => {
+	console.log("hook called");
 	setIsLoading(true);
 	fetchData()
 	setIsLoading(false);
 	return () => {controller.abort()}
     }, [body]);
-    return [data, isLoading, error];
+    return {data:data, isLoading:isLoading, error:error};
 }
 
 export default useData;
