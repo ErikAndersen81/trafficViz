@@ -1,34 +1,44 @@
 import {useState, useEffect} from 'react';
 
-const useData = (request) => {
+const useData = (request, res) => {
     const controller = new AbortController();
-    const body = JSON.stringify({starttime:request.starttime,
-				 endtime:request.endtime,
-				 interval:request.interval,
-				 intersections:request.intersections,
-				 disturbances:request.disturbances,
-				 datatypes:request.datatypes});
-    return useDataHook(body, controller);
+    const body = request === 'get' ? 'get' :
+	JSON.stringify({starttime:request.starttime,
+			endtime:request.endtime,
+			interval:request.interval,
+			intersections:request.intersections,
+			disturbances:request.disturbances,
+			datatypes:request.datatypes});
+    return useDataHook(body, res, controller);
 }
 
 /* use this custom hook to fetch data from the server */
-const useDataHook = (body, controller) => {
+const useDataHook = (body, res, controller) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    
+
     /* I should change this to be set as a shell variable if I want to run it on a different network */
-    const resource = "http://127.0.0.1:5000/data";
-    const payload = {
+    res = res ? res : "";
+    const resource = "http://127.0.0.1:5000/" + res;
+    const payload = body === 'get' ? {
 	signal: controller.signal,
-	method: 'POST',
+	method: 'GET',
 	headers: {
 	    'Accept': 'application/json',
 	    'Content-Type': 'application/json'
-	},
-	body: body};
-
+	}} :
+	  {
+	      signal: controller.signal,
+	      method: 'POST',
+	      headers: {
+		  'Accept': 'application/json',
+		  'Content-Type': 'application/json'
+	      },
+	      body: body};
+    
     useEffect( () => {
+	console.log("hook called");
 	const fetchData = async () => {
 	    try {
 		const response = await fetch(resource, payload);
@@ -47,6 +57,7 @@ const useDataHook = (body, controller) => {
 		}
 	    }
 	}
+	
 	setIsLoading(true);
 	fetchData()
 	setIsLoading(false);

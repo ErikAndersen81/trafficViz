@@ -1,30 +1,32 @@
 import React, { useContext } from 'react';
 import { Circle, Tooltip } from 'react-leaflet';
-import Blueprints from '../../constants/blueprints';
 import { DataContext, HighlightContext } from '../Context';
+import useData from '../Hooks/useData';
 
-const IntersectionMarkers = (props) => {
-    const data = useContext(DataContext);
+const IntersectionMarkers = React.memo((props) => {
+    const [data, isLoading, error] = useData({starttime:props.starttime, endtime:props.endtime}, 'markers');
+    const [coordinates, coordsAreLoading, coordsError] = useData('get', 'coordinates');
     if (!data) return null;
-    const ints = data ? Object.keys(data.intersections).map( (intersection,idx) => (
+    const ints = data ? Object.keys(data.total_passings).map( (intersection,idx) => (
 	<IntersectionMarker key={intersection + "IntersectionMarker"}
 			    name={intersection}
-			    measurements={data.interval}
+			    measurements={data.measurements}
 			    handleIntersectionClick={props.handleIntersectionClick}
-			    size={data.intersections[[intersection]].size}
-			    belows={data.intersections[[intersection]].belows}
-			    aboves={data.intersections[[intersection]].aboves}/>)) : null;
+			    coordinates={coordinates[[intersection]]}
+			    size={data.total_passings[[intersection]]}
+			    belows={data.pct_below[[intersection]]}
+			    aboves={data.pct_above[[intersection]]}/>)) : null;
     return (
 	<div className="markers">
 	    { ints ? ints : <p>error</p>}
 	</div>
     );
-};
+});
 
 const IntersectionMarker = props => {
-    const blueprint = Blueprints[props.name];
+    const coords = props.coordinates;
     const Highlight = useContext(HighlightContext);
-    if (!blueprint) return null;
+    if (!coords) return null;
 
     const handleIntersectionHover = event => {
 	if (event.type === "mouseover") {Highlight.setHighlighted(props.name);}
@@ -32,12 +34,12 @@ const IntersectionMarker = props => {
     }
     
     /* Size is traffic intensity relative to the number of measurements */
-    const radius = (props.size/props.measurements);
+    const radius = props.size/props.measurements;
 
-    /* Set gradient as percentage of outliers below and avoe means, respectively*/
+    /* Set gradient as percentage of outliers below and above means, respectively */
     
-    const aboves = parseInt((props.aboves/props.measurements)*100);
-    const belows = (props.belows/props.measurements)*100;
+    const aboves = parseInt(props.aboves*100);
+    const belows = parseInt(props.belows*100);
     if (isNaN(aboves) | isNaN(belows)) return null;
     const Fill = props => (
 	<svg xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +57,7 @@ const IntersectionMarker = props => {
     return (
 	<>
 	    <Fill/> 
-	    <Circle center={{lat:blueprint.latitude, lng:blueprint.longitude}}
+	    <Circle center={{lat:coords.latitude, lng:coords.longitude}}
 		    radius={radius+50}
 		    className="circle"
 		    weight="1.5"
