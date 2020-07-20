@@ -3,7 +3,7 @@ import React from 'react';
 const GraphOptions = props => {
     const meanChecked = props.datatypes.indexOf('mean') > -1;
     const medianChecked = props.datatypes.indexOf('median') > -1;
-    const simplifiedChecked = props.datatypes.indexOf('simplified') > -1;
+    const aggregatedChecked = props.datatypes.indexOf('aggregated') > -1;
     const change = event => {
 	if (event.target.checked){
 	    let dts = props.datatypes.concat([event.target.value]);
@@ -28,11 +28,11 @@ const GraphOptions = props => {
 		   defaultChecked = {medianChecked}/>
 	    <label htmlFor="median">Median </label>
 	    <input type="checkbox"
-		   id="simplified"
-		   name="simplified"
-		   value="simplified"
-		   defaultChecked = {simplifiedChecked}/>
-	    <label htmlFor="simplified">Aggregated </label>
+		   id="aggregated"
+		   name="aggregated"
+		   value="aggregated"
+		   defaultChecked = {aggregatedChecked}/>
+	    <label htmlFor="aggregated">Aggregated </label>
 	</form>)
 }
 

@@ -8,22 +8,28 @@ import useData from '../Hooks/useData.js'
 const Graph = props => {
     const {starttime, endtime} = useContext(DateTimeContext);
     const { data } = useData({starttime:starttime,
-					      endtime:endtime,
-					      intersections:props.intersections,
-					      datatypes:props.datatypes}, 'data');
+			      endtime:endtime,
+			      intersections:props.intersections,
+			      datatypes:props.datatypes}, 'data');
     if (!data) return <BlankGraph />
     const slice = data.interval;
     const maxVal = data.maxVal !== 0 ? data.maxVal : 1;
     const scalar_x = 100/slice;
     const scalar_y = 100/maxVal;
-    const paths = (<Paths scalar_x={scalar_x}
-			 scalar_y={scalar_y}
-			 data={data.intersections}/>);
-    const grid = (<Grid scalar_x={scalar_x}
-		       scalar_y={scalar_y}
-		       slice={slice}
-		       maxVal={maxVal}
-		       dates={data.dates}/>);
+    const paths = Object.keys(data.pathData).map( group => (
+	<Paths scalar_x={scalar_x}
+	       scalar_y={scalar_y}
+	       group={group}
+	       key={"Paths" + group}
+	       data={data.pathData[group]}/>
+    ));
+    const grid = (
+	<Grid scalar_x={scalar_x}
+	      scalar_y={scalar_y}
+	      slice={slice}
+	      maxVal={maxVal}
+	      dates={data.dates}/>
+    );
     return (
     <>
 	<div className="chartWide">
