@@ -10,7 +10,7 @@ const Graph = props => {
     const { data } = useData({starttime:starttime,
 			      endtime:endtime,
 			      intersections:props.intersections,
-			      datatypes:props.datatypes}, 'data');
+			      graphOptions:props.graphOptions}, 'data');
     if (!data) return <BlankGraph />
     const slice = data.interval;
     const maxVal = data.maxVal !== 0 ? data.maxVal : 1;

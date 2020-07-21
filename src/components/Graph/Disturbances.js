@@ -11,7 +11,7 @@ const Disturbances = props => {
 	setShowInfo("");
 	event.preventDefault();
     }
-    return props.data.map( disturbance => {
+    return !(props.data) ? null : props.data.map( disturbance => {
 	let x = disturbance[4] * props.scalar_x;
 	let width = (disturbance[5]-disturbance[4])*props.scalar_x
 	

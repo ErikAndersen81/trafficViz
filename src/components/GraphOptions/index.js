@@ -1,16 +1,17 @@
 import React from 'react';
 
 const GraphOptions = props => {
-    const meanChecked = props.datatypes.indexOf('mean') > -1;
-    const medianChecked = props.datatypes.indexOf('median') > -1;
-    const aggregatedChecked = props.datatypes.indexOf('aggregated') > -1;
+    const meanChecked = props.graphOptions.indexOf('mean') > -1;
+    const medianChecked = props.graphOptions.indexOf('median') > -1;
+    const aggregatedChecked = props.graphOptions.indexOf('aggregated') > -1;
+    const disturbancesChecked = props.graphOptions.indexOf('disturbances') > -1;
     const change = event => {
 	if (event.target.checked){
-	    let dts = props.datatypes.concat([event.target.value]);
-	    props.setDatatypes(dts);
+	    let dts = props.graphOptions.concat([event.target.value]);
+	    props.setGraphOptions(dts);
 	} else {
-	    let dts = props.datatypes.filter(x => x !== event.target.value);
-	    props.setDatatypes(dts);
+	    let dts = props.graphOptions.filter(x => x !== event.target.value);
+	    props.setGraphOptions(dts);
 	}
     }
     return (
@@ -33,6 +34,12 @@ const GraphOptions = props => {
 		   value="aggregated"
 		   defaultChecked = {aggregatedChecked}/>
 	    <label htmlFor="aggregated">Aggregated </label>
+	    <input type="checkbox"
+		   id="disturbances"
+		   name="disturbances"
+		   value="disturbances"
+		   defaultChecked = {disturbancesChecked}/>
+	    <label htmlFor="disturbances">Disturbances </label>
 	</form>)
 }
 

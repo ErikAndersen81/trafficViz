@@ -8,7 +8,7 @@ const useData = (request, res) => {
 			interval:request.interval,
 			intersections:request.intersections,
 			disturbances:request.disturbances,
-			datatypes:request.datatypes});
+			graph_options:request.graphOptions});
     return useDataHook(body, res, controller);
 }
 

@@ -27,6 +27,7 @@ const IntersectionMarkers = React.memo((props) => {
 const IntersectionMarker = props => {
     const coords = props.coordinates;
     const Highlight = useContext(HighlightContext);
+    
     if (!coords) return null;
 
     const handleIntersectionHover = event => {
@@ -38,7 +39,6 @@ const IntersectionMarker = props => {
     const radius = props.size/props.measurements;
 
     /* Set gradient as percentage of outliers below and above means, respectively */
-    
     const aboves = parseInt(props.aboves*100);
     const belows = parseInt(props.belows*100);
     if (isNaN(aboves) | isNaN(belows)) return null;

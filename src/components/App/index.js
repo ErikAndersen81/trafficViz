@@ -10,10 +10,10 @@ import GraphOptions from '../GraphOptions';
 
 function App() {
     /* Set default values */
-    const [datatypes, setDatatypes] = useState(["aggregated"]);
+    const [graphOptions, setGraphOptions] = useState(["aggregated"]);
     const [intersections, setIntersections] = useState([]);
-    const [starttime, setStarttime] = useState("2016-11-28 05:00");
-    const [endtime, setEndtime] = useState("2016-12-05 05:00");
+    const [starttime, setStarttime] = useState("2016-09-01 05:00");
+    const [endtime, setEndtime] = useState("2016-09-02 06:00");
 
     const [highlighted, setHighlighted] = useState("");
     
@@ -48,11 +48,11 @@ function App() {
  			     handleIntersectionHover={handleIntersectionHover}/>
     			<div>
     			    <div className="GraphBox">
-    				<Graph datatypes={datatypes}
+    				<Graph graphOptions={graphOptions}
 				       intersections={intersections}
 				/>
-    				<GraphOptions datatypes={datatypes}
-    					      setDatatypes={setDatatypes}
+    				<GraphOptions graphOptions={graphOptions}
+    					      setGraphOptions={setGraphOptions}
     				/>
      			    </div>
     			    <div className="DatetimeBox">
