@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { prettyPrintDate } from '../Date';
 
 const Disturbances = props => {
     const [showInfo, setShowInfo] = useState("");
@@ -11,7 +11,7 @@ const Disturbances = props => {
 	setShowInfo("");
 	event.preventDefault();
     }
-    return props.data.map( disturbance => {
+    return !(props.data) ? null : props.data.map( disturbance => {
 	let x = disturbance[4] * props.scalar_x;
 	let width = (disturbance[5]-disturbance[4])*props.scalar_x
 	
@@ -40,11 +40,5 @@ const Disturbances = props => {
 	)})
 };
 
-const prettyPrintDate = datetime => {
-    if (datetime === undefined) return null;
-    let [ date, time ] =  datetime.split(" ");
-    let [ year, month, day ] = date.split("-");
-    return day+"/"+month +" " + time.slice(0,5);
-};
 
 export default Disturbances;

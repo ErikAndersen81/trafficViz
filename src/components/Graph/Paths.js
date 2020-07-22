@@ -1,43 +1,20 @@
+
 import React, { useContext } from 'react';
 import { HighlightContext } from '../Context';
 
 const Paths = props => {
-    const intersectionsAgg = Object.keys(props.data).filter( x => props.data[x].hasOwnProperty('aggregated'));
-    const intersectionsMean = Object.keys(props.data).filter( x => props.data[x].hasOwnProperty('mean'));
-    const intersectionsMedian = Object.keys(props.data).filter( x => props.data[x].hasOwnProperty('median'));
-    
-    const aggregated = intersectionsAgg.map( (x, idx) => ( <GroupPaths values={props.data[x]['aggregated']}
-								       key={"GroupPathAgg"+x}
-								       groupName="aggregated"
+    const paths = Object.keys(props.data).map( (x, idx) => ( <GroupPaths values={props.data[x]}
+								       key={"GroupPath"+x + props.group}
+								       groupName={props.group}
 								       name={x}
 								       color={colors[idx]}
-								       dash="0"
+								       dash={dashes[props.group]}
 								       scalar_x={props.scalar_x}
 								       scalar_y={props.scalar_y}/>
     ));
-    const mean = intersectionsMean.map( (x, idx) => ( <GroupPaths values={props.data[x]['mean']}
-								  key={"GroupPathMean"+x}
-								  groupName="mean"
-								  name={x}
-								  dash=".5 .2"
-								  color={colors[idx]}
-								  scalar_x={props.scalar_x}
-								  scalar_y={props.scalar_y}/>
-    ));
-    const median = intersectionsMedian.map( (x, idx) => ( <GroupPaths values={props.data[x]['median']}
-								      key={"GroupPathMedian"+x}
-								      name={x}
-						                      groupName="median"
-								      dash=".3"
-								      color={colors[idx]}
-								      scalar_x={props.scalar_x}
-								      scalar_y={props.scalar_y}/>
-    ));
     return (
 	<>
-	  {aggregated}
-	  {mean}
-	  {median}
+	    { paths }
 	</>
     );
 };
@@ -94,5 +71,10 @@ const colors=[
     "#ffcdd2",
     "#33691e"   
 ]
+
+const dashes = {
+    'mean':".5 .2",
+    'median':".3"
+}
 
 export default Paths;
