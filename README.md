@@ -1,4 +1,4 @@
-# trafficSim
+# trafficViz
 
 
 ## Running via Docker:
