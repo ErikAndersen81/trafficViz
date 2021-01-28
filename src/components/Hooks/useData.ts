@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 
-const useData = (request, res) => {
+const useData = (request: any, res: any) => {
     const controller = new AbortController();
     const body = request === 'get' ? 'get' :
 	JSON.stringify({starttime:request.starttime,
@@ -13,6 +13,7 @@ const useData = (request, res) => {
 }
 
 /* use this custom hook to fetch data from the server */
+// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'body' implicitly has an 'any' type.
 const useDataHook = (body, res, controller) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -62,7 +63,7 @@ const useDataHook = (body, res, controller) => {
 	fetchData()
 	setIsLoading(false);
 	return () => {controller.abort()}
-    }, [body]);
+    }, [body, controller, fetchData]);
     return {data:data, isLoading:isLoading, error:error};
 }
 

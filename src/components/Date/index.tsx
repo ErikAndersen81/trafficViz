@@ -1,14 +1,17 @@
 import React from 'react';
 
-const DatePicker = (props) => {
+const DatePicker = (props: any) => {
     const datetime = props.datetime;
     const setDatetime = props.setDatetime;
     const [ date, time ] = datetime.split(" ");
     const max = props.max ? props.max : "2019-03-30";
     const min = props.min ? props.min : "2015-01-01";
     return (
+// @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
 	<form>
+{/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
 	    <label htmlFor="date"> Date: </label>
+{/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
 	    <input type="date"
 		   id={"date" + props.time}
 		   name="date"
@@ -17,7 +20,9 @@ const DatePicker = (props) => {
 		   min={min}
 		   max={max}
 		   onChange={(e) => setDatetime(e.target.value + " " + time)}/>
+{/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
 	    <label htmlFor="time"> Time: </label>
+{/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
 	    <input type="time"
 		   name="time"
 		   id={"time" + props.time}
@@ -30,9 +35,12 @@ const DatePicker = (props) => {
     
 };
 
+// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'datetime' implicitly has an 'any' type.
 const parseDate =  datetime => {
     let [date, time] = datetime.split(" ");
+    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
     let [year, month, day] = date.split("-").map(x => parseInt(x) | 0);
+    // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
     let [hours, minutes] = time.split(":").map(x => parseInt(x) | 0);
     return {
 	year: year,
@@ -43,6 +51,7 @@ const parseDate =  datetime => {
     }};
 
 
+// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'date' implicitly has an 'any' type.
 const validateDate = (date) => {
     console.log(date);
     /* Minutes */
@@ -96,6 +105,7 @@ const validateDate = (date) => {
     return date.year+"-"+date.month+"-"+date.day+" "+date.hours+":"+date.minutes;
 }
 
+// @ts-expect-error ts-migrate(7006) FIXME: Parameter 'datetime' implicitly has an 'any' type.
 const prettyPrintDate = datetime => {
     if (!datetime) return null;
     let [ date, time ] =  datetime.split(" ");
