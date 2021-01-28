@@ -3,7 +3,7 @@ import Disturbances from './Disturbances';
 import Paths from './Paths'
 import Grid from './Grid';
 import { DateTimeContext } from '../Context';
-import useData from '../Hooks/useData.js'
+import useData from '../Hooks/useData.js';
 
 const Graph = props => {
     const {starttime, endtime} = useContext(DateTimeContext);
@@ -15,7 +15,7 @@ const Graph = props => {
     const slice = data.interval;
     const maxVal = data.maxVal !== 0 ? data.maxVal : 1;
     const scalar_x = 100/slice;
-    const scalar_y = 100/maxVal;
+	const scalar_y = 100/maxVal;
     const paths = Object.keys(data.pathData).map( group => (
 	<Paths scalar_x={scalar_x}
 	       scalar_y={scalar_y}
