@@ -1,6 +1,13 @@
 import React from 'react';
+type HighlightContextT = {
+    highlighted:string;
+    setHighlighted:React.Dispatch<React.SetStateAction<string>>;
+}
+const defaultHighlight:HighlightContextT = {
+    highlighted:"",
+    setHighlighted: () => {},
+}
 
-// @ts-expect-error ts-migrate(2554) FIXME: Expected 1-2 arguments, but got 0.
-const HighlightContext = React.createContext();
+const HighlightContext = React.createContext<HighlightContextT>(defaultHighlight);
 
 export default HighlightContext;
