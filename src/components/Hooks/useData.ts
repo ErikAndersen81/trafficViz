@@ -38,7 +38,17 @@ export type IntersectionData = Map<string, LaneData>;
 
 export type LaneData = Array<number|null>;
 
-export type ResourceType = 'data'|'coordinates'|'markers';
+export type ResourceType = 'data'|'coordinates'|'markers'|'events';
+
+export type EventMarkersData = {
+	events:Map<string, EventType>
+}
+export type EventType = {
+	latitude:number;
+	longitude:number;
+	description:string;
+	visitors:number;
+}
 
 const headers = {
 	'Accept': 'application/json',
@@ -75,6 +85,7 @@ export const getMarkersDataRequest = (starttime:Date, endtime:Date):RequestInit 
 	return payload;
 }
 
+
 export const getCoordinatesDataRequest = ():RequestInit => {
 	const payload:RequestInit = {
 		method: 'GET',
@@ -84,7 +95,7 @@ export const getCoordinatesDataRequest = ():RequestInit => {
 }
 
 const useData = (resource:ResourceType) => {
-    const [data, setData] = useState<GraphData|MarkersData|CoordinatesData|null>(null);
+    const [data, setData] = useState<GraphData|MarkersData|CoordinatesData|EventMarkersData|null>(null);
     const [error, setError] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [payload, setPayload] = useState<RequestInit|undefined>();
@@ -111,6 +122,9 @@ const useData = (resource:ResourceType) => {
 							pctBelow.set(k, jsonData.pct_below[k]);
 						})
 						setData(() => ({totalPassings, pctAbove, pctBelow, measurements:jsonData.measurements}));
+					} else if (resource === 'events') {
+						let events = new Map<string,EventType>(Object.keys(jsonData.events).map((k:string) => [k, (jsonData.events[k] as EventType)]))
+						setData({events})
 					} else {
 						let pathData:PathData = new Map<GroupType, Group>();
 						let dates:Array<Date>= new Array<Date>(

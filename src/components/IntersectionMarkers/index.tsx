@@ -1,6 +1,6 @@
 import { LeafletMouseEvent } from "leaflet";
 import React, { useContext, useEffect } from "react";
-import { Circle, Tooltip } from "react-leaflet";
+import { CircleMarker, Tooltip } from "react-leaflet";
 import { DateTimeContext, HighlightContext } from "../Context";
 import useData, {
   getCoordinatesDataRequest,
@@ -84,7 +84,7 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
     }
   };
   /* Size is traffic intensity relative to the number of measurements */
-  const radius = props.size / props.measurements;
+  const radius = (props.size / props.measurements) * 0.1;
   /* Set gradient as percentage of outliers below and above means, respectively */
   const aboves = props.aboves * 100;
   const belows = props.belows * 100;
@@ -109,9 +109,9 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
   return (
     <>
       <Fill />
-      <Circle
+      <CircleMarker
         center={{ lat: coords.latitude, lng: coords.longitude }}
-        radius={radius + 50}
+        radius={radius + 1}
         className="circle"
         weight={1.5}
         color={
@@ -133,7 +133,7 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
 
           <p>Measurements &lt; &mu; - 3&sigma;: {props.belows}</p>
         </Tooltip>
-      </Circle>
+      </CircleMarker>
     </>
   );
 };
