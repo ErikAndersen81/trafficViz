@@ -1,4 +1,3 @@
-import { Icon, Point } from "leaflet";
 import React, { useContext, useEffect } from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { DateTimeContext } from "../Context";
@@ -6,6 +5,7 @@ import useData, {
   getMarkersDataRequest,
   EventMarkersData,
 } from "../Hooks/useData";
+import CustomIcon from "../CustomIcon";
 
 const EventMarkers = () => {
   const { starttime, endtime } = useContext(DateTimeContext);
@@ -54,40 +54,30 @@ const EventMarker = (props: EventMarkerProps) => {
     <>
       <Marker
         position={{ lat: latitude, lng: longitude }}
-        icon={icon(type)}
-        className="event"
+        icon={
+          type === "event"
+            ? CustomIcon("lightblue", "E")
+            : CustomIcon("red", "A")
+        }
         weight={1.5}
         color={"black"}
         fillOpacity={0.5}
         fillColor={"green"}>
         <Tooltip>
-          {type === "event" ? (
-            <p>
-              From {starttime}
-              <br></br>to {endtime}
-            </p>
-          ) : (
-            <p>Tweeted at {starttime}</p>
-          )}
-          <p>{description}</p>
+          <div className={`Tooltip ${type}`}>
+            {type === "event" ? (
+              <p>
+                From {starttime}
+                <br></br>to {endtime}
+              </p>
+            ) : (
+              <p>Tweeted at {starttime}</p>
+            )}
+            <p>{description}</p>
+          </div>
         </Tooltip>
       </Marker>
     </>
   );
 };
 export default EventMarkers;
-
-const icon = (type: string) => {
-  const uri =
-    type === "event" ? iconUri("lightgreen", "E") : iconUri("lightblue", "A");
-  console.log(uri);
-  return new Icon({ iconUrl: uri, iconSize: new Point(25, 25) });
-};
-
-const iconUri = (color: string, letter: string) =>
-  encodeURI(
-    `data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><metadata id="metadata1">image/svg+xml</metadata><circle fill="black" cx="50" cy="50" r="50"/><circle fill="${color}" cx="48" cy="48" r="47"/><text color="black" x="50" y="50" font-size="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold">${letter}</text></svg>`.replace(
-      new RegExp("#", "g"),
-      "%23"
-    )
-  );
