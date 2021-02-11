@@ -1,6 +1,6 @@
 import { Icon, Point } from "leaflet";
 import React, { useContext, useEffect } from "react";
-import { CircleMarker, Marker, Tooltip } from "react-leaflet";
+import { Marker, Tooltip } from "react-leaflet";
 import { DateTimeContext } from "../Context";
 import useData, {
   getMarkersDataRequest,
