@@ -20,7 +20,6 @@ function App() {
   const [endtime, setEndtime] = useState<Date>(new Date("2016-09-02 06:00"));
   const [skipInterval, setSkipInterval] = useState<SkipInterval>("hour");
   const [highlighted, setHighlighted] = useState("");
-
   const interval: Datetime = {
     starttime,
     setStarttime,
