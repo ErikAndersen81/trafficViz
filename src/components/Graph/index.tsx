@@ -54,7 +54,7 @@ const Graph = (props: GraphProps) => {
   const grid = <Grid scale={scale} dates={data.dates} />;
   return (
     <svg
-      viewBox="-7 -10 110 120"
+      viewBox="-10 -10 115 120"
       preserveAspectRatio="none"
       height="100%"
       width="100%">
