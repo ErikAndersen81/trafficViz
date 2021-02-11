@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 /* import Disturbances from "./Disturbances";*/
 import Paths from "./Paths";
-
 import Grid from "./Grid";
 import { DateTimeContext } from "../Context";
 import useData, { getGraphDataRequest, GraphData } from "../Hooks/useData";
+import { getScale, Scale } from "../Scaling";
 
 type GraphProps = {
   intersections: Array<string>;
@@ -32,28 +32,26 @@ const Graph = (props: GraphProps) => {
     (variableToCheck as GraphData).pathData !== undefined;
   if (data === null || !isGraphData(data) || error !== "" || isLoading)
     return <BlankGraph />;
-  const slice = data.interval;
-  const maxVal = data.maxVal !== 0 ? data.maxVal : 1;
-  const scalar_x = 100 / slice;
-  const scalar_y = 100 / maxVal;
+  const values = Array.from(Array.from(data.pathData)[0][1].values())
+    .map((x) => Array.from(x.values()))
+    .map((y) => Array.from(y.values()))
+    .flat();
+  const scale: Scale = getScale(
+    values.length > 0
+      ? values.flat().map((x) => (x === null ? 0 : x))
+      : [0, 50, 100, 200, 500]
+  );
+  const xInterval = 100 / data.interval;
   const paths = Array.from(data.pathData).map(([groupType, group]) => (
     <Paths
-      scalar_x={scalar_x}
-      scalar_y={scalar_y}
+      scale={scale}
+      xInterval={xInterval}
       group={groupType}
       key={"Paths" + groupType}
       data={group}
     />
   ));
-  const grid = (
-    <Grid
-      scalar_x={scalar_x}
-      scalar_y={scalar_y}
-      slice={slice}
-      maxVal={maxVal}
-      dates={data.dates}
-    />
-  );
+  const grid = <Grid scale={scale} dates={data.dates} />;
   return (
     <svg
       viewBox="-7 -10 110 120"

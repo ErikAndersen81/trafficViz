@@ -1,65 +1,88 @@
 import React from "react";
+import { FitToChart, Scale } from "../Scaling";
 
 type GridProps = {
-  maxVal: number;
-  slice: number;
-  scalar_x: number;
-  scalar_y: number;
+  scale: Scale;
   dates: Array<Date>;
 };
 
 const Grid = (props: GridProps) => {
-  const { maxVal, slice, scalar_x, scalar_y, dates } = { ...props };
+  const { scale, dates } = { ...props };
   let dateTicks = [0, 0.25, 0.5, 0.75].map(
     (i: number) => dates[Math.floor(dates.length * i)]
   );
-  const dateLines = [0, 0.25, 0.5, 0.75, 1].map((i: number) => (
+  const dateLines = [0, 25, 50, 75].map((i: number) => (
     <path
-      d={`M ${i * slice * scalar_x} 100 L ${i * slice * scalar_x} 102 `}
+      d={`M ${i} 100 L ${0.5 + i} 103 `}
       id={"dateLine" + i}
       key={"dateLine" + i}
-      className="dateLine"
+      stroke="black"
+      strokeLinecap="round"
+      strokeWidth={0.6}
     />
   ));
 
-  const dateLabels = [0, 0.25, 0.5, 0.75].map((i: number, idx: number) => (
-    <text
-      x={i * slice * scalar_x}
-      textAnchor="end"
-      dominantBaseline="text-before-edge"
-      y={100}
-      id={"dateLabel" + i}
-      key={"dateLabel" + i}
-      className="dateLabel">
-      {dates.length > 48 * 4
-        ? dateTicks[idx].toLocaleDateString().substring(0, 5)
-        : dateTicks[idx].toLocaleTimeString().substring(0, 5)}
-    </text>
+  const dateLabels = [0, 25, 50, 75].map((i: number, idx: number) => (
+    <g key={`DateGroup${idx}`}>
+      <rect
+        key={`rect${idx}`}
+        fill="black"
+        x={i}
+        y={101}
+        ry={2}
+        rx={2}
+        width={10}
+        height={4}></rect>
+      <text
+        x={5 + i}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize={3}
+        fill="white"
+        y={103}
+        id={"dateLabel" + i}
+        key={"dateLabel" + i}>
+        {dates.length > 48 * 4
+          ? dateTicks[idx].toLocaleDateString().substring(0, 5)
+          : dateTicks[idx].toLocaleTimeString().substring(0, 5)}
+      </text>
+    </g>
   ));
 
-  const hLines = [0, 0.25, 0.5, 0.75, 1].map((i: number) => (
-    <path
-      d={`M 0 ${100 - i * maxVal * scalar_y} L ${slice * scalar_x} ${
-        100 - i * maxVal * scalar_y
-      }`}
-      id={"hLine" + i}
-      key={"hLine" + i}
-      className="hLine"
-    />
-  ));
+  const hLines = scale.ticks.map((i: number) =>
+    i === 0 ? null : (
+      <path
+        d={`M 0 ${FitToChart(i, 100, scale)} L 0 ${FitToChart(i, 100, scale)}`}
+        id={"hLine" + i}
+        key={"hLine" + i}
+        stroke="black"
+        strokeLinecap="round"
+        strokeWidth={0.7}
+      />
+    )
+  );
 
-  const hLabels = [0, 0.25, 0.5, 0.75, 1].map((i: number) => (
-    <text
-      x="0"
-      className="hLabel"
-      key={"hLabel" + i}
-      y={100 - maxVal * i * scalar_y}>
-      {` ${maxVal * i}`}
-    </text>
-  ));
+  const hLabels = scale.ticks.map((i: number) =>
+    i === 0 ? null : (
+      <text
+        x="-.5"
+        textAnchor="end"
+        dominantBaseline="middle"
+        fontSize={3}
+        key={"hLabel" + i}
+        y={FitToChart(i, 100, scale)}>
+        {` ${i}`}
+      </text>
+    )
+  );
 
   return (
     <>
+      <path
+        d="M 0 100 L 100 100 L 98 99 M 100 100 L 98 101"
+        fillOpacity="0"
+        strokeWidth=".5"
+        stroke="black"></path>
       {hLines}
       {hLabels}
       {dateLines}

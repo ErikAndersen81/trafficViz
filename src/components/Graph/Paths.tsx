@@ -1,27 +1,28 @@
 import React, { useContext } from "react";
 import { HighlightContext } from "../Context";
 import { Group, GroupType, IntersectionData, LaneData } from "../Hooks/useData";
+import { FitToChart, Scale } from "../Scaling";
 
 type PathsProps = {
   data: Group;
   group: GroupType;
-  scalar_x: number;
-  scalar_y: number;
+  scale: Scale;
+  xInterval: number;
 };
 
 const Paths = (props: PathsProps) => {
-  const { data, group, scalar_y, scalar_x } = { ...props };
+  const { data, group, scale, xInterval } = { ...props };
   const paths = Array.from(
     data
   ).map(([intersection, intersectionData], idx) => (
     <GroupPaths
+      xInterval={xInterval}
       values={intersectionData}
       key={"GroupPath" + group + intersection}
       name={group + intersection}
       color={colors[idx]}
       dash={dashes[group]}
-      scalar_x={scalar_x}
-      scalar_y={scalar_y}
+      scale={scale}
     />
   ));
 
@@ -32,20 +33,20 @@ type GroupPathsProps = {
   values: IntersectionData;
   name: string;
   color: string;
-  scalar_x: number;
-  scalar_y: number;
+  scale: Scale;
   dash: string;
+  xInterval: number;
 };
 
 const GroupPaths = (props: GroupPathsProps) => {
-  const { values, color, name, scalar_x, scalar_y, dash } = { ...props };
+  const { values, color, name, scale, dash, xInterval } = { ...props };
   let paths = Array.from(values).map(([lane, laneData]) => (
     <Path
       values={laneData}
+      xInterval={xInterval}
       name={name}
       key={"Paths" + lane}
-      scalar_x={scalar_x}
-      scalar_y={scalar_y}
+      scale={scale}
     />
   ));
 
@@ -59,15 +60,15 @@ const GroupPaths = (props: GroupPathsProps) => {
 type PathProps = {
   values: LaneData;
   name: string;
-  scalar_x: number;
-  scalar_y: number;
+  scale: Scale;
+  xInterval: number;
 };
 
 const Path = (props: PathProps) => {
-  const { values, name, scalar_y, scalar_x } = { ...props };
+  const { values, name, scale, xInterval } = { ...props };
   const Highlight = useContext(HighlightContext);
-  const calc_x = (i: number) => i * scalar_x;
-  const calc_y = (i: number) => 100 - i * scalar_y;
+  const calc_x = (i: number) => i * xInterval;
+  const calc_y = (i: number) => FitToChart(i, 100, scale);
   let path = "";
   let newLine = true;
   let command = "M ";

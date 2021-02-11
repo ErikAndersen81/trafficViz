@@ -36,34 +36,9 @@
 }
 
 /* SVG-styling related to the Graph component  */
-.hLine {
-  stroke: black;
-  stroke-width: 0.5;
-  fill: transparent;
-  shape-rendering: optimizeSpeed;
-}
-
-.hLabel {
-  font-size: 0.15em;
-  fill: black;
-  text-anchor: end;
-}
-
-.dateLine {
-  stroke: black;
-  stroke-width: 0.1;
-  fill: transparent;
-}
-
-.dateLabel {
-  fill: black;
-  font-size: 3px;
-  text-anchor: middle;
-}
-
 .path {
   fill: transparent;
-  stroke-width: 0.2;
+  stroke-width: 0.3;
   shape-rendering: optimizeSpeed;
 }
 
@@ -78,12 +53,12 @@
   y: 0;
 }
 
-.laneText {
-  font: 8px sans-serif;
+text {
+  font-family: sans-serif;
 }
 
 body {
-  font-family: Noto Sans;
+  font-family: sans-serif;
   margin: 0;
   height: 100vh;
 }
