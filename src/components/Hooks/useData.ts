@@ -47,7 +47,9 @@ export type EventType = {
 	latitude:number;
 	longitude:number;
 	description:string;
-	visitors:number;
+	starttime:string;
+	endtime:string;
+	type:string;
 }
 
 const headers = {
