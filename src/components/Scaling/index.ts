@@ -25,8 +25,8 @@ export const getScale = (values:Array<number>):Scale => {
         stepIndex = stepIndex === 6 ? 1 : stepIndex+1;
         interval = stepSizes[stepIndex] * 10**(digits -3)
         interval = interval > range ? interval/10 : interval;
-    } 
-    const scale = Array(nTicks).fill(0).map((_ , idx) => scaleMin + idx * interval);
+    }
+    const scale = Array(nTicks+1).fill(0).map((_ , idx) => scaleMin + idx * interval);
     return {
         ticks:scale,
         min:scaleMin,
