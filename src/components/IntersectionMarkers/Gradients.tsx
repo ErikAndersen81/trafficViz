@@ -8,7 +8,7 @@ const Gradients = (props: GradientProps) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg">
       {props.values.map((k) => (
-        <Fill name={k.name} aboves={k.aboves} belows={k.belows} />
+        <Fill key={k.name} name={k.name} aboves={k.aboves} belows={k.belows} />
       ))}
     </svg>
   );
