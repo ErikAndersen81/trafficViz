@@ -64,6 +64,7 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
       <Gradients
         values={Array.from(data.totalPassings.keys()).map((intersection) => {
           return {
+            name: intersection,
             aboves: data.pctBelow.get(intersection) || 0,
             belows: data.pctAbove.get(intersection) || 0,
           };

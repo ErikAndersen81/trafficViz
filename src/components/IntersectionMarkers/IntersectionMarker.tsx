@@ -15,9 +15,11 @@ type IntersectionMarkerProps = {
 };
 
 const IntersectionMarker = (props: IntersectionMarkerProps) => {
-  const coords = props.coordinates;
+  const { name, coordinates, size, measurements, handleIntersectionClick } = {
+    ...props,
+  };
   const Highlight = useContext(HighlightContext);
-  if (!coords) return null;
+  if (!coordinates) return null;
   const handleIntersectionHover = (event: LeafletMouseEvent) => {
     if (event.type === "mouseover") {
       (Highlight as any).setHighlighted(props.name);
@@ -26,7 +28,7 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
     }
   };
   /* Size is traffic intensity relative to the number of measurements */
-  const radius = (props.size / props.measurements) * 0.1;
+  const radius = (size / measurements) * 0.1;
   /* Set gradient as percentage of outliers below and above means, respectively */
   const aboves = props.aboves * 100;
   const belows = props.belows * 100;
@@ -34,22 +36,22 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
 
   return (
     <CircleMarker
-      center={{ lat: coords.latitude, lng: coords.longitude }}
+      center={{ lat: coordinates.latitude, lng: coordinates.longitude }}
       radius={radius + 1}
       className="circle"
       weight={1.5}
-      color={(Highlight as any).highlighted === props.name ? "white" : "black"}
+      color={(Highlight as any).highlighted === name ? "white" : "black"}
       fillOpacity={0.5}
-      fillColor={"url(#bgGradient" + aboves + belows + ")"}
+      fillColor={`url(#bgGradient${name})`}
       onMouseOver={handleIntersectionHover}
       onMouseOut={handleIntersectionHover}
-      onclick={props.handleIntersectionClick}>
+      onclick={handleIntersectionClick}>
       <Tooltip>
-        <h3>{props.name}</h3>
+        <h3>{name}</h3>
 
-        <p>Number of passings: {props.size} </p>
+        <p>Number of passings: {size} </p>
 
-        <p>Measurements: {props.measurements}</p>
+        <p>Measurements: {measurements}</p>
 
         <p>Measurements &gt; &mu; + 3&sigma;: {props.aboves}</p>
 
