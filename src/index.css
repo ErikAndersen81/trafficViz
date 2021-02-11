@@ -189,3 +189,15 @@ input[type="date"]::-webkit-inner-spin-button {
   height: 100%;
   width: 100%;
 }
+
+.Tooltip {
+  width: 15vw;
+  white-space: normal;
+}
+
+.Tooltip.event > p:first-child {
+  background-color: lightblue;
+}
+.Tooltip.tweet > p:first-child {
+  background-color: red;
+}
