@@ -7,7 +7,7 @@ export type Scale = {
 }
 
 export const getScale = (values:Array<number>):Scale => {
-    const nTicks:number = 5;
+    var nTicks:number = 5;
     const stepSizes:Array<number> = [100, 125, 150, 250, 500, 750, 1000];
     const max:number = values.reduce((x,y) => x>y ? x : y);
     const min:number = values.reduce((x,y) => x<y ? x : y);
@@ -21,12 +21,13 @@ export const getScale = (values:Array<number>):Scale => {
     let a = 1
     while (a * interval < Math.abs(min) ) { a += 1; }   
     const scaleMin:number = min >= 0 ? interval * (a-1) : interval * -a;
-    if (scaleMin + interval * nTicks  < max) {
+    if (scaleMin + interval * (nTicks-1)  < max) {
         stepIndex = stepIndex === 6 ? 1 : stepIndex+1;
         interval = stepSizes[stepIndex] * 10**(digits -3)
         interval = interval > range ? interval/10 : interval;
     }
-    const scale = Array(nTicks+1).fill(0).map((_ , idx) => scaleMin + idx * interval);
+
+    const scale = Array(nTicks).fill(0).map((_ , idx) => scaleMin + idx * interval);
     return {
         ticks:scale,
         min:scaleMin,
