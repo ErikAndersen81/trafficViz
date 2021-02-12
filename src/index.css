@@ -46,13 +46,6 @@
   stroke: #aaaaaa;
 }
 
-.disturbance {
-  height: 100px;
-  fill: #ff3355;
-  opacity: 0.3;
-  y: 0;
-}
-
 text {
   font-family: sans-serif;
 }
@@ -166,7 +159,7 @@ input[type="date"]::-webkit-inner-spin-button {
 }
 
 .Tooltip {
-  width: 15vw;
+  width: 17vw;
   white-space: normal;
 }
 
@@ -175,6 +168,9 @@ input[type="date"]::-webkit-inner-spin-button {
 }
 .Tooltip.tweet > p:first-child {
   background-color: red;
+}
+.Tooltip.disturbance > p:first-child {
+  background-color: orange;
 }
 
 .CustomMapControls {

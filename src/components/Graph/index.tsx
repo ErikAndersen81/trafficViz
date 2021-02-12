@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-/* import Disturbances from "./Disturbances";*/
 import Paths from "./Paths";
 import Grid from "./Grid";
 import { DateTimeContext } from "../Context";
@@ -52,7 +51,7 @@ const Graph = (props: GraphProps) => {
       data={group}
     />
   ));
-  const grid = <Grid scale={scale} dates={data.dates} />;
+  const grid = <Grid scale={scale} dates={data.dates} interval={interval} />;
   return (
     <svg
       viewBox="-10 -10 115 120"
@@ -62,11 +61,9 @@ const Graph = (props: GraphProps) => {
       <g>
         {grid}
         {paths}
-
         <text strokeWidth="0" fontSize="4" textAnchor="right" x="-6" y="-5">
           Passings
         </text>
-        {/*<Disturbances data={data.disturbances} scalar_x={scalar_x} />*/}
       </g>
     </svg>
   );

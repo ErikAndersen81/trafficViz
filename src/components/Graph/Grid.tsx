@@ -1,50 +1,79 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Interval } from "../Context/DateTimeContext";
 import { FitToChart, Scale } from "../Scaling";
 
 type GridProps = {
   scale: Scale;
   dates: Array<Date>;
+  interval: Interval;
+};
+
+const toDayString = (n: number) => {
+  switch (n) {
+    case 0:
+      return "Sun";
+    case 1:
+      return "Mon";
+    case 2:
+      return "Tue";
+    case 3:
+      return "Wed";
+    case 4:
+      return "Thu";
+    case 5:
+      return "Fri";
+    case 6:
+      return "Sat";
+  }
 };
 
 const Grid = (props: GridProps) => {
-  const { scale, dates } = { ...props };
-  let dateTicks = [0, 0.25, 0.5, 0.75].map(
-    (i: number) => dates[Math.floor(dates.length * i)]
-  );
-  const dateLines = [0, 25, 50, 75].map((i: number) => (
-    <path
-      d={`M ${i} 100 L ${0.5 + i} 103 `}
-      id={"dateLine" + i}
-      key={"dateLine" + i}
-      stroke="black"
-      strokeLinecap="round"
-      strokeWidth={0.6}
-    />
-  ));
+  const { scale, dates, interval } = { ...props };
+  if (interval === "day" && dates[5 * 16] === undefined) return null;
+  if (interval === "week" && dates[7 * 96] === undefined) return null;
+  let xTicks =
+    interval === "day"
+      ? Array(5)
+          .fill(0)
+          .map(
+            (_, idx) =>
+              `${dates[idx * 16].getHours()}:${dates[idx * 16].getMinutes()}`
+          )
+      : Array(7)
+          .fill(0)
+          .map((_, idx) => `${toDayString(dates[idx * 96].getDay())}`);
 
-  const dateLabels = [0, 25, 50, 75].map((i: number, idx: number) => (
+  const dateLabels = xTicks.map((d: string, idx: number, a) => (
     <g key={`DateGroup${idx}`}>
+      <path
+        d={`M ${(100 / a.length) * idx} 100 L ${
+          0.5 + (100 / a.length) * idx
+        } 103 `}
+        id={"dateLine" + idx}
+        key={"dateLine" + idx}
+        stroke="black"
+        strokeLinecap="round"
+        strokeWidth={0.6}
+      />
       <rect
         key={`rect${idx}`}
         fill="black"
-        x={i}
+        x={(100 / a.length) * idx}
         y={101}
         ry={2}
         rx={2}
         width={10}
         height={4}></rect>
       <text
-        x={5 + i}
+        x={5 + (100 / a.length) * idx}
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize={3}
         fill="white"
         y={103}
-        id={"dateLabel" + i}
-        key={"dateLabel" + i}>
-        {dates.length > 48 * 4
-          ? dateTicks[idx].toLocaleDateString().substring(0, 5)
-          : dateTicks[idx].toLocaleTimeString().substring(0, 5)}
+        id={"dateLabel" + idx}
+        key={"dateLabel" + idx}>
+        {d}
       </text>
     </g>
   ));
@@ -85,7 +114,6 @@ const Grid = (props: GridProps) => {
         stroke="black"></path>
       {hLines}
       {hLabels}
-      {dateLines}
       {dateLabels}
     </>
   );

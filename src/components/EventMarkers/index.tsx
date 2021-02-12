@@ -55,24 +55,20 @@ const EventMarker = (props: EventMarkerProps) => {
     <>
       <Marker
         position={{ lat: latitude, lng: longitude }}
-        icon={
-          type === "event"
-            ? CustomIcon("lightblue", "E")
-            : CustomIcon("red", "A")
-        }
+        icon={getIcon(type)}
         weight={1.5}
         color={"black"}
         fillOpacity={0.5}
         fillColor={"green"}>
         <Tooltip>
           <div className={`Tooltip ${type}`}>
-            {type === "event" ? (
+            {type === "tweet" ? (
+              <p>Tweeted at {starttime}</p>
+            ) : (
               <p>
                 From {starttime}
                 <br></br>to {endtime}
               </p>
-            ) : (
-              <p>Tweeted at {starttime}</p>
             )}
             <p>{description}</p>
           </div>
@@ -81,4 +77,16 @@ const EventMarker = (props: EventMarkerProps) => {
     </>
   );
 };
+
+const getIcon = (type: string) => {
+  switch (type) {
+    case "event":
+      return CustomIcon("lightblue", "E");
+    case "tweet":
+      return CustomIcon("red", "A");
+    case "disturbance":
+      return CustomIcon("orange", "T");
+  }
+};
+
 export default EventMarkers;
