@@ -37,13 +37,29 @@
 
 /* SVG-styling related to the Graph component  */
 .path {
-  fill: transparent;
-  stroke-width: 0.3;
+  fill: none;
+  stroke-width: 0.5;
   shape-rendering: optimizeSpeed;
+}
+
+.GraphPopup {
+  stroke: none;
+  fill: black;
+  text-anchor: start;
+  font-size: 3;
+  dominant-baseline: middle;
 }
 
 .highlighted {
   stroke: #aaaaaa;
+}
+.textpath.highlighted {
+  stroke: none;
+  fill: black;
+}
+.textpath {
+  stroke: none;
+  fill: black;
 }
 
 text {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Interval } from "../Context/DateTimeContext";
 import { FitToChart, Scale } from "../Scaling";
 
@@ -8,40 +8,18 @@ type GridProps = {
   interval: Interval;
 };
 
-const toDayString = (n: number) => {
-  switch (n) {
-    case 0:
-      return "Sun";
-    case 1:
-      return "Mon";
-    case 2:
-      return "Tue";
-    case 3:
-      return "Wed";
-    case 4:
-      return "Thu";
-    case 5:
-      return "Fri";
-    case 6:
-      return "Sat";
-  }
-};
-
 const Grid = (props: GridProps) => {
   const { scale, dates, interval } = { ...props };
   if (interval === "day" && dates[5 * 16] === undefined) return null;
   if (interval === "week" && dates[7 * 96] === undefined) return null;
   let xTicks =
     interval === "day"
-      ? Array(5)
+      ? Array(6)
           .fill(0)
-          .map(
-            (_, idx) =>
-              `${dates[idx * 16].getHours()}:${dates[idx * 16].getMinutes()}`
-          )
+          .map((_, idx) => `${dates[idx * 16].toTimeString().substring(0, 5)}`)
       : Array(7)
           .fill(0)
-          .map((_, idx) => `${toDayString(dates[idx * 96].getDay())}`);
+          .map((_, idx) => `${dates[idx * 96].toDateString().substring(0, 3)}`);
 
   const dateLabels = xTicks.map((d: string, idx: number, a) => (
     <g key={`DateGroup${idx}`}>

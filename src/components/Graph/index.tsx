@@ -49,6 +49,7 @@ const Graph = (props: GraphProps) => {
       group={groupType}
       key={"Paths" + groupType}
       data={group}
+      dates={data.dates}
     />
   ));
   const grid = <Grid scale={scale} dates={data.dates} interval={interval} />;

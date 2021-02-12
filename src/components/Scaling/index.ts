@@ -64,4 +64,8 @@ export const convertScaleToDivergent = (scale:Scale):Scale => {
 export const FitToChart = (value:number, chartHeight:number, scale:Scale) => {
     const scalar = chartHeight/scale.range;
     return chartHeight - (value - scale.min) * scalar;
-}   
+}
+
+export const readFromChart = (value:number, chartHeight:number, scale:Scale) => {
+    return (chartHeight-value)*(scale.range/chartHeight);
+}
