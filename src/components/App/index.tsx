@@ -7,7 +7,7 @@ import Map from "../Map";
 import Graph from "../Graph";
 import GraphOptions from "../GraphOptions";
 import { HighlightContext, DateTimeContext } from "../Context";
-import { Datetime, SkipInterval } from "../Context/DateTimeContext";
+import { Datetime, Interval } from "../Context/DateTimeContext";
 import { LeafletMouseEvent } from "leaflet";
 
 function App() {
@@ -17,16 +17,13 @@ function App() {
   const [starttime, setStarttime] = useState<Date>(
     new Date("2016-09-01 05:00")
   );
-  const [endtime, setEndtime] = useState<Date>(new Date("2016-09-02 06:00"));
-  const [skipInterval, setSkipInterval] = useState<SkipInterval>("hour");
+  const [interval, setInterval] = useState<Interval>("day");
   const [highlighted, setHighlighted] = useState("");
-  const interval: Datetime = {
+  const datetime: Datetime = {
     starttime,
     setStarttime,
-    endtime,
-    setEndtime,
-    skipInterval,
-    setSkipInterval,
+    interval,
+    setInterval,
   };
 
   const handleIntersectionClick = (event: LeafletMouseEvent) => {
@@ -40,7 +37,7 @@ function App() {
   };
 
   return (
-    <DateTimeContext.Provider value={interval}>
+    <DateTimeContext.Provider value={datetime}>
       <div className="mapAndGraphsContainer">
         <HighlightContext.Provider
           value={{
@@ -61,23 +58,11 @@ function App() {
 
         <div className="DatetimeBox">
           <div className="DatetimeSelector">
-            <span>From</span>
-            <DatePicker
-              datetime={starttime}
-              setDatetime={setStarttime}
-              max={endtime}
-            />
+            <span>Start time</span>
+            <DatePicker datetime={starttime} setDatetime={setStarttime} />
           </div>
           <div className="DatetimeSelector">
-            <span>To</span>
-            <DatePicker
-              datetime={endtime}
-              setDatetime={setEndtime}
-              min={starttime}
-            />
-          </div>
-          <div className="DatetimeSelector">
-            <span>Step through time</span>
+            <span>Time span</span>
             <Skip />
           </div>
           <div className="DatetimeSelector">

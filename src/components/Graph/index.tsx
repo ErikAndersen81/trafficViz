@@ -5,6 +5,7 @@ import Grid from "./Grid";
 import { DateTimeContext } from "../Context";
 import useData, { getGraphDataRequest, GraphData } from "../Hooks/useData";
 import { getScale, Scale } from "../Scaling";
+import { getEndtime } from "../Context/DateTimeContext";
 
 type GraphProps = {
   intersections: Array<string>;
@@ -13,9 +14,9 @@ type GraphProps = {
 
 const Graph = (props: GraphProps) => {
   const { graphOptions, intersections } = { ...props };
-  const { starttime, endtime } = useContext(DateTimeContext);
+  const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("data");
-
+  const endtime = getEndtime(starttime, interval);
   useEffect(() => {
     const request = getGraphDataRequest(
       starttime,
@@ -26,7 +27,7 @@ const Graph = (props: GraphProps) => {
     setPayload(request);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, intersections, graphOptions, starttime, endtime]);
+  }, [setPayload, intersections, graphOptions, starttime, interval]);
 
   const isGraphData = (variableToCheck: any): variableToCheck is GraphData =>
     (variableToCheck as GraphData).pathData !== undefined;

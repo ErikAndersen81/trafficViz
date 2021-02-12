@@ -1,6 +1,7 @@
 import { LeafletMouseEvent } from "leaflet";
 import React, { useContext, useEffect } from "react";
 import { DateTimeContext } from "../Context";
+import { getEndtime } from "../Context/DateTimeContext";
 import useData, {
   getCoordinatesDataRequest,
   getMarkersDataRequest,
@@ -15,7 +16,7 @@ type IntersectionMarkersProps = {
 };
 
 const IntersectionMarkers = (props: IntersectionMarkersProps) => {
-  const { starttime, endtime } = useContext(DateTimeContext);
+  const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("markers");
   const {
     data: coordinates,
@@ -23,7 +24,7 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
     isLoading: cLoading,
     setPayload: cSetPayload,
   } = useData("coordinates");
-
+  const endtime = getEndtime(starttime, interval);
   useEffect(() => {
     const markersPayload: RequestInit = getMarkersDataRequest(
       starttime,
@@ -35,7 +36,7 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
       cSetPayload(coordinatesPayload);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, cSetPayload, starttime, endtime]);
+  }, [setPayload, cSetPayload, starttime, interval]);
 
   // Type guards to make sure we have GraphData and CoordinatesData
   const isMarkersData = (obj: any): obj is MarkersData =>

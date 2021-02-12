@@ -6,11 +6,12 @@ import useData, {
   EventMarkersData,
 } from "../Hooks/useData";
 import CustomIcon from "../CustomIcon";
+import { getEndtime } from "../Context/DateTimeContext";
 
 const EventMarkers = () => {
-  const { starttime, endtime } = useContext(DateTimeContext);
+  const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("events");
-
+  const endtime = getEndtime(starttime, interval);
   useEffect(() => {
     const markersPayload: RequestInit = getMarkersDataRequest(
       starttime,
@@ -19,7 +20,7 @@ const EventMarkers = () => {
     setPayload(markersPayload);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, starttime, endtime]);
+  }, [setPayload, starttime, interval]);
 
   // Type guards to make sure we have GraphData and CoordinatesData
   const isMarkersData = (obj: any): obj is EventMarkersData =>
