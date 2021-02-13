@@ -9,6 +9,7 @@ import GraphOptions from "../GraphOptions";
 import { HighlightContext, DateTimeContext } from "../Context";
 import { Datetime, Interval } from "../Context/DateTimeContext";
 import { LeafletMouseEvent } from "leaflet";
+import { RadialChart24H, RadialChartWeek } from "../RadialChart";
 
 function App() {
   /* Set default values */
@@ -38,6 +39,8 @@ function App() {
 
   return (
     <DateTimeContext.Provider value={datetime}>
+      <RadialChart24H />
+      <RadialChartWeek />
       <div className="mapAndGraphsContainer">
         <HighlightContext.Provider
           value={{
@@ -55,7 +58,6 @@ function App() {
             />
           </div>
         </HighlightContext.Provider>
-
         <div className="DatetimeBox">
           <div className="DatetimeSelector">
             <span>Start time</span>
