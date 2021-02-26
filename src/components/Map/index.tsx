@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import CustomMapControls from "../CustomMapControls";
 import EventMarkers from "../EventMarkers";
-import IntersectionMarkers from "../IntersectionMarkers";
-
+import IntersectionMarkers from "../IntersectionMarkersV2";
 type MapProps = {
   handleIntersectionClick: (event: LeafletMouseEvent) => void;
 };

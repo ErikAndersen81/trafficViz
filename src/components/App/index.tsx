@@ -9,7 +9,6 @@ import GraphOptions from "../GraphOptions";
 import { HighlightContext, DateTimeContext } from "../Context";
 import { Datetime, Interval } from "../Context/DateTimeContext";
 import { LeafletMouseEvent } from "leaflet";
-import { RadialChart24H, RadialChartWeek } from "../RadialChart";
 
 function App() {
   /* Set default values */
@@ -18,7 +17,7 @@ function App() {
   const [starttime, setStarttime] = useState<Date>(
     new Date("2016-09-01 05:00")
   );
-  const [interval, setInterval] = useState<Interval>("day");
+  const [interval, setInterval] = useState<Interval>("week");
   const [highlighted, setHighlighted] = useState("");
   const datetime: Datetime = {
     starttime,
@@ -39,8 +38,6 @@ function App() {
 
   return (
     <DateTimeContext.Provider value={datetime}>
-      <RadialChart24H />
-      <RadialChartWeek />
       <div className="mapAndGraphsContainer">
         <HighlightContext.Provider
           value={{
