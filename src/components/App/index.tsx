@@ -26,9 +26,11 @@ function App() {
     setInterval,
   };
 
-  const handleIntersectionClick = (event: LeafletMouseEvent) => {
-    const key: string = event.target.options.children._owner.key;
-    const intersection = key.slice(0, key.indexOf("I"));
+  const handleIntersectionClick = (
+    event: LeafletMouseEvent,
+    intersection: string
+  ) => {
+    console.log(intersection);
     if (intersections.find((x) => intersection === x)) {
       setIntersections(() => intersections.filter((x) => x !== intersection));
     } else {

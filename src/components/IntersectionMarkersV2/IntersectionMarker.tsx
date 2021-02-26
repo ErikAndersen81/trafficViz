@@ -1,6 +1,6 @@
 import { LeafletMouseEvent } from "leaflet";
 import React, { useContext } from "react";
-import { Marker, Tooltip } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import { DateTimeContext, HighlightContext } from "../Context";
 import CustomIcon from "../CustomIcon";
 import { CoordinatesType } from "../Hooks/useData";

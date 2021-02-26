@@ -5,7 +5,10 @@ import CustomMapControls from "../CustomMapControls";
 import EventMarkers from "../EventMarkers";
 import IntersectionMarkers from "../IntersectionMarkersV2";
 type MapProps = {
-  handleIntersectionClick: (event: LeafletMouseEvent) => void;
+  handleIntersectionClick: (
+    event: LeafletMouseEvent,
+    intersection: string
+  ) => void;
 };
 
 const Map = (props: MapProps) => {

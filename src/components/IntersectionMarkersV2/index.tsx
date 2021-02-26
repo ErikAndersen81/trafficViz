@@ -10,7 +10,10 @@ import useData, {
 import IntersectionMarker from "./IntersectionMarker";
 
 type IntersectionMarkersProps = {
-  handleIntersectionClick: (event: LeafletMouseEvent) => void;
+  handleIntersectionClick: (
+    event: LeafletMouseEvent,
+    intersection: string
+  ) => void;
 };
 
 const IntersectionMarkers = (props: IntersectionMarkersProps) => {
@@ -63,7 +66,9 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
       key={intersection + "IntersectionMarker"}
       name={intersection}
       data={values}
-      handleIntersectionClick={(props as any).handleIntersectionClick}
+      handleIntersectionClick={(e) =>
+        (props as any).handleIntersectionClick(e, intersection)
+      }
       coordinates={coordinates.intersections.get(intersection) || undefined}
     />
   ));
