@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { DateTimeContext } from "../Context";
-import { SkipInterval } from "../Context/DateTimeContext";
+import { Interval } from "../Context/DateTimeContext";
 import { useSlideTimeframe } from "../Hooks";
 
 const Skip = () => {
-  const { skipInterval, setSkipInterval } = useContext(DateTimeContext);
+  const { interval, setInterval } = useContext(DateTimeContext);
   const slide = useSlideTimeframe();
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSkipInterval(event.target.value as SkipInterval);
+    setInterval(event.target.value as Interval);
     event.preventDefault();
   };
   return (
@@ -19,13 +19,10 @@ const Skip = () => {
         <select
           className="DropdownBtn"
           name="skip"
-          value={skipInterval}
+          value={interval}
           onChange={handleChange}>
-          <option value="hour">Hour</option>
           <option value="day">Day</option>
           <option value="week">Week</option>
-          <option value="month">Month</option>
-          <option value="year">Year</option>
         </select>
         <button value="forward" onClick={() => slide("forward")}>
           &raquo;

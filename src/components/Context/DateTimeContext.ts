@@ -1,25 +1,34 @@
 import React from 'react';
 
-export type SkipInterval = 'hour'|'day'|'week'|'month'|'year';
+export type Interval = 'day'|'week';
 
 export type Datetime = {
     starttime: Date;
     setStarttime: React.Dispatch<React.SetStateAction<Date>>;
-    endtime: Date;
-    setEndtime: React.Dispatch<React.SetStateAction<Date>>;
-    skipInterval:SkipInterval;
-    setSkipInterval:React.Dispatch<React.SetStateAction<SkipInterval>>;
+    interval:Interval;
+    setInterval:React.Dispatch<React.SetStateAction<Interval>>;
   };
 
 const defaultTime:Datetime = {
-  endtime:new Date("2016-09-09 12:00"),
-  starttime: new Date("2016-09-09 10:00"),
-  setEndtime:() => {},
+  starttime: new Date("2016-09-09 04:00"),
   setStarttime: () => {},
-  skipInterval:'hour',
-  setSkipInterval: () => {}
+  interval:'day',
+  setInterval: () => {}
 }
-  
+
+export const getEndtime = (datetime:Date, interval:Interval) =>  {
+  if (interval === 'day') {
+    let newDatetime:Date = new Date(datetime.toString())
+    const date = newDatetime.getDate();
+    newDatetime.setDate(date+1);
+    return newDatetime;
+  }
+  let newDatetime:Date = new Date(datetime.toString())
+  const date = newDatetime.getDate();
+  newDatetime.setDate(date+7);
+  return newDatetime;
+}
+
 const DateTimeContext = React.createContext<Datetime>(defaultTime);
 
 export default DateTimeContext;

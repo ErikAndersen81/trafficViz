@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 
 const formatDate = (date:Date):string => {
-	return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+	return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
 }
 
 export type GraphData = {
@@ -32,13 +32,21 @@ export type GroupType = 'mean'|'median'|'aggregated';
 
 export type PathData = Map<GroupType,Group>;
 
-export type Group = Map<string, IntersectionData>;
+export type Group = Map<string,  Array<number|null>>;
 
-export type IntersectionData = Map<string, LaneData>;
+export type ResourceType = 'data'|'coordinates'|'markers'|'events';
 
-export type LaneData = Array<number|null>;
-
-export type ResourceType = 'data'|'coordinates'|'markers';
+export type EventMarkersData = {
+	events:Map<string, EventType>
+}
+export type EventType = {
+	latitude:number;
+	longitude:number;
+	description:string;
+	starttime:string;
+	endtime:string;
+	type:string;
+}
 
 const headers = {
 	'Accept': 'application/json',
@@ -75,6 +83,7 @@ export const getMarkersDataRequest = (starttime:Date, endtime:Date):RequestInit 
 	return payload;
 }
 
+
 export const getCoordinatesDataRequest = ():RequestInit => {
 	const payload:RequestInit = {
 		method: 'GET',
@@ -84,7 +93,7 @@ export const getCoordinatesDataRequest = ():RequestInit => {
 }
 
 const useData = (resource:ResourceType) => {
-    const [data, setData] = useState<GraphData|MarkersData|CoordinatesData|null>(null);
+    const [data, setData] = useState<GraphData|MarkersData|CoordinatesData|EventMarkersData|null>(null);
     const [error, setError] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [payload, setPayload] = useState<RequestInit|undefined>();
@@ -111,6 +120,9 @@ const useData = (resource:ResourceType) => {
 							pctBelow.set(k, jsonData.pct_below[k]);
 						})
 						setData(() => ({totalPassings, pctAbove, pctBelow, measurements:jsonData.measurements}));
+					} else if (resource === 'events') {
+						let events = new Map<string,EventType>(Object.keys(jsonData.events).map((k:string) => [k, (jsonData.events[k] as EventType)]))
+						setData({events})
 					} else {
 						let pathData:PathData = new Map<GroupType, Group>();
 						let dates:Array<Date>= new Array<Date>(
@@ -119,16 +131,13 @@ const useData = (resource:ResourceType) => {
 						let interval:number = jsonData.interval;
 						let disturbances:any = jsonData.disturbances;
 						let maxVal:number = jsonData.maxVal;
-						if (jsonData['mean']) pathData.set('mean', new Map<string, IntersectionData>());
-						if (jsonData['median']) pathData.set('median', new Map<string, IntersectionData>());
+						if (jsonData['mean']) pathData.set('mean', new Map<string, Array<number|null>>());
+						if (jsonData['median']) pathData.set('median', new Map<string, Array<number|null>>());
 						Object.keys(jsonData['pathData']).forEach(group => {
 						if (jsonData['pathData'][group]){
-							pathData.set(group as GroupType, new Map<string, IntersectionData>());
+							pathData.set(group as GroupType, new Map<string, Array<number|null>>());
 							Object.keys(jsonData['pathData'][group]).forEach(intersection => {
-								pathData.get(group as GroupType)?.set(intersection, new Map<string, LaneData>())
-								Object.keys(jsonData['pathData'][group][intersection]).forEach(lane => {
-									pathData.get(group as GroupType)?.get(intersection)?.set(lane, jsonData['pathData'][group][intersection][lane])
-								})
+								pathData.get(group as GroupType)?.set(intersection, Array<number|null>(jsonData['pathData'][group][intersection]).flat())
 							})
 						}});
 					setData(() => ({pathData, dates, interval, disturbances, maxVal}));

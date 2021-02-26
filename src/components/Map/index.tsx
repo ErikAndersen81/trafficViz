@@ -1,32 +1,46 @@
 import { LeafletMouseEvent } from "leaflet";
-import React from "react";
+import React, { useState } from "react";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
-import IntersectionMarkers from "../IntersectionMarkers";
-
+import CustomMapControls from "../CustomMapControls";
+import EventMarkers from "../EventMarkers";
+import IntersectionMarkers from "../IntersectionMarkersV2";
 type MapProps = {
   handleIntersectionClick: (event: LeafletMouseEvent) => void;
 };
 
 const Map = (props: MapProps) => {
-  return (
-    <LeafletMap
-      className="Map"
-      center={[52.0704978, 4.3006999]}
-      zoom={13}
-      minZoom={12}
-      attributionControl={true}
-      zoomControl={true}
-      doubleClickZoom={true}
-      scrollWheelZoom={true}
-      dragging={true}
-      animate={true}
-      easeLinearity={0.35}>
-      <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+  const [showEvents, setShowEvents] = useState<boolean>(true);
+  const [showIntersections, setShowIntersections] = useState<boolean>(true);
 
-      <IntersectionMarkers
-        handleIntersectionClick={props.handleIntersectionClick}
+  return (
+    <>
+      <LeafletMap
+        className="Map"
+        center={[52.0704978, 4.3006999]}
+        zoom={13}
+        minZoom={12}
+        attributionControl={true}
+        zoomControl={true}
+        doubleClickZoom={true}
+        scrollWheelZoom={true}
+        dragging={true}
+        animate={true}
+        easeLinearity={0.35}>
+        <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+        {showIntersections ? (
+          <IntersectionMarkers
+            handleIntersectionClick={props.handleIntersectionClick}
+          />
+        ) : null}
+        {showEvents ? <EventMarkers /> : null}
+      </LeafletMap>
+      <CustomMapControls
+        showEvents={showEvents}
+        setShowEvents={setShowEvents}
+        showIntersections={showIntersections}
+        setShowIntersections={setShowIntersections}
       />
-    </LeafletMap>
+    </>
   );
 };
 
