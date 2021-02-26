@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { HighlightContext } from "../Context";
-import { Group, GroupType, IntersectionData, LaneData } from "../Hooks/useData";
+import { Group, GroupType } from "../Hooks/useData";
 import { FitToChart, readFromChart, Scale } from "../Scaling";
 
 type PathsProps = {
@@ -13,56 +13,28 @@ type PathsProps = {
 
 const Paths = (props: PathsProps) => {
   const { data, group, scale, xInterval, dates } = { ...props };
-  const paths = Array.from(
-    data
-  ).map(([intersection, intersectionData], idx) => (
-    <GroupPaths
-      xInterval={xInterval}
-      values={intersectionData}
-      key={"GroupPath" + group + intersection}
-      name={intersection}
-      color={colors[idx]}
-      dash={dashes[group]}
-      scale={scale}
-      dates={dates}
-    />
-  ));
-
+  const paths = Array.from(data).map(
+    ([intersection, intersectionData], idx) => (
+      <g
+        key={"group" + idx}
+        stroke={colors[idx]}
+        strokeDasharray={dashes[group]}>
+        <Path
+          xInterval={xInterval}
+          values={intersectionData}
+          key={"GroupPath" + group + intersection}
+          name={intersection}
+          scale={scale}
+          dates={dates}
+        />
+      </g>
+    )
+  );
   return <>{paths}</>;
 };
 
-type GroupPathsProps = {
-  values: IntersectionData;
-  name: string;
-  color: string;
-  scale: Scale;
-  dash: string;
-  xInterval: number;
-  dates: Array<Date>;
-};
-
-const GroupPaths = (props: GroupPathsProps) => {
-  const { values, color, name, scale, dash, xInterval, dates } = { ...props };
-  let paths = Array.from(values).map(([lane, laneData]) => (
-    <Path
-      values={laneData}
-      xInterval={xInterval}
-      name={name}
-      key={"Paths" + lane}
-      scale={scale}
-      dates={dates}
-    />
-  ));
-
-  return (
-    <g stroke={color} strokeDasharray={dash}>
-      {paths}
-    </g>
-  );
-};
-
 type PathProps = {
-  values: LaneData;
+  values: Array<number | null>;
   name: string;
   scale: Scale;
   xInterval: number;
