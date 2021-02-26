@@ -5,7 +5,7 @@ import useData, {
   getMarkersDataRequest,
   EventMarkersData,
 } from "../Hooks/useData";
-import CustomIcon from "../CustomIcon";
+import CustomIcon, { StandardMarker } from "../CustomIcon";
 import { getEndtime } from "../Context/DateTimeContext";
 
 const EventMarkers = () => {
@@ -79,14 +79,21 @@ const EventMarker = (props: EventMarkerProps) => {
 };
 
 const getIcon = (type: string) => {
+  let marker;
   switch (type) {
     case "event":
-      return CustomIcon("lightblue", "E");
+      marker = <StandardMarker color="lightblue" letter="E" />;
+      break;
     case "tweet":
-      return CustomIcon("red", "A");
+      marker = <StandardMarker color="red" letter="A" />;
+      break;
     case "disturbance":
-      return CustomIcon("orange", "T");
+      marker = <StandardMarker color="orange" letter="T" />;
+      break;
+    default:
+      marker = <StandardMarker color="grey" letter="!" />;
   }
+  return CustomIcon(5, marker);
 };
 
 export default EventMarkers;
