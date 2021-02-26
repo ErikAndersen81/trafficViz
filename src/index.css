@@ -218,3 +218,7 @@ input[type="date"]::-webkit-inner-spin-button {
   top: 1px;
   left: 1px;
 }
+
+.Transparency {
+  opacity: 1;
+}
