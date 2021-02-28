@@ -8,18 +8,25 @@ type GridProps = {
   interval: Interval;
 };
 
+const getXTicksWeek = (dates: Array<Date>): Array<string> => {
+  const mod = Math.floor(dates.length / 7);
+  return dates
+    .filter((_, i) => i % mod === 0)
+    .map((date) => date.toDateString().substring(0, 3));
+};
+
+const getXTicksDay = (dates: Array<Date>): Array<string> => {
+  console.log(dates);
+  const mod = Math.floor(dates.length / 8);
+  return dates
+    .filter((_, i) => i % mod === 0)
+    .map((date) => date.toTimeString().substring(0, 5));
+};
+
 const Grid = (props: GridProps) => {
   const { scale, dates, interval } = { ...props };
-  if (interval === "day" && dates[5 * 16] === undefined) return null;
-  if (interval === "week" && dates[7 * 96] === undefined) return null;
-  let xTicks =
-    interval === "day"
-      ? Array(6)
-          .fill(0)
-          .map((_, idx) => `${dates[idx * 16].toTimeString().substring(0, 5)}`)
-      : Array(7)
-          .fill(0)
-          .map((_, idx) => `${dates[idx * 96].toDateString().substring(0, 3)}`);
+  if (dates.length <= 0) return null;
+  let xTicks = interval === "day" ? getXTicksDay(dates) : getXTicksWeek(dates);
 
   const dateLabels = xTicks.map((d: string, idx: number, a) => (
     <g key={`DateGroup${idx}`}>

@@ -47,7 +47,7 @@ const Path = (props: PathProps) => {
     x: -100,
     y: -100,
     value: 0,
-    time: "",
+    datetime: "",
     intersection: "",
   });
   const Highlight = useContext(HighlightContext);
@@ -76,20 +76,16 @@ const Path = (props: PathProps) => {
         const { e, f } = matrix
           .inverse()
           .translate(event.clientX, event.clientY);
+        console.log(e);
         setPopupInfo(() => {
           return {
             x: e,
             y: f,
             value: readFromChart(Math.floor(f), 100, scale),
             intersection: name,
-            time:
-              dates.length < 100
-                ? dates[Math.floor((dates.length / 100) * e)]
-                    .toTimeString()
-                    .substring(0, 5)
-                : dates[Math.floor((dates.length / 100) * e)]
-                    .toDateString()
-                    .substring(0, 3),
+            datetime: dates[
+              Math.floor((dates.length / 100) * Math.abs(e))
+            ].toLocaleString(),
           };
         });
       }
@@ -119,11 +115,12 @@ type PopupInfo = {
   y: number;
   intersection: string;
   value: number;
-  time: string;
+  datetime: string;
 };
 
 const Popup = (props: PopupInfo) => {
-  const { x, y, value, time, intersection } = { ...props };
+  const { x, y, value, datetime, intersection } = { ...props };
+  const [date, time] = datetime.split(",");
   return (
     <g className={"GraphPopup"}>
       <rect
@@ -132,7 +129,7 @@ const Popup = (props: PopupInfo) => {
         rx="2%"
         ry="2%"
         width={25}
-        height={15}
+        height={18}
         strokeWidth=".2"
         fill="orange"
         fillOpacity=".6"></rect>
@@ -146,10 +143,13 @@ const Popup = (props: PopupInfo) => {
       <text x={x + 8} y={y + 3} fontWeight="bold" fontSize={3}>
         {intersection}
       </text>
-      <text x={x + 1} y={y + 6} fontSize={3}>
+      <text x={x + 1} y={y + 7} fontSize={3}>
+        {date}
+      </text>
+      <text x={x + 1} y={y + 11} fontSize={3}>
         {time}
       </text>
-      <text x={x + 1} y={y + 10} fontSize={3}>
+      <text x={x + 1} y={y + 15} fontSize={3}>
         Passings: {value}
       </text>
     </g>
