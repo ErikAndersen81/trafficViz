@@ -4,7 +4,7 @@ import * as chroma from "chroma.ts";
 
 const RadialChart24H = (props: { values: Array<number> }) => {
   let { values } = { ...props };
-  const colorScale = chroma.scale("Purples").classes(7);
+  const colorScale = chroma.scale("Purples").classes(24);
   const inner = values
     .slice(0, 12)
     .map((val) => colorScale(val).toString())
@@ -57,7 +57,7 @@ const RadialChart24H = (props: { values: Array<number> }) => {
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize={6}>
-        PM
+        AM
       </text>
       <text
         x={50}
@@ -65,7 +65,7 @@ const RadialChart24H = (props: { values: Array<number> }) => {
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize={6}>
-        AM
+        PM
       </text>
     </svg>
   );

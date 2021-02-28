@@ -4,7 +4,7 @@ import { DateTimeContext } from "../Context";
 import useData, {
   getCoordinatesDataRequest,
   CoordinatesData,
-  GraphData,
+  IntersectionData,
   getGraphDataRequest,
 } from "../Hooks/useData";
 import IntersectionMarker from "./IntersectionMarker";
@@ -28,6 +28,7 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
 
   useEffect(() => {
     const daysToAdd = interval === "day" ? 1 : 7;
+    const binSize = interval === "day" ? 4 : 96;
     let start = new Date(starttime.toString());
     if (interval === "week") {
       start.setHours(0);
@@ -35,11 +36,13 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
     }
     let end = new Date(start.toString());
     end.setDate(starttime.getDate() + daysToAdd);
+
     const markersPayload: RequestInit = getGraphDataRequest(
       start,
       end,
-      ["all"],
-      ["aggregated"]
+      ["K304"],
+      ["aggregated"],
+      binSize
     );
     setPayload(markersPayload);
     if (coordinates === null) {
@@ -50,8 +53,8 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
   }, [setPayload, cSetPayload, starttime, interval]);
 
   // Type guards to make sure we have GraphData and CoordinatesData
-  const isGraphData = (obj: any): obj is GraphData =>
-    (obj as GraphData).pathData !== undefined;
+  const isGraphData = (obj: any): obj is IntersectionData =>
+    (obj as IntersectionData).pathData !== undefined;
   const isCoordinatesData = (obj: any): obj is CoordinatesData =>
     (obj as CoordinatesData).intersections !== undefined;
   if (data === null || coordinates === null) return null;
@@ -59,9 +62,11 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
   if (!isCoordinatesData(coordinates) || cError !== "" || cLoading) {
     return null;
   }
-  const agg = data.pathData.get("aggregated");
-  if (agg === undefined) return null;
-  const ints = Array.from(agg.entries()).map(([intersection, values]) => (
+  const intersections = data.pathData.get("aggregated");
+  if (intersections === undefined) return null;
+  const ints = Array.from(
+    intersections.entries()
+  ).map(([intersection, values]) => (
     <IntersectionMarker
       key={intersection + "IntersectionMarker"}
       name={intersection}

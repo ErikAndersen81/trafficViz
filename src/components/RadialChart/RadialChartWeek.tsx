@@ -4,13 +4,13 @@ import Slice from "./Slice";
 
 const RadialChartWeek = (props: { values: Array<number> }) => {
   const { values } = { ...props };
-  const colorScale = chroma.scale("Purples").classes(5);
+  const colorScale = chroma.scale("Purples").classes(24);
   const inner = values
     .map((val) => colorScale(val).toString())
     .map((color, offset) => (
       <Slice
         key={"slice" + offset}
-        {...{ color, offset: offset + 1, radius: 49, nSlices: 7 }}
+        {...{ color, offset, radius: 49, nSlices: 7 }}
       />
     ));
 

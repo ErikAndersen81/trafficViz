@@ -18,30 +18,18 @@ const RadialChart = (props: RadialChartProps) => {
   )
     return <StandardMarker color="gray" letter="!" />;
   if (interval === "day") {
-    return <RadialChart24H values={prepValues(values, 24, offset)} />;
+    return <RadialChart24H values={prepValues(values, offset)} />;
   }
-  return <RadialChartWeek values={prepValues(values, 7, offset)} />;
+  return <RadialChartWeek values={prepValues(values, offset)} />;
 };
 
-const prepValues = (
-  values: Array<number | null>,
-  nBins: number,
-  offset: number
-) => {
-  let bins: Array<number> = binValues(values, nBins);
-  bins = minMaxNormalize(bins);
-  bins = bins.slice(offset).concat(bins.slice(0, offset));
-  return bins;
-};
-
-const binValues = (values: Array<number | null>, bins: number) => {
-  const binWidth = Math.floor(values.length / bins);
-  const median = getMedian(values);
-  let vals = values.map((x) => convertNull(x, median));
-  vals = Array(bins)
-    .fill(0)
-    .map((_, i) => vals.slice(i, i + binWidth).reduce((acc, val) => acc + val));
-  return vals.slice(0, bins);
+const prepValues = (values: Array<number | null>, offset: number) => {
+  let vals = values.map((x) => convertNull(x));
+  vals = minMaxNormalize(vals);
+  console.log(vals);
+  vals = vals.slice(offset).concat(vals.slice(0, offset));
+  vals.reverse();
+  return vals;
 };
 
 const convertNull = (val: number | null, median?: number): number => {

@@ -27,11 +27,15 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
       (Highlight as any).setHighlighted("");
     }
   };
-  const offset =
-    interval === "day" ? starttime.getHours() : 1 + starttime.getDay();
   const icon = CustomIcon(
     90,
-    <RadialChart values={data} interval={interval} offset={offset} />
+    <RadialChart
+      values={data}
+      interval={interval}
+      offset={
+        interval === "day" ? 24 - starttime.getHours() : starttime.getDay()
+      }
+    />
   );
   return (
     <Marker
