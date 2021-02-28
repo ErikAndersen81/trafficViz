@@ -2,7 +2,10 @@ import React, { useContext, useEffect } from "react";
 import Paths from "./Paths";
 import Grid from "./Grid";
 import { DateTimeContext } from "../Context";
-import useData, { getGraphDataRequest, GraphData } from "../Hooks/useData";
+import useData, {
+  getGraphDataRequest,
+  IntersectionData,
+} from "../Hooks/useData";
 import { getScale, Scale } from "../Scaling";
 import { getEndtime } from "../Context/DateTimeContext";
 
@@ -16,20 +19,24 @@ const Graph = (props: GraphProps) => {
   const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("data");
   const endtime = getEndtime(starttime, interval);
+  const binSize = interval === "day" ? 1 : 4;
   useEffect(() => {
     const request = getGraphDataRequest(
       starttime,
       endtime,
       intersections,
-      graphOptions
+      graphOptions,
+      binSize
     );
     setPayload(request);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, intersections, graphOptions, starttime, interval]);
+  }, [setPayload, intersections, graphOptions, starttime]);
 
-  const isGraphData = (variableToCheck: any): variableToCheck is GraphData =>
-    (variableToCheck as GraphData).pathData !== undefined;
+  const isGraphData = (
+    variableToCheck: any
+  ): variableToCheck is IntersectionData =>
+    (variableToCheck as IntersectionData).pathData !== undefined;
   if (data === null || !isGraphData(data) || error !== "" || isLoading)
     return <BlankGraph />;
   const values = Array.from(Array.from(data.pathData)[0][1].values())
@@ -41,7 +48,7 @@ const Graph = (props: GraphProps) => {
       ? values.flat().map((x) => (x === null ? 0 : x))
       : [0, 50, 100, 200, 500]
   );
-  const xInterval = 100 / data.interval;
+  const xInterval = 100 / data.dates.length;
   const paths = Array.from(data.pathData).map(([groupType, group]) => (
     <Paths
       scale={scale}
