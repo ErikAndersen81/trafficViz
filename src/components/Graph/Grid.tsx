@@ -16,7 +16,6 @@ const getXTicksWeek = (dates: Array<Date>): Array<string> => {
 };
 
 const getXTicksDay = (dates: Array<Date>): Array<string> => {
-  console.log(dates);
   const mod = Math.floor(dates.length / 8);
   return dates
     .filter((_, i) => i % mod === 0)
