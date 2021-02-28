@@ -4,11 +4,9 @@ const formatDate = (date:Date):string => {
 	return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
 }
 
-export type GraphData = {
+export type IntersectionData = {
 	pathData:PathData;
 	dates:Array<Date>;
-	interval:number;
-	disturbances:any;
 	maxVal:number;
 }
 
@@ -53,11 +51,12 @@ const headers = {
 	'Content-Type': 'application/json'
 };
 
-export const getGraphDataRequest = (starttime:Date, endtime:Date, intersections:Array<string>, graphOptions:Array<string>):RequestInit => {
+export const getGraphDataRequest = (starttime:Date, endtime:Date, intersections:Array<string>, graphOptions:Array<string>, binSize?:number):RequestInit => {
 	const body = JSON.stringify(
 		{starttime:formatDate(starttime),
 		endtime:formatDate(endtime),
 		intersections:intersections,
+		bin_size:binSize,
 		graph_options:graphOptions
 	});
 			
@@ -93,7 +92,7 @@ export const getCoordinatesDataRequest = ():RequestInit => {
 }
 
 const useData = (resource:ResourceType) => {
-    const [data, setData] = useState<GraphData|MarkersData|CoordinatesData|EventMarkersData|null>(null);
+    const [data, setData] = useState<IntersectionData|MarkersData|CoordinatesData|EventMarkersData|null>(null);
     const [error, setError] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [payload, setPayload] = useState<RequestInit|undefined>();
@@ -128,8 +127,6 @@ const useData = (resource:ResourceType) => {
 						let dates:Array<Date>= new Array<Date>(
 							...jsonData.dates.map((date:string) => new Date(date))
 							);
-						let interval:number = jsonData.interval;
-						let disturbances:any = jsonData.disturbances;
 						let maxVal:number = jsonData.maxVal;
 						if (jsonData['mean']) pathData.set('mean', new Map<string, Array<number|null>>());
 						if (jsonData['median']) pathData.set('median', new Map<string, Array<number|null>>());
@@ -140,7 +137,7 @@ const useData = (resource:ResourceType) => {
 								pathData.get(group as GroupType)?.set(intersection, Array<number|null>(jsonData['pathData'][group][intersection]).flat())
 							})
 						}});
-					setData(() => ({pathData, dates, interval, disturbances, maxVal}));
+					setData(() => ({pathData, dates, maxVal}));
 					}
 				}}
 			catch (err) {
