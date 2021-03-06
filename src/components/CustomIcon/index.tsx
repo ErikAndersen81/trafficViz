@@ -14,11 +14,11 @@ const CustomIcon = (size: number, svg: JSX.Element) => {
 
 type SimpleIconProps = {
   color: string;
-  letter: string;
+  text: string;
 };
 
 export const SimpleIcon = (props: SimpleIconProps) => {
-  const { color, letter } = { ...props };
+  const { color, text: letter } = { ...props };
   const fontSize = letter.length === 1 ? 50 : 30;
   return (
     <svg

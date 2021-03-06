@@ -82,16 +82,16 @@ const getIcon = (type: string) => {
   let marker;
   switch (type) {
     case "event":
-      marker = <SimpleIcon color="lightblue" letter="E" />;
+      marker = <SimpleIcon color="lightblue" text="E" />;
       break;
     case "tweet":
-      marker = <SimpleIcon color="red" letter="A" />;
+      marker = <SimpleIcon color="red" text="A" />;
       break;
     case "disturbance":
-      marker = <SimpleIcon color="orange" letter="T" />;
+      marker = <SimpleIcon color="orange" text="T" />;
       break;
     default:
-      marker = <SimpleIcon color="grey" letter="!" />;
+      marker = <SimpleIcon color="grey" text="!" />;
   }
   return CustomIcon(20, marker);
 };

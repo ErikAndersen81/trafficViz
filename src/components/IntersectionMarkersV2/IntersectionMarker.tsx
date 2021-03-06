@@ -33,7 +33,7 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
     data.reduce(
       (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
     ) === 0
-      ? CustomIcon(30, <SimpleIcon color="gray" letter={name} />)
+      ? CustomIcon(30, <SimpleIcon color="gray" text={name} />)
       : CustomIcon(
           90,
           <RadialChart
