@@ -31,7 +31,7 @@ const Graph = (props: GraphProps) => {
     setPayload(request);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, intersections, graphOptions, starttime]);
+  }, [setPayload, intersections, graphOptions, starttime, interval]);
 
   const isGraphData = (
     variableToCheck: any
