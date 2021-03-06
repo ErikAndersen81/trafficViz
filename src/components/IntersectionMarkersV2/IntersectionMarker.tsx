@@ -28,25 +28,25 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
     }
   };
 
-  const icon =
+  if (
     data.length === 0 ||
     data.reduce(
       (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
     ) === 0
-      ? CustomIcon(30, <SimpleIcon color="gray" text={name} />)
-      : CustomIcon(
-          90,
-          <RadialChart
-            title={name}
-            values={data}
-            interval={interval}
-            offset={
-              interval === "day"
-                ? 24 - starttime.getHours()
-                : starttime.getDay()
-            }
-          />
-        );
+  )
+    return <NoDataMarker coordinates={coordinates} title={name} />;
+
+  const icon = CustomIcon(
+    90,
+    <RadialChart
+      title={name}
+      values={data}
+      interval={interval}
+      offset={
+        interval === "day" ? 24 - starttime.getHours() : starttime.getDay()
+      }
+    />
+  );
   return (
     <Marker
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
@@ -56,7 +56,25 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
       fillOpacity={0.5}
       onMouseOver={handleIntersectionHover}
       onMouseOut={handleIntersectionHover}
-      onclick={handleIntersectionClick}></Marker>
+      onclick={handleIntersectionClick}
+    />
+  );
+};
+
+type NoDataMarkerProps = {
+  coordinates: CoordinatesType;
+  title: string;
+};
+
+const NoDataMarker = (props: NoDataMarkerProps) => {
+  const { coordinates, title } = { ...props };
+  const icon = CustomIcon(30, <SimpleIcon color="gray" text={title} />);
+  return (
+    <Marker
+      interactive={false}
+      position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
+      icon={icon}
+    />
   );
 };
 
