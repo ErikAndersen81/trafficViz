@@ -43,11 +43,7 @@ type PathProps = {
 
 const Path = (props: PathProps) => {
   const { values, name, scale, xInterval, dates } = { ...props };
-  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>({
-    value: 0,
-    datetime: "",
-    intersection: "",
-  });
+  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const Highlight = useContext(HighlightContext);
   const calc_x = (i: number) => i * xInterval;
   const calc_y = (i: number) => FitToChart(i, 100, scale);
