@@ -40,7 +40,7 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
     const markersPayload: RequestInit = getGraphDataRequest(
       start,
       end,
-      ["K304"],
+      ["all"],
       ["aggregated"],
       binSize
     );
