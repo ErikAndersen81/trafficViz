@@ -12,17 +12,18 @@ const CustomIcon = (size: number, svg: JSX.Element) => {
   });
 };
 
-type StandardMarkerProps = {
+type SimpleIconProps = {
   color: string;
   letter: string;
 };
 
-export const StandardMarker = (props: StandardMarkerProps) => {
+export const SimpleIcon = (props: SimpleIconProps) => {
   const { color, letter } = { ...props };
+  const fontSize = letter.length === 1 ? 50 : 30;
   return (
     <svg
-      width="20"
-      height="20"
+      width="100%"
+      height="100%"
       viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg">
       <circle fill="black" cx="50" cy="50" r="50" />
@@ -31,7 +32,7 @@ export const StandardMarker = (props: StandardMarkerProps) => {
         color="black"
         x="50"
         y="50"
-        fontSize="50"
+        fontSize={fontSize}
         fontFamily="sans-serif"
         dominantBaseline="middle"
         textAnchor="middle"

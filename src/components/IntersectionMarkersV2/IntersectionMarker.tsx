@@ -2,7 +2,7 @@ import { LeafletMouseEvent } from "leaflet";
 import React, { useContext } from "react";
 import { Marker } from "react-leaflet";
 import { DateTimeContext, HighlightContext } from "../Context";
-import CustomIcon from "../CustomIcon";
+import CustomIcon, { SimpleIcon } from "../CustomIcon";
 import { CoordinatesType } from "../Hooks/useData";
 import RadialChart from "../RadialChart";
 
@@ -27,16 +27,26 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
       (Highlight as any).setHighlighted("");
     }
   };
-  const icon = CustomIcon(
-    90,
-    <RadialChart
-      values={data}
-      interval={interval}
-      offset={
-        interval === "day" ? 24 - starttime.getHours() : starttime.getDay()
-      }
-    />
-  );
+
+  const icon =
+    data.length === 0 ||
+    data.reduce(
+      (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
+    ) === 0
+      ? CustomIcon(30, <SimpleIcon color="gray" letter={name} />)
+      : CustomIcon(
+          90,
+          <RadialChart
+            title={name}
+            values={data}
+            interval={interval}
+            offset={
+              interval === "day"
+                ? 24 - starttime.getHours()
+                : starttime.getDay()
+            }
+          />
+        );
   return (
     <Marker
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}

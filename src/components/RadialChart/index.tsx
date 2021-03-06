@@ -1,32 +1,27 @@
 import React from "react";
 import { Interval } from "../Context/DateTimeContext";
-import { StandardMarker } from "../CustomIcon";
+import { SimpleIcon } from "../CustomIcon";
 import RadialChart24H from "./RadialChart24H";
 import RadialChartWeek from "./RadialChartWeek";
 
 export type RadialChartProps = {
+  title: string;
   values: Array<number | null>;
   interval: Interval;
   offset: number;
 };
 
 const RadialChart = (props: RadialChartProps) => {
-  const { values, interval, offset } = { ...props };
-  if (
-    values.length === 0 ||
-    values.reduce((acc, val) => convertNull(acc) + convertNull(val)) === 0
-  )
-    return <StandardMarker color="gray" letter="!" />;
+  const { values, interval, offset, title } = { ...props };
   if (interval === "day") {
-    return <RadialChart24H values={prepValues(values, offset)} />;
+    return <RadialChart24H title={title} values={prepValues(values, offset)} />;
   }
-  return <RadialChartWeek values={prepValues(values, offset)} />;
+  return <RadialChartWeek title={title} values={prepValues(values, offset)} />;
 };
 
 const prepValues = (values: Array<number | null>, offset: number) => {
   let vals = values.map((x) => convertNull(x));
   vals = minMaxNormalize(vals);
-  console.log(vals);
   vals = vals.slice(offset).concat(vals.slice(0, offset));
   vals.reverse();
   return vals;
@@ -37,12 +32,6 @@ const convertNull = (val: number | null, median?: number): number => {
     return val === null ? median : val;
   }
   return val === null ? 0 : val;
-};
-
-const getMedian = (values: Array<number | null>): number => {
-  let vals = values.filter((x) => x !== null) as Array<number>;
-  vals.sort();
-  return vals[Math.floor(vals.length / 2)];
 };
 
 const minMaxNormalize = (values: Array<number>) => {

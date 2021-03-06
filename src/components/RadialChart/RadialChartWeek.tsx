@@ -2,8 +2,8 @@ import React from "react";
 import * as chroma from "chroma.ts";
 import Slice from "./Slice";
 
-const RadialChartWeek = (props: { values: Array<number> }) => {
-  const { values } = { ...props };
+const RadialChartWeek = (props: { values: Array<number>; title: string }) => {
+  const { values, title } = { ...props };
   const colorScale = chroma.scale("Purples").classes(24);
   const inner = values
     .map((val) => colorScale(val).toString())
@@ -17,7 +17,7 @@ const RadialChartWeek = (props: { values: Array<number> }) => {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const outerXs = [65, 85, 77, 50, 23, 15, 35];
   const outerYs = [15, 40, 73, 86, 73, 40, 15];
-  const clock = days.map((x, idx) => (
+  const weekdays = days.map((x, idx) => (
     <g key={"clock" + idx}>
       <text
         textAnchor="middle"
@@ -40,7 +40,16 @@ const RadialChartWeek = (props: { values: Array<number> }) => {
       <circle fill="black" cx="50" cy="50" r="50" />
       {inner}
       <circle fill="white" cx="50" cy="50" r="23" />
-      {clock}
+      {weekdays}
+      <text
+        textAnchor="middle"
+        dominantBaseline="middle"
+        x="50"
+        y="50"
+        fontWeight="bold"
+        fontSize="12">
+        {title}
+      </text>
     </svg>
   );
 };

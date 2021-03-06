@@ -2,8 +2,8 @@ import React from "react";
 import Slice from "./Slice";
 import * as chroma from "chroma.ts";
 
-const RadialChart24H = (props: { values: Array<number> }) => {
-  let { values } = { ...props };
+const RadialChart24H = (props: { values: Array<number>; title: string }) => {
+  let { values, title } = { ...props };
   const colorScale = chroma.scale("Purples").classes(24);
   const inner = values
     .slice(0, 12)
@@ -24,18 +24,18 @@ const RadialChart24H = (props: { values: Array<number> }) => {
       />
     ));
 
-  const innerTimes = [12, 3, 6, 9];
-  const innerXs = [50, 60, 50, 40];
-  const innerYs = [40, 50, 60, 50];
-  const clock = innerTimes.map((x, idx) => (
+  const clockTicks = ["12 pm", 3, 6, 9];
+  const clockXs = [50, 90, 50, 10];
+  const clockYs = [10, 50, 90, 50];
+  const clock = clockTicks.map((x, idx) => (
     <text
       key={"clockText" + idx}
       textAnchor="middle"
       dominantBaseline="middle"
-      fontSize={8}
-      x={innerXs[idx]}
-      y={innerYs[idx]}>
-      {innerTimes[idx]}
+      fontSize={10}
+      x={clockXs[idx]}
+      y={clockYs[idx]}>
+      {clockTicks[idx]}
     </text>
   ));
   return (
@@ -46,6 +46,7 @@ const RadialChart24H = (props: { values: Array<number> }) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100">
       <rect x="0" y="0" height="100" width="100" fillOpacity="0" />
+
       <circle fill="black" cx="50" cy="50" r="50" />
       {outer}
       {inner}
@@ -56,16 +57,18 @@ const RadialChart24H = (props: { values: Array<number> }) => {
         y={25}
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize={6}>
-        AM
+        fontSize={10}>
+        am
       </text>
+
       <text
-        x={50}
-        y={9}
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize={6}>
-        PM
+        x="50"
+        y="50"
+        fontWeight="bold"
+        fontSize="12">
+        {title}
       </text>
     </svg>
   );
