@@ -43,9 +43,7 @@ type PathProps = {
 
 const Path = (props: PathProps) => {
   const { values, name, scale, xInterval, dates } = { ...props };
-  const [popupInfo, setPopupInfo] = useState<PopupInfo>({
-    x: -100,
-    y: -100,
+  const [popupInfo, setPopupInfo] = useState<PopupInfo | null>({
     value: 0,
     datetime: "",
     intersection: "",
@@ -68,9 +66,10 @@ const Path = (props: PathProps) => {
   const handleIntersectionHover = (
     event: React.MouseEvent<SVGPathElement, MouseEvent>
   ) => {
+    event.persist();
+    event.preventDefault();
     if (event.type === "mouseover") {
       (Highlight as any).setHighlighted(name);
-      event.persist();
       const matrix = event.currentTarget.getScreenCTM();
       if (matrix !== null) {
         const { e, f } = matrix
@@ -78,8 +77,6 @@ const Path = (props: PathProps) => {
           .translate(event.clientX, event.clientY);
         setPopupInfo(() => {
           return {
-            x: e,
-            y: f,
             value: readFromChart(Math.floor(f), 100, scale),
             intersection: name,
             datetime: dates[
@@ -90,6 +87,7 @@ const Path = (props: PathProps) => {
       }
     } else {
       (Highlight as any).setHighlighted("");
+      setPopupInfo(null);
     }
   };
   const classes =
@@ -104,22 +102,21 @@ const Path = (props: PathProps) => {
         className={classes}
         key="path"
       />
-      <Popup {...popupInfo} />
+      {popupInfo && <Popup {...popupInfo} />}
     </g>
   );
 };
 
 type PopupInfo = {
-  x: number;
-  y: number;
   intersection: string;
   value: number;
   datetime: string;
 };
 
 const Popup = (props: PopupInfo) => {
-  const { x, y, value, datetime, intersection } = { ...props };
+  const { value, datetime, intersection } = { ...props };
   const [date, time] = datetime.split(",");
+  const [x, y] = [78, -7];
   return (
     <g className={"GraphPopup"}>
       <rect
@@ -132,13 +129,6 @@ const Popup = (props: PopupInfo) => {
         strokeWidth=".2"
         fill="orange"
         fillOpacity=".6"></rect>
-      <circle
-        cx={x}
-        cy={y}
-        stroke="black"
-        fillOpacity="0"
-        r=".2"
-        fill="black"></circle>
       <text x={x + 8} y={y + 3} fontWeight="bold" fontSize={3}>
         {intersection}
       </text>
