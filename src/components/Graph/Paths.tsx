@@ -76,7 +76,6 @@ const Path = (props: PathProps) => {
         const { e, f } = matrix
           .inverse()
           .translate(event.clientX, event.clientY);
-        console.log(e);
         setPopupInfo(() => {
           return {
             x: e,
