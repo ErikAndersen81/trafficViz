@@ -18,8 +18,8 @@ type SimpleIconProps = {
 };
 
 export const SimpleIcon = (props: SimpleIconProps) => {
-  const { color, text: letter } = { ...props };
-  const fontSize = letter.length === 1 ? 50 : 30;
+  const { color, text } = { ...props };
+  const fontSize = text.length === 1 ? 50 : 30;
   return (
     <svg
       width="100%"
@@ -37,7 +37,7 @@ export const SimpleIcon = (props: SimpleIconProps) => {
         dominantBaseline="middle"
         textAnchor="middle"
         fontWeight="bold">
-        {letter}
+        {text}
       </text>
     </svg>
   );
