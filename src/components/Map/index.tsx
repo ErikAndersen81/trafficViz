@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import CustomMapControls from "../CustomMapControls";
 import EventMarkers from "../EventMarkers";
-import IntersectionMarkers from "../IntersectionMarkersV2";
+import IntersectionMarkers, {
+  IntersectionMarkerType,
+} from "../IntersectionMarkersV2";
+
 type MapProps = {
   handleIntersectionClick: (
     event: LeafletMouseEvent,
@@ -13,7 +16,10 @@ type MapProps = {
 
 const Map = (props: MapProps) => {
   const [showEvents, setShowEvents] = useState<boolean>(true);
-  const [showIntersections, setShowIntersections] = useState<boolean>(true);
+  const [
+    showIntersections,
+    setShowIntersections,
+  ] = useState<IntersectionMarkerType>("radial");
 
   return (
     <>
@@ -30,11 +36,11 @@ const Map = (props: MapProps) => {
         animate={true}
         easeLinearity={0.35}>
         <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
-        {showIntersections ? (
-          <IntersectionMarkers
-            handleIntersectionClick={props.handleIntersectionClick}
-          />
-        ) : null}
+
+        <IntersectionMarkers
+          handleIntersectionClick={props.handleIntersectionClick}
+          markerType={showIntersections}
+        />
         {showEvents ? <EventMarkers /> : null}
       </LeafletMap>
       <CustomMapControls

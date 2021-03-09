@@ -2,9 +2,10 @@ import { LeafletMouseEvent } from "leaflet";
 import React, { useContext } from "react";
 import { Marker } from "react-leaflet";
 import { DateTimeContext, HighlightContext } from "../Context";
-import CustomIcon, { SimpleIcon } from "../CustomIcon";
+import CustomIcon from "../CustomIcon";
 import { CoordinatesType } from "../Hooks/useData";
 import RadialChart from "../RadialChart";
+import SimpleIntersectionMarker from "./SimpleIntersectionMarker";
 
 type IntersectionMarkerProps = {
   coordinates?: CoordinatesType;
@@ -13,7 +14,7 @@ type IntersectionMarkerProps = {
   handleIntersectionClick: (event: LeafletMouseEvent) => void;
 };
 
-const IntersectionMarker = (props: IntersectionMarkerProps) => {
+const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
   const { name, coordinates, data, handleIntersectionClick } = {
     ...props,
   };
@@ -34,7 +35,7 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
       (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
     ) === 0
   )
-    return <NoDataMarker coordinates={coordinates} title={name} />;
+    return <SimpleIntersectionMarker coordinates={coordinates} title={name} />;
 
   const icon = CustomIcon(
     90,
@@ -61,21 +62,4 @@ const IntersectionMarker = (props: IntersectionMarkerProps) => {
   );
 };
 
-type NoDataMarkerProps = {
-  coordinates: CoordinatesType;
-  title: string;
-};
-
-const NoDataMarker = (props: NoDataMarkerProps) => {
-  const { coordinates, title } = { ...props };
-  const icon = CustomIcon(30, <SimpleIcon color="gray" text={title} />);
-  return (
-    <Marker
-      interactive={false}
-      position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
-      icon={icon}
-    />
-  );
-};
-
-export default IntersectionMarker;
+export default RadialIntersectionMarker;
