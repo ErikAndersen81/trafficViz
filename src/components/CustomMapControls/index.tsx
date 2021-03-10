@@ -3,21 +3,14 @@ import { EventMarkerType } from "../Hooks/useData";
 import { IntersectionMarkerType } from "../IntersectionMarkersV2";
 
 type CustomMapControlsProps = {
-  showEvents: EventMarkerType;
   setShowEvents: React.Dispatch<React.SetStateAction<EventMarkerType>>;
-  showIntersections: IntersectionMarkerType;
   setShowIntersections: React.Dispatch<
     React.SetStateAction<IntersectionMarkerType>
   >;
 };
 
 const CustomMapControls = (props: CustomMapControlsProps) => {
-  const {
-    setShowEvents,
-    setShowIntersections,
-    showEvents,
-    showIntersections,
-  } = { ...props };
+  const { setShowEvents, setShowIntersections } = { ...props };
 
   const handleIntersectionSelect = (
     event: React.SyntheticEvent<HTMLSelectElement, Event>

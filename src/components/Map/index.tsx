@@ -16,11 +16,11 @@ type MapProps = {
 };
 
 const Map = (props: MapProps) => {
-  const [showEvents, setShowEvents] = useState<EventMarkerType>("off");
+  const [showEvents, setShowEvents] = useState<EventMarkerType>("all");
   const [
     showIntersections,
     setShowIntersections,
-  ] = useState<IntersectionMarkerType>("radial");
+  ] = useState<IntersectionMarkerType>("simple");
 
   const visibleMarkerTypes = {
     all: ["event", "disturbance", "tweet"],
@@ -54,9 +54,7 @@ const Map = (props: MapProps) => {
         <EventMarkers visibleMarkerTypes={visibleMarkerTypes} />
       </LeafletMap>
       <CustomMapControls
-        showEvents={showEvents}
         setShowEvents={setShowEvents}
-        showIntersections={showIntersections}
         setShowIntersections={setShowIntersections}
       />
     </>
