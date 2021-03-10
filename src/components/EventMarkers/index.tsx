@@ -4,11 +4,17 @@ import { DateTimeContext } from "../Context";
 import useData, {
   getMarkersDataRequest,
   EventMarkersData,
+  EventMarkerType,
 } from "../Hooks/useData";
 import CustomIcon, { SimpleIcon } from "../CustomIcon";
 import { getEndtime } from "../Context/DateTimeContext";
 
-const EventMarkers = () => {
+type EventMarkersProps = {
+  visibleMarkerTypes: Array<EventMarkerType>;
+};
+
+const EventMarkers = (props: EventMarkersProps) => {
+  const { visibleMarkerTypes } = { ...props };
   const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("events");
   const endtime = getEndtime(starttime, interval);
@@ -32,6 +38,7 @@ const EventMarkers = () => {
   const events = Array.from(data.events.keys()).map((e) => {
     const event = data.events.get(e);
     if (event === undefined) return null;
+    if (!visibleMarkerTypes.includes(event.type)) return null;
     return <EventMarker key={e + "EventMarker"} {...event} />;
   });
   return <div className="markers">{events}</div>;
@@ -42,7 +49,7 @@ type EventMarkerProps = {
   longitude: number;
   starttime: string;
   endtime: string;
-  type: string;
+  type: EventMarkerType;
   description: string;
 };
 
@@ -78,7 +85,7 @@ const EventMarker = (props: EventMarkerProps) => {
   );
 };
 
-const getIcon = (type: string) => {
+const getIcon = (type: EventMarkerType) => {
   let marker;
   switch (type) {
     case "event":

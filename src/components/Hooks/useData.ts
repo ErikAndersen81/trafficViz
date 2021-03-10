@@ -43,8 +43,9 @@ export type EventType = {
 	description:string;
 	starttime:string;
 	endtime:string;
-	type:string;
+	type:EventMarkerType;
 }
+export type EventMarkerType = 'event' | 'tweet' | 'disturbance'|'off'|'all';
 
 const headers = {
 	'Accept': 'application/json',

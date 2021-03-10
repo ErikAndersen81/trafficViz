@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import CustomMapControls from "../CustomMapControls";
 import EventMarkers from "../EventMarkers";
+import { EventMarkerType } from "../Hooks/useData";
 import IntersectionMarkers, {
   IntersectionMarkerType,
 } from "../IntersectionMarkersV2";
@@ -15,11 +16,19 @@ type MapProps = {
 };
 
 const Map = (props: MapProps) => {
-  const [showEvents, setShowEvents] = useState<boolean>(true);
+  const [showEvents, setShowEvents] = useState<EventMarkerType>("off");
   const [
     showIntersections,
     setShowIntersections,
   ] = useState<IntersectionMarkerType>("radial");
+
+  const visibleMarkerTypes = {
+    all: ["event", "disturbance", "tweet"],
+    off: [],
+    event: ["event"],
+    tweet: ["tweet"],
+    disturbance: ["disturbance"],
+  }[showEvents] as Array<EventMarkerType>;
 
   return (
     <>
@@ -41,7 +50,8 @@ const Map = (props: MapProps) => {
           handleIntersectionClick={props.handleIntersectionClick}
           markerType={showIntersections}
         />
-        {showEvents ? <EventMarkers /> : null}
+
+        <EventMarkers visibleMarkerTypes={visibleMarkerTypes} />
       </LeafletMap>
       <CustomMapControls
         showEvents={showEvents}
