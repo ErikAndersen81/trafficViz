@@ -1,29 +1,35 @@
 import React, { useEffect } from "react";
 import { useData } from "../Hooks";
-import { CoordinatesData, getCoordinatesDataRequest } from "../Hooks/useData";
+import { getGraphDataRequest, IntersectionData } from "../Hooks/useData";
 import SimpleIntersectionMarker from "./SimpleIntersectionMarker";
 
 const SimpleIntersectionMarkers = () => {
-  const { data, setPayload } = useData("coordinates");
-  const isCoordinatesData = (obj: any): obj is CoordinatesData =>
-    (obj as CoordinatesData).intersections !== undefined;
+  const { data, error, isLoading, setPayload } = useData("data");
 
   useEffect(() => {
-    if (data === null) {
-      const coordinatesPayload: RequestInit = getCoordinatesDataRequest();
-      setPayload(coordinatesPayload);
-    }
-  }, [data]);
+    const markersPayload: RequestInit = getGraphDataRequest(
+      new Date(),
+      new Date(),
+      ["all"],
+      ["aggregated"]
+    );
+    setPayload(markersPayload);
+  }, []);
+  // Type guards to make sure we have GraphData
+  const isGraphData = (obj: any): obj is IntersectionData =>
+    (obj as IntersectionData).pathData !== undefined;
+  if (data === null) return null;
+  if (!isGraphData(data) || error !== "" || isLoading) return null;
   if (data === null) {
     return null;
   }
-  if (!isCoordinatesData(data)) return null;
 
   return (
     <div className="markers">
-      {Array.from(data.intersections.entries()).map(
+      {Array.from(data.coordinates.entries()).map(
         ([intersection, coordinates]) => (
           <SimpleIntersectionMarker
+            key={`intersectionmarker${intersection}`}
             title={intersection}
             coordinates={coordinates}
           />
