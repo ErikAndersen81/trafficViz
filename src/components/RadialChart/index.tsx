@@ -1,6 +1,5 @@
 import React from "react";
 import { Interval } from "../Context/DateTimeContext";
-import { SimpleIcon } from "../CustomIcon";
 import RadialChart24H from "./RadialChart24H";
 import RadialChartWeek from "./RadialChartWeek";
 
