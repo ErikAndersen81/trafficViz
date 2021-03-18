@@ -1,6 +1,6 @@
 import React from "react";
 import { EventMarkerType } from "../Hooks/useData";
-import { IntersectionMarkerType } from "../IntersectionMarkersV2";
+import { IntersectionMarkerType } from "../IntersectionMarkers";
 
 type CustomMapControlsProps = {
   setShowEvents: React.Dispatch<React.SetStateAction<EventMarkerType>>;

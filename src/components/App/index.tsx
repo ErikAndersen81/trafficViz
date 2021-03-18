@@ -30,7 +30,6 @@ function App() {
     event: LeafletMouseEvent,
     intersection: string
   ) => {
-    console.log(intersection);
     if (intersections.find((x) => intersection === x)) {
       setIntersections(() => intersections.filter((x) => x !== intersection));
     } else {

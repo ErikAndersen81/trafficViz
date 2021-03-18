@@ -35,12 +35,7 @@ export type PathData = Map<GroupType, Group>;
 
 export type Group = Map<string, Array<number | null>>;
 
-export type ResourceType =
-  | "data"
-  | "coordinates"
-  | "markers"
-  | "events"
-  | "distances";
+export type ResourceType = "data" | "events" | "distances";
 
 export type EventMarkersData = {
   events: Map<string, EventType>;
@@ -100,14 +95,6 @@ export const getMarkersDataRequest = (
   return payload;
 };
 
-export const getCoordinatesDataRequest = (): RequestInit => {
-  const payload: RequestInit = {
-    method: "GET",
-    headers: headers,
-  };
-  return payload;
-};
-
 const useData = (resource: ResourceType) => {
   const [data, setData] = useState<
     IntersectionData | MarkersData | CoordinatesData | EventMarkersData | null
@@ -125,30 +112,7 @@ const useData = (resource: ResourceType) => {
         if (jsonData.error) {
           setError(jsonData.error);
         } else {
-          if (resource === "coordinates") {
-            let intersections = new Map<string, CoordinatesType>(
-              Object.keys(jsonData.intersections).map((k: string) => [
-                k,
-                jsonData.intersections[k] as CoordinatesType,
-              ])
-            );
-            setData(() => ({ intersections: intersections }));
-          } else if (resource === "markers") {
-            let totalPassings = new Map<string, number>();
-            let pctAbove = new Map<string, number>();
-            let pctBelow = new Map<string, number>();
-            Object.keys(jsonData.total_passings).forEach((k) => {
-              totalPassings.set(k, jsonData.total_passings[k]);
-              pctAbove.set(k, jsonData.pct_above[k]);
-              pctBelow.set(k, jsonData.pct_below[k]);
-            });
-            setData(() => ({
-              totalPassings,
-              pctAbove,
-              pctBelow,
-              measurements: jsonData.measurements,
-            }));
-          } else if (resource === "events") {
+          if (resource === "events") {
             let events = new Map<string, EventType>(
               Object.keys(jsonData.events).map((k: string) => [
                 k,

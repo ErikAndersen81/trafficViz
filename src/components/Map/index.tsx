@@ -6,7 +6,7 @@ import EventMarkers from "../EventMarkers";
 import { EventMarkerType } from "../Hooks/useData";
 import IntersectionMarkers, {
   IntersectionMarkerType,
-} from "../IntersectionMarkersV2";
+} from "../IntersectionMarkers";
 
 type MapProps = {
   handleIntersectionClick: (
