@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { DateTimeContext } from "../Context";
 import useData, {
-  getMarkersDataRequest,
-  EventMarkersData,
+  createTimeframeRequest,
+  EventData,
   EventMarkerType,
 } from "../Hooks/useData";
 import CustomIcon, { SimpleIcon } from "../CustomIcon";
@@ -19,7 +19,7 @@ const EventMarkers = (props: EventMarkersProps) => {
   const { data, error, isLoading, setPayload } = useData("events");
   const endtime = getEndtime(starttime, interval);
   useEffect(() => {
-    const markersPayload: RequestInit = getMarkersDataRequest(
+    const markersPayload: RequestInit = createTimeframeRequest(
       starttime,
       endtime
     );
@@ -29,10 +29,11 @@ const EventMarkers = (props: EventMarkersProps) => {
   }, [setPayload, starttime, interval]);
 
   // Type guards to make sure we have GraphData and CoordinatesData
-  const isMarkersData = (obj: any): obj is EventMarkersData =>
-    (obj as EventMarkersData).events !== undefined;
+  const isMarkersData = (obj: any): obj is EventData =>
+    (obj as EventData).events !== undefined;
 
   if (data === null) return null;
+
   if (!isMarkersData(data) || error !== "" || isLoading) return null;
 
   const events = Array.from(data.events.keys()).map((e) => {

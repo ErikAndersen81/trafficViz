@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { IntersectionMarkersProps } from ".";
 import { DateTimeContext } from "../Context";
 import { useData } from "../Hooks";
-import { getGraphDataRequest, IntersectionData } from "../Hooks/useData";
+import { createIntersectionRequest, IntersectionData } from "../Hooks/useData";
 import RadialIntersectionMarker from "./RadialIntersectionMarker";
 
 const RadialIntersectionMarkers = (props: IntersectionMarkersProps) => {
@@ -21,10 +21,9 @@ const RadialIntersectionMarkers = (props: IntersectionMarkersProps) => {
     let end = new Date(start.toString());
     end.setDate(starttime.getDate() + daysToAdd);
 
-    const markersPayload: RequestInit = getGraphDataRequest(
+    const markersPayload: RequestInit = createIntersectionRequest(
       start,
       end,
-      ["all"],
       ["aggregated"],
       binSize
     );

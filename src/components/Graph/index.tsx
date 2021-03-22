@@ -1,34 +1,37 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Paths from "./Paths";
 import Grid from "./Grid";
 import { DateTimeContext } from "../Context";
 import useData, {
-  getGraphDataRequest,
+  createIntersectionRequest,
   IntersectionData,
 } from "../Hooks/useData";
 import { getScale, Scale } from "../Scaling";
 import { getEndtime } from "../Context/DateTimeContext";
+import GraphOptions from "./GraphOptions";
 
 type GraphProps = {
   intersections: Array<string>;
-  graphOptions: Array<string>;
 };
 
 const Graph = (props: GraphProps) => {
-  const { graphOptions, intersections } = { ...props };
+  const { intersections } = { ...props };
+  const [graphOptions, setGraphOptions] = useState(["aggregated"]);
   const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("data");
   const endtime = getEndtime(starttime, interval);
   const binSize = interval === "day" ? 1 : 4;
   useEffect(() => {
-    const request = getGraphDataRequest(
+    const request = createIntersectionRequest(
       starttime,
       endtime,
-      intersections,
       graphOptions,
-      binSize
+      binSize,
+      intersections
     );
-    setPayload(request);
+    if (intersections.length > 0) {
+      setPayload(request);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setPayload, intersections, graphOptions, starttime, interval]);
@@ -61,26 +64,34 @@ const Graph = (props: GraphProps) => {
   ));
   const grid = <Grid scale={scale} dates={data.dates} interval={interval} />;
   return (
-    <svg
-      viewBox="-10 -10 115 120"
-      preserveAspectRatio="none"
-      height="100%"
-      width="100%">
-      <g>
-        {grid}
-        {paths}
-        <text strokeWidth="0" fontSize="4" textAnchor="right" x="-6" y="-5">
-          Passings
-        </text>
-      </g>
-    </svg>
+    <>
+      <svg
+        viewBox="-10 -10 115 120"
+        preserveAspectRatio="none"
+        height="100%"
+        width="100%">
+        <g>
+          {grid}
+          {paths}
+          <text strokeWidth="0" fontSize="4" textAnchor="right" x="-6" y="-5">
+            Passings
+          </text>
+        </g>
+      </svg>
+      <GraphOptions
+        setGraphOptions={setGraphOptions}
+        graphOptions={graphOptions}
+      />
+    </>
   );
 };
 
 const BlankGraph = () => {
   return (
     <>
-      <h3>Loading...</h3>
+      <div>
+        <h3 style={{ textAlign: "center" }}>No Data</h3>
+      </div>
     </>
   );
 };

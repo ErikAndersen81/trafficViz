@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
+import { IntersectionMarkersProps } from ".";
 import { useData } from "../Hooks";
-import { getGraphDataRequest, IntersectionData } from "../Hooks/useData";
+import { createIntersectionRequest, IntersectionData } from "../Hooks/useData";
 import SimpleIntersectionMarker from "./SimpleIntersectionMarker";
 
-const SimpleIntersectionMarkers = () => {
+const SimpleIntersectionMarkers = (props: IntersectionMarkersProps) => {
+  const { handleIntersectionClick } = { ...props };
   const { data, error, isLoading, setPayload } = useData("data");
 
   useEffect(() => {
-    const markersPayload: RequestInit = getGraphDataRequest(
+    const markersPayload: RequestInit = createIntersectionRequest(
       new Date(),
       new Date(),
-      ["all"],
       ["aggregated"]
     );
     setPayload(markersPayload);
@@ -32,6 +33,10 @@ const SimpleIntersectionMarkers = () => {
             key={`intersectionmarker${intersection}`}
             title={intersection}
             coordinates={coordinates}
+            handleIntersectionClick={(e) =>
+              handleIntersectionClick(e, intersection)
+            }
+            interactive={true}
           />
         )
       )}

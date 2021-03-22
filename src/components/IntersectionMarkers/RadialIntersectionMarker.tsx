@@ -35,7 +35,14 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
       (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
     ) === 0
   )
-    return <SimpleIntersectionMarker coordinates={coordinates} title={name} />;
+    return (
+      <SimpleIntersectionMarker
+        coordinates={coordinates}
+        title={name}
+        handleIntersectionClick={handleIntersectionClick}
+        interactive={false}
+      />
+    );
 
   const icon = CustomIcon(
     90,

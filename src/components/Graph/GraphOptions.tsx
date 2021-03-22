@@ -1,17 +1,22 @@
 import React from "react";
 
-const GraphOptions = (props: any) => {
-  const meanChecked = props.graphOptions.indexOf("mean") > -1;
-  const medianChecked = props.graphOptions.indexOf("median") > -1;
-  const aggregatedChecked = props.graphOptions.indexOf("aggregated") > -1;
+type GraphOptionsProps = {
+  graphOptions: Array<string>;
+  setGraphOptions: any;
+};
+
+const GraphOptions = (props: GraphOptionsProps) => {
+  const { graphOptions, setGraphOptions } = { ...props };
+  const meanChecked = graphOptions.indexOf("mean") > -1;
+  const medianChecked = graphOptions.indexOf("median") > -1;
+  const aggregatedChecked = graphOptions.indexOf("aggregated") > -1;
   const change = (event: any) => {
     if (event.target.checked) {
-      let dts = props.graphOptions.concat([event.target.value]);
-      props.setGraphOptions(dts);
+      let dts = graphOptions.concat([event.target.value]);
+      setGraphOptions(dts);
     } else {
-      // @ts-expect-error ts-migrate(7006) FIXME: Parameter 'x' implicitly has an 'any' type.
-      let dts = props.graphOptions.filter((x) => x !== event.target.value);
-      props.setGraphOptions(dts);
+      let dts = graphOptions.filter((x) => x !== event.target.value);
+      setGraphOptions(dts);
     }
   };
   return (

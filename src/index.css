@@ -6,21 +6,15 @@
   grid-template-rows: 70% 30%;
 }
 
-.GraphBox {
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 91% 9%;
-  border-style: none;
-  grid-row-start: 1;
-  grid-row-end: 1;
-  grid-column-start: 2;
-  grid-column-end: 2;
+.ChartBox {
+  display: inline;
+}
+
+.ChartBoxMenuButton {
+  border-bottom: none;
 }
 
 .DatetimeBox {
-  grid-column-start: 2;
-  grid-row-start: 2;
-  grid-row-end: 2;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;

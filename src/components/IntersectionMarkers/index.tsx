@@ -12,12 +12,12 @@ export type IntersectionMarkersProps = {
 };
 
 const IntersectionMarkers = (props: IntersectionMarkersProps) => {
-  const { markerType } = { ...props };
+  const { markerType, handleIntersectionClick } = { ...props };
   switch (markerType) {
     case "off":
       return null;
     case "simple":
-      return <SimpleIntersectionMarkers />;
+      return <SimpleIntersectionMarkers {...props} />;
     case "radial":
       return <RadialIntersectionMarkers {...props} />;
   }

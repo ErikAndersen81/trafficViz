@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 
-const formatDate = (date: Date): string => {
-  return `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+type DataTypes = IntersectionData | EventData | DistanceData | null;
+
+type DataDispatcher = React.Dispatch<React.SetStateAction<DataTypes>>;
+
+export type DistanceData = {
+  columns: Array<string>;
+  matrix: Array<Array<number | null>>;
 };
 
 export type IntersectionData = {
@@ -11,17 +14,6 @@ export type IntersectionData = {
   dates: Array<Date>;
   coordinates: Map<string, CoordinatesType>;
   maxVal: number;
-};
-
-export type MarkersData = {
-  totalPassings: Map<string, number>;
-  pctAbove: Map<string, number>;
-  pctBelow: Map<string, number>;
-  measurements: number;
-};
-
-export type CoordinatesData = {
-  intersections: Map<string, CoordinatesType>;
 };
 
 export type CoordinatesType = {
@@ -37,7 +29,7 @@ export type Group = Map<string, Array<number | null>>;
 
 export type ResourceType = "data" | "events" | "distances";
 
-export type EventMarkersData = {
+export type EventData = {
   events: Map<string, EventType>;
 };
 export type EventType = {
@@ -48,6 +40,7 @@ export type EventType = {
   endtime: string;
   type: EventMarkerType;
 };
+
 export type EventMarkerType = "event" | "tweet" | "disturbance" | "off" | "all";
 
 const headers = {
@@ -55,12 +48,12 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-export const getGraphDataRequest = (
+export const createIntersectionRequest = (
   starttime: Date,
   endtime: Date,
-  intersections: Array<string>,
   graphOptions: Array<string>,
-  binSize?: number
+  binSize?: number,
+  intersections?: Array<string>
 ): RequestInit => {
   const body = JSON.stringify({
     starttime: formatDate(starttime),
@@ -78,7 +71,7 @@ export const getGraphDataRequest = (
   return payload;
 };
 
-export const getMarkersDataRequest = (
+export const createTimeframeRequest = (
   starttime: Date,
   endtime: Date
 ): RequestInit => {
@@ -95,14 +88,17 @@ export const getMarkersDataRequest = (
   return payload;
 };
 
+const formatDate = (date: Date): string => {
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+};
+
 const useData = (resource: ResourceType) => {
-  const [data, setData] = useState<
-    IntersectionData | MarkersData | CoordinatesData | EventMarkersData | null
-  >(null);
+  const [data, setData] = useState<DataTypes>(null);
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [payload, setPayload] = useState<RequestInit | undefined>();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -113,53 +109,15 @@ const useData = (resource: ResourceType) => {
           setError(jsonData.error);
         } else {
           if (resource === "events") {
-            let events = new Map<string, EventType>(
-              Object.keys(jsonData.events).map((k: string) => [
-                k,
-                jsonData.events[k] as EventType,
-              ])
-            );
-            setData({ events });
+            parseEventData(jsonData, setData);
+          } else if (resource === "distances") {
+            const columns = Array.from(jsonData["columns"]) as Array<string>;
+            const matrix = Array.from(jsonData["matrix"]) as Array<
+              Array<number | null>
+            >;
+            setData(() => ({ columns, matrix } as DistanceData));
           } else {
-            let pathData: PathData = new Map<GroupType, Group>();
-            let dates: Array<Date> = new Array<Date>(
-              ...jsonData.dates.map((date: string) => new Date(date))
-            );
-            let maxVal: number = jsonData.maxVal;
-            if (jsonData["mean"])
-              pathData.set("mean", new Map<string, Array<number | null>>());
-            if (jsonData["median"])
-              pathData.set("median", new Map<string, Array<number | null>>());
-            Object.keys(jsonData["pathData"]).forEach((group) => {
-              if (jsonData["pathData"][group]) {
-                pathData.set(
-                  group as GroupType,
-                  new Map<string, Array<number | null>>()
-                );
-                Object.keys(jsonData["pathData"][group]).forEach(
-                  (intersection) => {
-                    pathData
-                      .get(group as GroupType)
-                      ?.set(
-                        intersection,
-                        Array<number | null>(
-                          jsonData["pathData"][group][intersection]
-                        ).flat()
-                      );
-                  }
-                );
-              }
-            });
-            const coordinates = new Map<string, CoordinatesType>();
-            if (jsonData["coordinates"]) {
-              Object.keys(jsonData["coordinates"]).forEach((intersection) => {
-                coordinates.set(
-                  intersection as string,
-                  jsonData["coordinates"][intersection] as CoordinatesType
-                );
-              });
-            }
-            setData(() => ({ pathData, dates, maxVal, coordinates }));
+            parseIntersectionData(jsonData, setData);
           }
         }
       } catch (err) {
@@ -174,6 +132,53 @@ const useData = (resource: ResourceType) => {
     }
   }, [resource, payload]);
   return { data, isLoading, error, setPayload };
+};
+
+const parseEventData = (jsonData: any, setData: DataDispatcher) => {
+  let events = new Map<string, EventType>(
+    Object.keys(jsonData.events).map((k: string) => [
+      k,
+      jsonData.events[k] as EventType,
+    ])
+  );
+  setData(() => ({ events } as EventData));
+};
+
+const parseIntersectionData = (jsonData: any, setData: DataDispatcher) => {
+  let pathData: PathData = new Map<GroupType, Group>();
+  let dates: Array<Date> = new Array<Date>(
+    ...jsonData.dates.map((date: string) => new Date(date))
+  );
+  let maxVal: number = jsonData.maxVal;
+  if (jsonData["mean"])
+    pathData.set("mean", new Map<string, Array<number | null>>());
+  if (jsonData["median"])
+    pathData.set("median", new Map<string, Array<number | null>>());
+  Object.keys(jsonData["pathData"]).forEach((group) => {
+    if (jsonData["pathData"][group]) {
+      pathData.set(group as GroupType, new Map<string, Array<number | null>>());
+      Object.keys(jsonData["pathData"][group]).forEach((intersection) => {
+        pathData
+          .get(group as GroupType)
+          ?.set(
+            intersection,
+            Array<number | null>(
+              jsonData["pathData"][group][intersection]
+            ).flat()
+          );
+      });
+    }
+  });
+  const coordinates = new Map<string, CoordinatesType>();
+  if (jsonData["coordinates"]) {
+    Object.keys(jsonData["coordinates"]).forEach((intersection) => {
+      coordinates.set(
+        intersection as string,
+        jsonData["coordinates"][intersection] as CoordinatesType
+      );
+    });
+  }
+  setData(() => ({ pathData, dates, maxVal, coordinates }));
 };
 
 export default useData;
