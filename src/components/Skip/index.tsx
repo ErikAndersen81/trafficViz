@@ -11,23 +11,21 @@ const Skip = () => {
     event.preventDefault();
   };
   return (
-    <div className="DatetimeSelector">
-      <div>
-        <button value="back" onClick={() => slide("backward")}>
-          &laquo;
+    <div>
+      <select
+        className="DropdownBtn"
+        name="skip"
+        value={interval}
+        onChange={handleChange}>
+        <option value="day">Day</option>
+        <option value="week">Week</option>
+      </select>
+      <button value="back" onClick={() => slide("backward")}>
+        &laquo;
         </button>
-        <select
-          className="DropdownBtn"
-          name="skip"
-          value={interval}
-          onChange={handleChange}>
-          <option value="day">Day</option>
-          <option value="week">Week</option>
-        </select>
-        <button value="forward" onClick={() => slide("forward")}>
-          &raquo;
+      <button value="forward" onClick={() => slide("forward")}>
+        &raquo;
         </button>
-      </div>
     </div>
   );
 };

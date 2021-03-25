@@ -15,9 +15,12 @@
 }
 
 .DatetimeBox {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
+  background-color: lightgoldenrodyellow;
+  display: flex;
+  padding: 2px;
+}
+.DatetimeBoxItem {
+  padding: 2px;
 }
 
 .MapBox {

@@ -40,7 +40,7 @@ const Graph = (props: GraphProps) => {
     variableToCheck: any
   ): variableToCheck is IntersectionData =>
     (variableToCheck as IntersectionData).pathData !== undefined;
-  if (data === null || !isGraphData(data) || error !== "" || isLoading)
+  if (data === null || !isGraphData(data) || error !== "" || isLoading || data.pathData === null)
     return <BlankGraph />;
   const values = Array.from(Array.from(data.pathData)[0][1].values())
     .map((x) => Array.from(x.values()))

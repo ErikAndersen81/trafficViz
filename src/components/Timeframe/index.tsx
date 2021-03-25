@@ -5,13 +5,13 @@ import Skip from "../Skip";
 const Timeframe = () => {
   return (
     <div className="DatetimeBox">
-      <div className="DatetimeSelector">
-        <span>Start time</span>
-        <DatePicker />
+      <div className="DatetimeBoxItem">
+        <span>Timeframe:</span>
       </div>
-      <div className="DatetimeSelector">
-        <span>Time span</span>
-        <Skip />
+      <div className="DatetimeBoxItem">
+        <Skip /></div>
+      <div className="DatetimeBoxItem">
+        <DatePicker />
       </div>
     </div>
   );
@@ -57,7 +57,6 @@ const DatePicker = (props: DatePickerProps) => {
   };
   return (
     <form>
-      <label htmlFor="date"> Date: </label>
       <input
         type="date"
         name="date"
@@ -66,12 +65,10 @@ const DatePicker = (props: DatePickerProps) => {
         max={max.toISOString().substring(0, 10)}
         onChange={(e) => changeDate(e)}
       />
-      <br></br>
-      <label htmlFor="time"> Time: </label>
       <input
         type="time"
         name="time"
-        value={starttime.toLocaleTimeString().substring(0, 5)}
+        value={starttime.toTimeString().slice(0, 5)}
         onChange={(e) => changeTime(e)}
       />
     </form>

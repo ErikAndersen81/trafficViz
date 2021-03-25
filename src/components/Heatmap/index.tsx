@@ -88,16 +88,23 @@ type OptionsProps = {
   setOption: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
+
+
 const Options = (props: OptionsProps) => {
   const { setOption, options } = { ...props };
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = parseInt(e.currentTarget.value)
+    if (!isNaN(val)) setOption(val)
+    else setOption(null)
+  }
   return (
-    <select>
+    <select defaultValue="unsorted" onChange={handleChange}>
       {options.map((str, idx) => (
-        <option onClick={() => setOption(idx)} key={"option" + idx} value={idx}>
+        <option key={"option" + idx} value={idx}>
           {str}
         </option>
       ))}
-      <option selected={true} onClick={() => setOption(null)}>
+      <option value="unsorted">
         Unsorted
       </option>
     </select>

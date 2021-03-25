@@ -61,27 +61,27 @@ type ChartProps = {
 
 const Charts = (props: ChartProps) => {
   const { intersections } = { ...props };
-  const [showGraph, setShowGraph] = useState<boolean>(false);
-  const [showHeatmap, setShowHeatmap] = useState<boolean>(false);
+  const [showing, setShowing] = useState<string>("heatmap");
+  console.log(showing);
   return (
     <div className="Charts">
       <Timeframe />
-      <button
-        className="ChartBoxMenuButton"
-        onClick={() => setShowGraph(!showGraph)}>
-        Graph
-      </button>
-      <button
-        className="ChartBoxMenuButton"
-        onClick={() => setShowHeatmap(!showHeatmap)}>
-        Heatmap
-      </button>
-      {showGraph && (
+      <select defaultValue={showing} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setShowing(e.currentTarget.value) }}>
+        <option
+          value="graph">
+          Graph
+      </option>
+        <option
+          value="heatmap">
+          Heatmap
+      </option>
+      </select>
+      {showing === "graph" && (
         <div className="ChartBox">
           <Graph intersections={intersections} />
         </div>
       )}
-      {showHeatmap && (
+      {showing === "heatmap" && (
         <div className="ChartBox">
           <Heatmap intersections={intersections} />
         </div>
