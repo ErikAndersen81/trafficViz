@@ -19,7 +19,7 @@ const Paths = (props: PathsProps) => {
     (intersection, idx) => (
       <g
         key={"group" + idx}
-        stroke={colors[idx]}
+        stroke={colors[idx % colors.length]}
         strokeDasharray={dashes[group]}>
         <Path
           xInterval={xInterval}
@@ -125,7 +125,7 @@ const Popup = (props: PopupInfo) => {
         width={25}
         height={18}
         strokeWidth=".2"
-        fill="orange"
+        fill="lightgray"
         fillOpacity=".6"></rect>
       <text x={x + 8} y={y + 3} fontWeight="bold" fontSize={3}>
         {intersection}

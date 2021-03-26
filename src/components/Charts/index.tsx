@@ -10,14 +10,17 @@ const Charts = () => {
     return (
         <div className="Charts">
             <Timeframe />
-            <select defaultValue={showing} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setShowing(e.currentTarget.value) }}>
+            <IntersectionSelection />
+            <select title="Graph type" defaultValue={showing} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setShowing(e.currentTarget.value) }}>
                 <option
+                    title="Temporal flow intensities"
                     value="graph">
-                    Graph
+                    Timeline
         </option>
                 <option
+                    title="Flow probability distances"
                     value="heatmap">
-                    Heatmap
+                    Distances
         </option>
             </select>
             {showing === "graph" && (
@@ -30,7 +33,6 @@ const Charts = () => {
                     <Heatmap />
                 </div>
             )}
-            <IntersectionSelection />
         </div>
     );
 };

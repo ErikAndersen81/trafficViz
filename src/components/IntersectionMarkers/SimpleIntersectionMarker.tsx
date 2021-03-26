@@ -22,6 +22,7 @@ const SimpleIntersectionMarker = (props: SimpleIntersectionMarkerProps) => {
   );
   return (
     <Marker
+      title={interactive ? "Click to select/deselect" : "No data"}
       interactive={interactive}
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
       icon={icon}

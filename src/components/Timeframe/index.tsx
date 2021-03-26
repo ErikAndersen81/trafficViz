@@ -56,7 +56,7 @@ const DatePicker = (props: DatePickerProps) => {
     event.preventDefault();
   };
   return (
-    <form>
+    <form title="Set the start of the timeframe">
       <input
         type="date"
         name="date"

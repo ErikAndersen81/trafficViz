@@ -30,7 +30,7 @@ const CustomMapControls = (props: CustomMapControlsProps) => {
 
   return (
     <div className="CustomMapControls leaflet-control">
-      <select name="intersection" onChange={handleIntersectionSelect}>
+      <select title="Intersection marker type" name="intersection" onChange={handleIntersectionSelect}>
         <option disabled hidden>
           Intersection markers
         </option>
@@ -38,7 +38,7 @@ const CustomMapControls = (props: CustomMapControlsProps) => {
         <option value="radial">Radial charts</option>
         <option value="off">Off</option>
       </select>
-      <select name="events" onChange={handleEventSelect}>
+      <select title="Show event markers" name="events" onChange={handleEventSelect}>
         <option disabled hidden>
           Event markers
         </option>

@@ -14,16 +14,17 @@ const Skip = () => {
     <div>
       <select
         className="DropdownBtn"
+        title="Timeframe span"
         name="skip"
         value={interval}
         onChange={handleChange}>
         <option value="day">Day</option>
         <option value="week">Week</option>
       </select>
-      <button value="back" onClick={() => slide("backward")}>
+      <button value="back" onClick={() => slide("backward")} title="Previous timeframe">
         &laquo;
         </button>
-      <button value="forward" onClick={() => slide("forward")}>
+      <button value="forward" onClick={() => slide("forward")} title="Next timeframe">
         &raquo;
         </button>
     </div>

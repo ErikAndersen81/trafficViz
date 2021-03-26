@@ -8,7 +8,7 @@ type BlocksProps = {
 
 const Blocks = (props: BlocksProps) => {
   const { matrix, gridSize } = { ...props };
-  const colorScale = chroma.scale("Purples").classes(100);
+  const colorScale = chroma.scale(['#f7fcfd', '#e5f5f9', '#ccece6', '#99d8c9', '#66c2a4', '#41ae76', '#238b45', '#006d2c', '#00441b']).classes(100);
   const maxVal = matrix
     .flat()
     .map((x) => (x !== null ? x : 0))

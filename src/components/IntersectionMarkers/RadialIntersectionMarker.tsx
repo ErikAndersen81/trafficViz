@@ -59,6 +59,7 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
 
   return (
     <Marker
+      title="Click to select/deselect"
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
       icon={icon}
       weight={1.5}

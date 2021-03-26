@@ -23,8 +23,28 @@
   padding: 2px;
 }
 
-.intersectionSelection {
+.intersectionSelection{
+  border-style: groove;
+  min-height: 16mm;
   display: flex;
+}
+
+.intersectionSelection > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.intersectionSelectionItem {
+  margin-top: 3px;
+  margin-bottom: 3px ;
+  margin-left: 1px;
+  max-height: 40%;
+}
+
+.intersectionSelection>p {
+  margin-top: 1mm;
+  margin-right: 1mm;
+  margin-left: 1mm;
 }
 
 .MapBox {
