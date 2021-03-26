@@ -18,6 +18,8 @@
 .DatetimeBox {
   background-color: lightgoldenrodyellow;
   display: flex;
+  border:groove;
+  margin: 2px 2px 2px 2px;
   padding: 2px;
 }
 .DatetimeBoxItem {
@@ -29,6 +31,7 @@
   background-color: rgb(210, 250, 237);
   min-height: 16mm;
   display: flex;
+  margin: 2px 2px 2px 2px;
 }
 
 .intersectionSelection > div {
