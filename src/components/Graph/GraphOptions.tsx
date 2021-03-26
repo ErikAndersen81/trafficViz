@@ -9,7 +9,6 @@ const GraphOptions = (props: GraphOptionsProps) => {
   const { graphOptions, setGraphOptions } = { ...props };
   const meanChecked = graphOptions.indexOf("mean") > -1;
   const medianChecked = graphOptions.indexOf("median") > -1;
-  const aggregatedChecked = graphOptions.indexOf("aggregated") > -1;
   const change = (event: any) => {
     if (event.target.checked) {
       let dts = graphOptions.concat([event.target.value]);
@@ -41,15 +40,6 @@ const GraphOptions = (props: GraphOptionsProps) => {
 
       <label htmlFor="median">Median </label>
 
-      <input
-        type="checkbox"
-        id="aggregated"
-        name="aggregated"
-        value="aggregated"
-        defaultChecked={aggregatedChecked}
-      />
-
-      <label htmlFor="aggregated">Aggregated </label>
     </form>
   );
 };

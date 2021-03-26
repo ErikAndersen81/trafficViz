@@ -12,7 +12,7 @@ const IntersectionContext = React.createContext<IntersectionSelection>({
   intersections: [],
   highlighted: '',
   setIntersections: () => { console.log("Warning: No intersections provider!") },
-  setHighlighted: () => { console.log("Warning: No highlight provider!") }
+  setHighlighted: () => { console.log("Warning: No highlight provider!") },
 });
 
 export const addOrRemove = (intersection: string, intersections: Array<string>): Array<string> => {

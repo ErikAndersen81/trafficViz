@@ -26,7 +26,7 @@ const Heatmap = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setPayload, starttime, interval, intersections]);
-
+  if (intersections.length < 2) return <BlankGraph />
   const isDistanceData = (
     variableToCheck: any
   ): variableToCheck is DistanceData =>
@@ -58,7 +58,7 @@ const BlankGraph = () => {
   return (
     <>
       <div>
-        <h3 style={{ textAlign: "center" }}>Heatmap</h3>
+        <h3 style={{ textAlign: "center" }}>Select at least two intersections!</h3>
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Graph from "../Graph";
 import Heatmap from "../Heatmap";
+import IntersectionSelection from "../IntersectionSelection";
 import Timeframe from "../Timeframe";
 
 
@@ -29,6 +30,7 @@ const Charts = () => {
                     <Heatmap />
                 </div>
             )}
+            <IntersectionSelection />
         </div>
     );
 };

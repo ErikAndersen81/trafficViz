@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { DateTimeContext } from "../Context";
 import { getEndtime } from "../Context/DateTimeContext";
 import { useData } from "../Hooks";
-import { createRequest, Group, GroupType, IntersectionData } from "../Hooks/useData";
+import { createRequest, GroupType, IntersectionData } from "../Hooks/useData";
 import SimpleIntersectionMarker from "./SimpleIntersectionMarker";
 
 const SimpleIntersectionMarkers = () => {
@@ -28,7 +28,6 @@ const SimpleIntersectionMarkers = () => {
   if (data === null) {
     return null;
   }
-  console.log(data)
   return (
     <div className="markers">
       {Array.from(data.coordinates.entries()).map(

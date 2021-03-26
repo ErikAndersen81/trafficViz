@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { HighlightContext } from "../Context";
+import colors from "../../constants/images/colors";
+import { HighlightContext, IntersectionContext } from "../Context";
 import { Group, GroupType } from "../Hooks/useData";
 import { FitToChart, readFromChart, Scale } from "../Scaling";
 
@@ -13,15 +14,16 @@ type PathsProps = {
 
 const Paths = (props: PathsProps) => {
   const { data, group, scale, xInterval, dates } = { ...props };
-  const paths = Array.from(data).map(
-    ([intersection, intersectionData], idx) => (
+  const { intersections } = useContext(IntersectionContext)
+  const paths = intersections.map(
+    (intersection, idx) => (
       <g
         key={"group" + idx}
         stroke={colors[idx]}
         strokeDasharray={dashes[group]}>
         <Path
           xInterval={xInterval}
-          values={intersectionData}
+          values={data.get(intersection) || []}
           key={"GroupPath" + group + intersection}
           name={intersection}
           scale={scale}
@@ -141,18 +143,7 @@ const Popup = (props: PopupInfo) => {
   );
 };
 
-const colors = [
-  "#558b2f",
-  "#f8c471",
-  "#a5d6a7",
-  "#ef9a9a",
-  "#a9cce3",
-  "#FFF9c4",
-  "#616161",
-  "#bbdefb",
-  "#ffcdd2",
-  "#33691e",
-];
+
 
 const dashes = {
   mean: ".5 .2",

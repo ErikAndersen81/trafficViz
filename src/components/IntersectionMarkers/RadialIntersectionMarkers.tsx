@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { DateTimeContext } from "../Context";
-import GraphOptions from "../Graph/GraphOptions";
 import { useData } from "../Hooks";
 import { createRequest, IntersectionData } from "../Hooks/useData";
 import RadialIntersectionMarker from "./RadialIntersectionMarker";
