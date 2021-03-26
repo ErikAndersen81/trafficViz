@@ -4,6 +4,7 @@
   width: 100vw;
   grid-template-columns: 60% 40%;
   grid-template-rows: 70% 30%;
+  background-color: d4d4d4;
 }
 
 .ChartBox {
@@ -25,6 +26,7 @@
 
 .intersectionSelection{
   border-style: groove;
+  background-color: rgb(210, 250, 237);
   min-height: 16mm;
   display: flex;
 }
@@ -35,13 +37,16 @@
 }
 
 .intersectionSelectionItem {
+  cursor: pointer;
   margin-top: 3px;
   margin-bottom: 3px ;
   margin-left: 1px;
   max-height: 40%;
+  background-color: rgb(230, 231, 229);
 }
 
 .intersectionSelection>p {
+  cursor: default;
   margin-top: 1mm;
   margin-right: 1mm;
   margin-left: 1mm;
@@ -135,7 +140,6 @@ body {
 
 .charts {
   width: 100%;
-  margin: auto;
   display: grid;
   background-color: #c7ebe6;
   grid-column-gap: 5px;
@@ -143,9 +147,18 @@ body {
   grid-template-columns: auto auto auto auto;
 }
 
+.box {
+  border-style: groove;
+  margin: 2px 2px 2px 2px;
+  height:100%
+}
+
 .chart {
-  background-color: #ffff00;
-  height: 25vw;
+  height:92%;
+  background-color:rgb(230, 231, 229);
+  border-style: groove;
+  border-width: 1px;
+  margin: 2px 2px 2px 2px;
 }
 
 .Bar {

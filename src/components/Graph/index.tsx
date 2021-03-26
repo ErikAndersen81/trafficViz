@@ -63,7 +63,7 @@ const Graph = () => {
   ));
   const grid = <Grid scale={scale} dates={data.dates} interval={interval} />;
   return (
-    <>
+    <div className="chart">
       <svg
         viewBox="-10 -10 115 120"
         preserveAspectRatio="none"
@@ -81,17 +81,15 @@ const Graph = () => {
         setGraphOptions={setGraphOptions}
         graphOptions={graphOptions}
       />
-    </>
+    </div>
   );
 };
 
 const BlankGraph = () => {
   return (
-    <>
-      <div>
-        <h3 style={{ textAlign: "center" }}>No Data</h3>
-      </div>
-    </>
+    <div className="chart">
+      <h3 style={{ textAlign: "center" }}>No Data</h3>
+    </div>
   );
 };
 

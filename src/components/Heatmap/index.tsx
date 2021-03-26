@@ -40,7 +40,7 @@ const Heatmap = () => {
   const { columns, matrix } = sortDataBy(data, sortby);
 
   return (
-    <>
+    <div className="chart">
       <svg
         viewBox="-10 -10 115 120"
         preserveAspectRatio="none"
@@ -50,17 +50,15 @@ const Heatmap = () => {
         <Blocks matrix={matrix} gridSize={gridSize} />
       </svg>
       <Options options={data.columns} setOption={setSortby} />
-    </>
+    </div>
   );
 };
 
 const BlankGraph = () => {
   return (
-    <>
-      <div>
-        <h3 style={{ textAlign: "center" }}>Select at least two intersections!</h3>
-      </div>
-    </>
+    <div className="chart">
+      <h3 style={{ textAlign: "center" }}>Select at least two intersections!</h3>
+    </div>
   );
 };
 
