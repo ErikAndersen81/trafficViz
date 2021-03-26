@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
-import { IntersectionMarkersProps } from ".";
 import { DateTimeContext } from "../Context";
+import GraphOptions from "../Graph/GraphOptions";
 import { useData } from "../Hooks";
-import { createIntersectionRequest, IntersectionData } from "../Hooks/useData";
+import { createRequest, IntersectionData } from "../Hooks/useData";
 import RadialIntersectionMarker from "./RadialIntersectionMarker";
 
-const RadialIntersectionMarkers = (props: IntersectionMarkersProps) => {
-  const { handleIntersectionClick } = { ...props };
+const RadialIntersectionMarkers = () => {
   const { starttime, interval } = useContext(DateTimeContext);
+
   const { data, error, isLoading, setPayload } = useData("data");
 
   useEffect(() => {
@@ -21,12 +21,13 @@ const RadialIntersectionMarkers = (props: IntersectionMarkersProps) => {
     let end = new Date(start.toString());
     end.setDate(starttime.getDate() + daysToAdd);
 
-    const markersPayload: RequestInit = createIntersectionRequest(
-      start,
-      end,
-      ["aggregated"],
-      binSize
-    );
+    const markersPayload: RequestInit = createRequest(
+      {
+        starttime: start,
+        endtime: end,
+        graphOptions: ["aggregated"],
+        binSize: binSize
+      });
     setPayload(markersPayload);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,17 +39,16 @@ const RadialIntersectionMarkers = (props: IntersectionMarkersProps) => {
   if (data === null) return null;
   if (!isGraphData(data) || error !== "" || isLoading) return null;
 
-  const intersections = data.pathData.get("aggregated");
+  const intersectionData = data.pathData.get("aggregated");
 
-  if (intersections === undefined) return null;
+  if (intersectionData === undefined) return null;
   const ints = Array.from(
-    intersections.entries()
+    intersectionData.entries()
   ).map(([intersection, values]) => (
     <RadialIntersectionMarker
       key={intersection + "IntersectionMarker"}
       name={intersection}
       data={values}
-      handleIntersectionClick={(e) => handleIntersectionClick(e, intersection)}
       coordinates={data.coordinates.get(intersection) || undefined}
     />
   ));

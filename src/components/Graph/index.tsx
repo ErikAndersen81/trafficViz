@@ -1,33 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import Paths from "./Paths";
 import Grid from "./Grid";
-import { DateTimeContext } from "../Context";
+import { DateTimeContext, IntersectionContext } from "../Context";
 import useData, {
-  createIntersectionRequest,
+  createRequest,
   IntersectionData,
 } from "../Hooks/useData";
 import { getScale, Scale } from "../Scaling";
 import { getEndtime } from "../Context/DateTimeContext";
 import GraphOptions from "./GraphOptions";
 
-type GraphProps = {
-  intersections: Array<string>;
-};
 
-const Graph = (props: GraphProps) => {
-  const { intersections } = { ...props };
+const Graph = () => {
+  const { intersections } = useContext(IntersectionContext)
   const [graphOptions, setGraphOptions] = useState(["aggregated"]);
   const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("data");
   const endtime = getEndtime(starttime, interval);
   const binSize = interval === "day" ? 1 : 4;
   useEffect(() => {
-    const request = createIntersectionRequest(
-      starttime,
-      endtime,
-      graphOptions,
-      binSize,
-      intersections
+    const request = createRequest(
+      {
+        starttime,
+        endtime,
+        graphOptions,
+        binSize,
+        intersections
+      }
     );
     if (intersections.length > 0) {
       setPayload(request);

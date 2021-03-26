@@ -1,7 +1,8 @@
 import { LeafletMouseEvent } from "leaflet";
 import React, { useContext } from "react";
 import { Marker } from "react-leaflet";
-import { DateTimeContext, HighlightContext } from "../Context";
+import { DateTimeContext, HighlightContext, IntersectionContext } from "../Context";
+import { addOrRemove } from "../Context/IntersectionContext";
 import CustomIcon from "../CustomIcon";
 import { CoordinatesType } from "../Hooks/useData";
 import RadialChart from "../RadialChart";
@@ -11,14 +12,14 @@ type IntersectionMarkerProps = {
   coordinates?: CoordinatesType;
   name: string;
   data: Array<number | null>;
-  handleIntersectionClick: (event: LeafletMouseEvent) => void;
 };
 
 const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
-  const { name, coordinates, data, handleIntersectionClick } = {
+  const { name, coordinates, data } = {
     ...props,
   };
   const Highlight = useContext(HighlightContext);
+  const { intersections, setIntersections } = useContext(IntersectionContext);
   const { starttime, interval } = useContext(DateTimeContext);
   if (!coordinates || !data) return null;
   const handleIntersectionHover = (event: LeafletMouseEvent) => {
@@ -34,15 +35,15 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
     data.reduce(
       (acc, val) => (acc === null ? 0 : acc) + (val === null ? 0 : val)
     ) === 0
-  )
+  ) {
     return (
       <SimpleIntersectionMarker
         coordinates={coordinates}
         title={name}
-        handleIntersectionClick={handleIntersectionClick}
         interactive={false}
       />
     );
+  }
 
   const icon = CustomIcon(
     90,
@@ -55,6 +56,7 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
       }
     />
   );
+
   return (
     <Marker
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
@@ -64,7 +66,7 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
       fillOpacity={0.5}
       onMouseOver={handleIntersectionHover}
       onMouseOut={handleIntersectionHover}
-      onclick={handleIntersectionClick}
+      onClick={() => setIntersections(addOrRemove(name, intersections))}
     />
   );
 };

@@ -1,21 +1,25 @@
-import React, { useEffect } from "react";
-import { IntersectionMarkersProps } from ".";
+import React, { useContext, useEffect } from "react";
+import { DateTimeContext } from "../Context";
+import { getEndtime } from "../Context/DateTimeContext";
 import { useData } from "../Hooks";
-import { createIntersectionRequest, IntersectionData } from "../Hooks/useData";
+import { createRequest, Group, GroupType, IntersectionData } from "../Hooks/useData";
 import SimpleIntersectionMarker from "./SimpleIntersectionMarker";
 
-const SimpleIntersectionMarkers = (props: IntersectionMarkersProps) => {
-  const { handleIntersectionClick } = { ...props };
+const SimpleIntersectionMarkers = () => {
   const { data, error, isLoading, setPayload } = useData("data");
+  const { starttime, interval } = useContext(DateTimeContext);
 
   useEffect(() => {
-    const markersPayload: RequestInit = createIntersectionRequest(
-      new Date(),
-      new Date(),
-      ["aggregated"]
+    const markersPayload: RequestInit = createRequest(
+      {
+        starttime,
+        endtime: getEndtime(starttime, interval),
+        graphOptions: ["aggregated"]
+      }
     );
     setPayload(markersPayload);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [starttime, interval]);
   // Type guards to make sure we have GraphData
   const isGraphData = (obj: any): obj is IntersectionData =>
     (obj as IntersectionData).pathData !== undefined;
@@ -24,7 +28,7 @@ const SimpleIntersectionMarkers = (props: IntersectionMarkersProps) => {
   if (data === null) {
     return null;
   }
-
+  console.log(data)
   return (
     <div className="markers">
       {Array.from(data.coordinates.entries()).map(
@@ -33,15 +37,17 @@ const SimpleIntersectionMarkers = (props: IntersectionMarkersProps) => {
             key={`intersectionmarker${intersection}`}
             title={intersection}
             coordinates={coordinates}
-            handleIntersectionClick={(e) =>
-              handleIntersectionClick(e, intersection)
-            }
-            interactive={true}
+            interactive={hasValidData(data.pathData.get('aggregated')?.get(intersection as GroupType))}
           />
         )
       )}
     </div>
   );
 };
+
+const hasValidData = (intersection: (Array<number | null> | undefined)): boolean => {
+  if (intersection === undefined) return false
+  return intersection.reduce((acc, val) => acc ? acc + (val ? val : 0) : 0) !== 0
+}
 
 export default SimpleIntersectionMarkers;

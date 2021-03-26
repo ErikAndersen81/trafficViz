@@ -1,25 +1,21 @@
-import { LeafletMouseEvent } from "leaflet";
 import React from "react";
 import RadialIntersectionMarkers from "./RadialIntersectionMarkers";
 import SimpleIntersectionMarkers from "./SimpleIntersectionMarkers";
 
 export type IntersectionMarkersProps = {
-  handleIntersectionClick: (
-    event: LeafletMouseEvent,
-    intersection: string
-  ) => void;
   markerType: IntersectionMarkerType;
 };
 
 const IntersectionMarkers = (props: IntersectionMarkersProps) => {
   const { markerType } = { ...props };
+  console.log(markerType)
   switch (markerType) {
     case "off":
       return null;
     case "simple":
-      return <SimpleIntersectionMarkers {...props} />;
+      return <SimpleIntersectionMarkers />;
     case "radial":
-      return <RadialIntersectionMarkers {...props} />;
+      return <RadialIntersectionMarkers />;
   }
 };
 

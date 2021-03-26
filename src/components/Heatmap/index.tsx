@@ -1,31 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DateTimeContext } from "../Context";
+import { DateTimeContext, IntersectionContext } from "../Context";
 import { getEndtime } from "../Context/DateTimeContext";
 import { useData } from "../Hooks";
-import { createTimeframeRequest, DistanceData } from "../Hooks/useData";
+import { createRequest, DistanceData } from "../Hooks/useData";
 import Blocks from "./Blocks";
 import Labels from "./Labels";
 
-type HeatmapProps = {
-  intersections: Array<string>;
-};
 
-const Heatmap = (props: HeatmapProps) => {
-  const { intersections } = { ...props }; // Let the user select intersections as in Graph!!
+const Heatmap = () => {
+  const { intersections } = useContext(IntersectionContext);
   const { starttime, interval } = useContext(DateTimeContext);
   const { data, error, isLoading, setPayload } = useData("distances");
   const [sortby, setSortby] = useState<number | null>(null);
   const endtime = getEndtime(starttime, interval);
 
   useEffect(() => {
-    const markersPayload: RequestInit = createTimeframeRequest(
-      starttime,
-      endtime
+    const markersPayload: RequestInit = createRequest(
+      {
+        starttime,
+        endtime,
+        intersections
+      }
     );
     setPayload(markersPayload);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPayload, starttime, interval]);
+  }, [setPayload, starttime, interval, intersections]);
 
   const isDistanceData = (
     variableToCheck: any

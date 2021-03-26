@@ -48,36 +48,23 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-export const createIntersectionRequest = (
-  starttime: Date,
-  endtime: Date,
-  graphOptions: Array<string>,
-  binSize?: number,
+type requestForm = {
+  starttime: Date;
+  endtime: Date;
+  graphOptions?: Array<string>;
+  binSize?: number;
   intersections?: Array<string>
+}
+
+export const createRequest = (form: requestForm
 ): RequestInit => {
+  const { starttime, endtime, intersections, binSize, graphOptions } = { ...form }
   const body = JSON.stringify({
     starttime: formatDate(starttime),
     endtime: formatDate(endtime),
-    intersections: intersections,
-    bin_size: binSize,
-    graph_options: graphOptions,
-  });
-
-  const payload: RequestInit = {
-    method: "POST",
-    headers: headers,
-    body: body,
-  };
-  return payload;
-};
-
-export const createTimeframeRequest = (
-  starttime: Date,
-  endtime: Date
-): RequestInit => {
-  const body = JSON.stringify({
-    starttime: formatDate(starttime),
-    endtime: formatDate(endtime),
+    intersections: intersections ? intersections : [],
+    bin_size: binSize ? binSize : 1,
+    graph_options: graphOptions ? graphOptions : [],
   });
 
   const payload: RequestInit = {
@@ -89,9 +76,8 @@ export const createTimeframeRequest = (
 };
 
 const formatDate = (date: Date): string => {
-  return `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+  return `${date.getFullYear()}-${date.getMonth() + 1
+    }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
 };
 
 const useData = (resource: ResourceType) => {

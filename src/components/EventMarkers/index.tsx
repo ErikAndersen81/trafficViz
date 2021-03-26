@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Marker, Tooltip } from "react-leaflet";
 import { DateTimeContext } from "../Context";
 import useData, {
-  createTimeframeRequest,
+  createRequest,
   EventData,
   EventMarkerType,
 } from "../Hooks/useData";
@@ -19,9 +19,11 @@ const EventMarkers = (props: EventMarkersProps) => {
   const { data, error, isLoading, setPayload } = useData("events");
   const endtime = getEndtime(starttime, interval);
   useEffect(() => {
-    const markersPayload: RequestInit = createTimeframeRequest(
-      starttime,
-      endtime
+    const markersPayload: RequestInit = createRequest(
+      {
+        starttime,
+        endtime
+      }
     );
     setPayload(markersPayload);
 
