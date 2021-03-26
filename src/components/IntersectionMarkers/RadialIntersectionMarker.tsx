@@ -1,7 +1,6 @@
-import { LeafletMouseEvent } from "leaflet";
 import React, { useContext } from "react";
 import { Marker } from "react-leaflet";
-import { DateTimeContext, HighlightContext, IntersectionContext } from "../Context";
+import { DateTimeContext, IntersectionContext } from "../Context";
 import { addOrRemove } from "../Context/IntersectionContext";
 import CustomIcon from "../CustomIcon";
 import { CoordinatesType } from "../Hooks/useData";
@@ -18,17 +17,9 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
   const { name, coordinates, data } = {
     ...props,
   };
-  const Highlight = useContext(HighlightContext);
   const { intersections, setIntersections } = useContext(IntersectionContext);
   const { starttime, interval } = useContext(DateTimeContext);
   if (!coordinates || !data) return null;
-  const handleIntersectionHover = (event: LeafletMouseEvent) => {
-    if (event.type === "mouseover") {
-      (Highlight as any).setHighlighted(props.name);
-    } else {
-      (Highlight as any).setHighlighted("");
-    }
-  };
 
   if (
     data.length === 0 ||
@@ -63,10 +54,7 @@ const RadialIntersectionMarker = (props: IntersectionMarkerProps) => {
       position={{ lat: coordinates.latitude, lng: coordinates.longitude }}
       icon={icon}
       weight={1.5}
-      color={(Highlight as any).highlighted === name ? "white" : "black"}
       fillOpacity={0.5}
-      onMouseOver={handleIntersectionHover}
-      onMouseOut={handleIntersectionHover}
       onClick={() => setIntersections(addOrRemove(name, intersections))}
     />
   );

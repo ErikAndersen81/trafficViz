@@ -15,10 +15,11 @@ const CustomIcon = (size: number, svg: JSX.Element) => {
 type SimpleIconProps = {
   color: string;
   text: string;
+  selected?: boolean;
 };
 
 export const SimpleIcon = (props: SimpleIconProps) => {
-  const { color, text } = { ...props };
+  const { color, text, selected } = { ...props };
   const fontSize = text.length === 1 ? 50 : 30;
   return (
     <svg
@@ -26,8 +27,8 @@ export const SimpleIcon = (props: SimpleIconProps) => {
       height="100%"
       viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg">
-      <circle fill="black" cx="50" cy="50" r="50" />
-      <circle fill={color} cx="48" cy="48" r="47" />
+      {selected ? <circle fill="grey" cx="48" cy="48" r="48" /> : <circle fill="black" cx="52" cy="52" r="48" />}
+      <circle fill={color} cx="50" cy="50" r="46" />
       <text
         color="black"
         x="50"

@@ -3,7 +3,7 @@ import Slice from "./Slice";
 import * as chroma from "chroma.ts";
 
 const RadialChart24H = (props: { values: Array<number>; title: string }) => {
-  let { values, title } = { ...props };
+  const { values, title } = { ...props };
   const colorScale = chroma.scale("Purples").classes(24);
   const inner = values
     .slice(0, 12)

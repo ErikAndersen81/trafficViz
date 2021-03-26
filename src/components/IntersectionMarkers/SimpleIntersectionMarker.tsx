@@ -18,7 +18,7 @@ const SimpleIntersectionMarker = (props: SimpleIntersectionMarkerProps) => {
   const { intersections, setIntersections } = useContext(IntersectionContext);
   const icon = CustomIcon(
     30,
-    <SimpleIcon color={interactive ? "lightgray" : "gray"} text={title} />
+    <SimpleIcon color={interactive ? "lightgray" : "gray"} text={title} selected={intersections.includes(title)} />
   );
   return (
     <Marker
