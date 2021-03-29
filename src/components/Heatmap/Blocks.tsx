@@ -55,7 +55,7 @@ const Block = (props: BlockProps) => {
         y={y}
         width={size}
         height={size}
-        stroke="white"
+        stroke="#ffe0dd"
         strokeWidth={0.5}
         fillOpacity={0}
       />
