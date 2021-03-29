@@ -163,6 +163,20 @@ body {
   border-width: 1px;
   margin: 2px 2px 2px 2px;
 }
+.vl {
+  background-color:#283966;
+  margin-left: 6px;
+  margin-right:  6px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  width:2px;
+}
+
+.Session {
+  border:groove;
+  margin: 2px 2px 2px 2px;
+  display: flex;
+}
 
 .Bar {
   fill: #73b9ff;
