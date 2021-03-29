@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Map from "../Map";
 import { DateTimeContext, IntersectionContext } from "../Context";
 import { Interval } from "../Context/DateTimeContext";
-import { LeafletMouseEvent } from "leaflet";
 import { IntersectionSelection } from "../Context/IntersectionContext";
 import Charts from "../Charts";
 
@@ -10,9 +9,9 @@ function App() {
   /* Set default values */
   const [intersections, setIntersections] = useState<Array<string>>([]);
   const [starttime, setStarttime] = useState<Date>(
-    new Date("2016-09-01 05:00")
+    new Date("2016-09-14 05:00")
   );
-  const [interval, setInterval] = useState<Interval>("week");
+  const [interval, setInterval] = useState<Interval>("day");
   const [highlighted, setHighlighted] = useState("");
   const datetimeContext = {
     starttime,
