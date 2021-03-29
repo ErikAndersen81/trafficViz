@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import Graph from "../Graph";
 import Heatmap from "../Heatmap";
 import IntersectionSelection from "../IntersectionSelection";
+import Session from "../Session";
 import Timeframe from "../Timeframe";
 
 
 const Charts = () => {
-    const [showing, setShowing] = useState<string>("heatmap");
+    const [showing, setShowing] = useState<string>("graph");
     return (
         <div className="Charts">
             <Timeframe />
@@ -37,6 +38,7 @@ const Charts = () => {
                     </div>
                 )}
             </div>
+            <Session />
         </div>
     );
 };
