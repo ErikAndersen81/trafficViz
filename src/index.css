@@ -173,6 +173,7 @@ body {
 }
 
 .Session {
+  background-color: rgb(238, 209, 216);
   border:groove;
   margin: 2px 2px 2px 2px;
   display: flex;

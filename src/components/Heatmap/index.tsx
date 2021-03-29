@@ -46,7 +46,7 @@ const Heatmap = () => {
         preserveAspectRatio="none"
         height="100%"
         width="100%">
-        <Labels columns={data.columns} rows={columns} gridSize={gridSize} />
+        <Labels columns={columns} rows={columns} gridSize={gridSize} />
         <Blocks matrix={matrix} gridSize={gridSize} />
       </svg>
       <Options options={data.columns} setOption={setSortby} />
@@ -77,7 +77,8 @@ const sortDataBy = (
     sortFunc(data.matrix[sortby][a], data.matrix[sortby][b])
   );
   const columns = indices.map((i) => data.columns[i]);
-  const matrix = indices.map((i) => data.matrix[i]);
+  const matrix = indices.map((i) => indices.map(j => data.matrix[i][j]));
+
   return { columns, matrix };
 };
 
