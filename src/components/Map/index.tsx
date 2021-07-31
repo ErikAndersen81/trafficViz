@@ -14,7 +14,7 @@ const Map = () => {
   const [
     showIntersections,
     setShowIntersections,
-  ] = useState<IntersectionMarkerType>("simple");
+  ] = useState<IntersectionMarkerType>("bar");
 
   const visibleMarkerTypes = {
     all: ["event", "disturbance", "tweet"],

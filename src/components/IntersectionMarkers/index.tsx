@@ -1,4 +1,5 @@
 import React from "react";
+import BarIntersectionMarkers from "./BarIntersectionMarkers";
 import RadialIntersectionMarkers from "./RadialIntersectionMarkers";
 import SimpleIntersectionMarkers from "./SimpleIntersectionMarkers";
 
@@ -16,9 +17,11 @@ const IntersectionMarkers = (props: IntersectionMarkersProps) => {
       return <SimpleIntersectionMarkers />;
     case "radial":
       return <RadialIntersectionMarkers />;
+    case "bar":
+      return <BarIntersectionMarkers />
   }
 };
 
-export type IntersectionMarkerType = "simple" | "radial" | "off";
+export type IntersectionMarkerType = "simple" | "radial" | "bar" | "off";
 
 export default IntersectionMarkers;

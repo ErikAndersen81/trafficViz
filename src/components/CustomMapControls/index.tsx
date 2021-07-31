@@ -36,6 +36,7 @@ const CustomMapControls = (props: CustomMapControlsProps) => {
         </option>
         <option value="simple">Simple</option>
         <option value="radial">Radial charts</option>
+        <option value="bar">Intensities</option>
         <option value="off">Off</option>
       </select>
       <select title="Show event markers" name="events" onChange={handleEventSelect}>
